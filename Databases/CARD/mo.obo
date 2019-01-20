@@ -1,0 +1,290 @@
+format-version: 1.2
+date: 12:04:2018 14:41
+saved-by: CARD
+auto-generated-by: cv2obo
+default-namespace: model_ontology
+ontology: model_ontology
+
+[Term]
+id: MO:0000004
+name: single resistance variant
+namespace: model_ontology
+def: "A nucleotide or amino acid substitution that confers elevated resistance to antibiotic(s) relative to wild type. The most common type encoded in the CARD is an amino acid substitution gleaned from the literature with format [wild-type][position][mutation], e.g. R184Q. When present in the associated gene or protein, a single resistance variant confers resistance to an antibiotic drug or drug class. Single resistance variants are used by the protein variant and rRNA mutation models to detect antibiotic resistance from submitted sequences." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000006 ! rRNA gene variant model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000003
+name: BLASTP e-value
+namespace: model_ontology
+def: "A curated expectation value (E-value), derived from BLASTP results, to establish a threshold value for assignment of a submitted protein sequence to a database protein reference sequence in CARD, differentiated from other existing CARD reference sequences. This parameter is attached to multiple types of detection models, including protein homolog and protein variant models, and is used to identify AMR genes from sequence data." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000009 ! protein homolog model
+relationship: part_of MO:0000020 ! protein knockout model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000009
+name: protein homolog model
+namespace: model_ontology
+def: "The protein homolog model is an AMR detection model. Protein homolog models detect a protein sequence based on its similarity to a curated reference sequence. A protein homolog model has only one parameter: a curated BLASTP bitscore cutoff for determining the strength of a match. Protein homolog model matches to reference sequences are categorized on three criteria: \"perfect\", \"strict\" and \"loose\". A perfect match is 100% identical to the reference sequence along its entire length; a strict match is not identical but the bitscore of the matched sequence is greater than the curated BLASTP bitscore cutoff. Loose matches are other sequences with a match bitscore less than the curated BLASTP bitscore." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000002
+name: protein variant model
+namespace: model_ontology
+def: "The protein variant model is an AMR detection model. Protein variant models are similar to protein homolog models - they detect the presence of a protein sequence based on its similarity to a curated reference sequence, but secondarily search submitted query sequences for curated sets of mutations shown clinically to confer resistance relative to wild-type. This model includes a protein reference sequence, a curated BLASTP cut-off, and mapped resistance variants. Mapped resistance variants may include any or all of: single resistance variants, insertions, deletions, co-dependent resistance variants, nonsense SNPs, and/or frameshift mutations. Protein variant model matches to reference sequences are categorized on two criteria: \"strict\" and \"loose\". A strict match has a BLASTP bitscore above the curated BLASTP cutoff value and contains at least one detected mutation from amongst the mapped resistance variants; a loose match has a BLASTP bitscore below the curated BLASTP cutoff value but still contains at least one detected mutation from amongst the mapped resistance variants. Regardless of BLASTP bitscore, if a sequence does not contain one of the mapped resistance variants, it is not considered a match and not detected by the protein variant model." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000006
+name: rRNA gene variant model
+namespace: model_ontology
+def: "The rRNA gene variant model is an AMR detection model used to identify ribosomal RNA (rRNA) genes with mutations shown clinically to confer resistance to known antibiotic(s) relative to the wild-type rRNA sequence. Like the protein variant model, rRNA gene variant models detect the presence of an rRNA sequence based on its homolog, and then secondarily search submitted query sequences for a curated mutation. This model includes an rRNA gene reference sequence, a BLASTN bitscore cutoff, and a set of mapped resistance variants. A submitted sequence must have both high homolog to the reference sequence and include a known resistance variant to be detected." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000007
+name: gene order
+namespace: model_ontology
+def: "The gene order model parameter describes the relative order of a set of genes or other genetic elements on a chromosome, a plasmid or within an operon. Antibiotic resistance is only conferred when the detected set of genes appears in the indicated order; otherwise, no resistance phenotype is produced. This parameter is part of the gene cluster meta-model, and may be attached to detection models with the following notation: [[cvterm_id 1],[cvterm_id 2],...,[cvterm_id n]], where the cvterm_id denotes a gene-associated AMR term and an attached model id. This parameter currently (August 2017) lacks an algorithm for detection." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000008 ! gene cluster meta-model
+
+[Term]
+id: MO:0000008
+name: gene cluster meta-model
+namespace: model_ontology
+def: "A meta-model to detect a defined gene cluster based on gene detection by other models." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000001
+name: detection model or meta-model
+namespace: model_ontology
+def: "The Comprehensive Antibiotic Resistance Database uses models for the detection of molecular determinants. For example, a \"protein homolog\" model can contain sequences of antimicrobial resistance genes that do not include mutation as a determinant of resistance, whereas a \"protein variant\" model will contain reference wild type sequences used for mapping SNPs conferring antimicrobial resistance.  The Comprehensive Antibiotic Resistance Database uses meta-models for the detection of combinations of individual molecular determinants. For example, efflux pump systems consist of multiple subunits and regulators that are detected together using the the \"efflux pump system\" meta-model. In CARD, these models are applied to the detection of antimicrobial resistance elements, but they are broadly applicable to other systems as well, with modifications." []
+is_a: MO:0000036 ! detection model or parameter
+
+[Term]
+id: MO:0000010
+name: protein domain meta-model
+namespace: model_ontology
+def: "A meta-model used to detect specific domains of proteins that confer resistance to antibiotic(s) relative to wild type. These models include reference sequences, a curated BLASTP cut-off for each of the genes, and directionality of the fused genes (if known)." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000011
+name: domain order
+namespace: model_ontology
+def: "A parameter to describe the genes in a fusion protein. The parameter is defined by Cvterm IDs, separated by commas, with the ordering number preceding a colon. If the ordering of one or more parameters is unknown, it is designated as 0. Examples: 1:30003,2:30111 or 0:32224,0:33555" []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000010 ! protein domain meta-model
+
+[Term]
+id: MO:0000012
+name: domain direction or strand
+namespace: model_ontology
+def: "A parameter to describe the order of the fusion protein domains from N terminus to C terminus. The parameter is defined by Cvterm IDs separated by commas (if known). " []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000010 ! protein domain meta-model
+
+[Term]
+id: MO:0000014
+name: multiple resistance variants
+namespace: model_ontology
+def: "A set of nucleotide or amino acid substitutions that are each required to confer resistance to an antibiotic drug or drug class by co-mutation. Compare to single resistance variant, where only one substitution is required. Multiple resistance variants parameters are indicated on appropriate models using the following notation: [wild-type 1][position 1][mutation 1],[wild-type 2][position 2][mutation 2],...,[wild-type n][position n][mutation n]. When each included substitution is detected in a protein sequence, resistance is conferred. This parameter is not currently included in any detection algorithms." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000020
+name: protein knockout model
+namespace: model_ontology
+def: "An AMR detection model for instances where the absence of a protein - due to large-scale insertion elements, large deletions, or other methods of protein knockout - confers clinical resistance to a known antibiotic. These models include reference sequences. Protein knockout models are currently in development." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000021
+name: taxa restriction
+namespace: model_ontology
+def: "An AMR detection model parameter to restrict algorithmic prediction of a specific gene or protein to a single taxon or set of taxa. This parameter is currently (Aug 2017) in development. Adding a taxa restriction parameter to an AMR detection model will prevent that model from being reported unless the taxa is explicitly stated or otherwise identified." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000020 ! protein knockout model
+
+[Term]
+id: MO:0000022
+name: nonsense mutation
+namespace: model_ontology
+def: "A nucleotide substitution resulting in a change from an amino acid codon to a STOP codon. Nonsense mutations truncate protein translation prematurely, resulting in a defective or completely inactive protein. In CARD, nonsense mutations may be attached to models using the notation: [wild type amino acid][position][STOP] (e.g. Q42STOP). This parameter is not currently used in detection algorithms." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+
+[Term]
+id: MO:0000023
+name: co-dependent single resistance variant
+namespace: model_ontology
+def: "A model parameter to describe mutations in multiple genes or proteins where resistance is co-dependent on each. For example, the G247S SNP in M. tuberculosis gyrA does not confer resistance to fluoroquinolones. However, when the D500N SNP is also present in gyrB, resistance is conferred. In this case, gyrA G247S is co-dependent on gyrB D500N to confer resistance. This parameter is noted on relevant models with the following notation: [cvterm-id-gene-1],[gene-1-SNP]+[cvterm-id-gene-2],[gene-2-SNP]+ ... +[cvterm-id-gene-n],[gene-n-SNP] e.g. 39879,G247S+40052,D500N. This parameter is not currently included in any detection algorithms." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+
+[Term]
+id: MO:0000024
+name: frameshift mutation
+namespace: model_ontology
+def: "A frameshift is a type of genetic mutation caused by a nucleotide insertion or deletion ≠ 3 bases. This changes the grouping of codons and thus the reading frame during translation, resulting in a incomplete or inactive protein product. Many frameshift mutations generate downstream STOP codons, resulting in premature peptide translation termination. Frameshifts may also confer antibiotic resistance through partial or total protein loss-of-function. Frameshift mutations are included with relevant models when applicable, with the following notation: [wild-type AA][position]fs;[[wild-type AA][position]STOP], where AA is an amino acid. If the premature STOP codon position is unknown or does not exist, [wild-type AA][position]fs is sufficient. This parameter is currently not included in detection algorithms." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000025
+name: co-dependent nonsense SNP
+namespace: model_ontology
+def: "An AMR detection model parameter to describe concurrent nonsense mutations in multiple genes which produce a resistance phenotype. That is, either mutation independently will not confer resistance but co-mutation in a set of genes does. These mutation parameters are documented in CARD with the notation: [cvterm-id-gene-1],[gene-1-nonsenseSNP]+[cvterm-id-gene-2],[gene-2-nonsenseSNP]+ ... +[cvterm-id-gene-n],[gene-n-nonsenseSNP] e.g. 39879,G247S+40052,D500STOP. This is currently (August 2017) no algorithm for model detection with this parameter." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+
+[Term]
+id: MO:0000026
+name: co-dependent insertion/deletion
+namespace: model_ontology
+def: "A model parameter to describe insertion/deletions in multiple genes that are dependent on each other's presence to confer resistance. For example, a mutation to Gene A does not confer resistance, but with an additional deletion mutation in Gene B, resistance is conferred. Notation: [cvterm-id-gene-1],[gene-1-mutation]+[cvterm-id-gene-2],[gene-2-mutation]+ ... +[cvterm-id-gene-n],[gene-n-mutation], with mutation notation corresponding to the appropriate type and notation from the non-co-dependent parameter (ie. single resistance variant, insertion/deletion and nonsense SNP) e.g. 39879,G247S+40052,nt502-1:C" []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+
+[Term]
+id: MO:0000028
+name: nonfunctional insertion model
+namespace: model_ontology
+def: "An AMR detection model for inclusion of a large insertion element. These insertion elements create a nonfunctional protein. These models are currently under development." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000029
+name: BLASTP bit-score
+namespace: model_ontology
+def: "A score is a numerical value that describes the overall quality of an alignment with higher numbers correspond to higher similarity. The bit-score (S) is determined by the following formula: S = (λ × S − lnK)/ ln2 where λ is the Gumble distribution constant, S is the raw alignment score, and K is a constant associated with the scoring matrix. Many AMR detection models use this parameter, including the protein homolog and protein variant models. The BLASTP bit-score parameter is a curated value determined from BLASTP analysis of the canonical reference sequence of a specific AMR-associated protein against the database of CARD reference sequence. This value establishes a threshold for computational prediction of a specific protein amongst a batch of submitted sequences." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000009 ! protein homolog model
+relationship: part_of MO:0000020 ! protein knockout model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000031
+name: gene type
+namespace: model_ontology
+def: "A parameter to describe the general type of genes detected by multiple detection models. The parameter is defined by cvterm_id and the gene type of one component gene separated by a comma. For example, 39353,regulatory would indicate that the gene for VanRA codes for a regulatory protein." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000008 ! gene cluster meta-model
+
+[Term]
+id: MO:0000032
+name: protein overexpression model
+namespace: model_ontology
+def: "This model detects protein overexpression based on the presence of mutations.\nThe detection of the protein without an associated mutation indicates that the protein is likely to be expressed at low or basal levels. The detection of the protein with the mutation indicates that the protein is likely overexpressed. This model reflects how certain proteins are functional with and without mutations. For example, efflux pump subunits and regulators are functional with mutations and without mutations. Without mutations, efflux pump subunits and regulators are usually expressed at a low level. When an efflux pump regulator has a mutation, it can cause the overexpression of the efflux pump it is responsible for regulating, leading to resistance to specific drugs. Protein overexpression models have two parameters: a curated BLASTP cutoff, and a curated set of mutations (single resistance variants, frameshift mutations, indels, etc.) shown clinically to confer resistance. This model type is a combination of the protein homolog and protein variant model. A detected hit can be categorized as Perfect, Strict, or Loose with no mutation(s) or as Strict or Loose with mutation(s)." []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000033
+name: BLASTN bit-score
+namespace: model_ontology
+def: "A score is a numerical value that describes the overall quality of an alignment. Higher numbers correspond to higher similarity. The bit-score (S) is determined by the following formula: S = (λ × S − lnK)/ ln2 where λ is the Gumble distribution constant, S is the raw alignment score, and K is a constant associated with the scoring matrix. This parameter is used by AMR detection models without a protein reference sequence but including a nucleotide reference sequence, e.g. the rRNA gene variant model. The BLASTN bit-score parameter is a curated value determined from BLASTN analysis of the canonical nucleotide reference sequence of a specific AMR-associated gene against the database of CARD reference sequences. This value establishes a threshold for computational prediction of a specific gene amongst a batch of submitted sequences." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+
+[Term]
+id: MO:0000034
+name: efflux pump system meta-model
+namespace: model_ontology
+def: "A meta-model used to detect an efflux pump (and its subunits) along with its regulators and any determinants of overexpression (e.g., mutations in efflux pump subunits, mutations in local and global regulators, mutations in two component regulatory systems)" []
+is_a: MO:0000001 ! detection model or meta-model
+
+[Term]
+id: MO:0000035
+name: efflux pump components
+namespace: model_ontology
+def: "This detection model parameter describes efflux pump components that are to be detected together (e.g., efflux pump subunits and regulators) using sequential model IDs, separated by commas. For example: 2685,440,1925,1305." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000034 ! efflux pump system meta-model
+
+[Term]
+id: MO:0000036
+name: detection model or parameter
+namespace: model_ontology
+def: "The Comprehensive Antibiotic Resistance Database uses meta-models, models, and model parameters for prediction of antimicrobial resistance determinants (plus other genotypes and phenotypes) from genomic data. Models and their parameters predict individual determinants, with a focus on genotype, while meta-models incorporate gene regulation, protein complexes, operon organization, and other information to predict both genotype and phenotype." []
+
+[Term]
+id: MO:0000038
+name: detection parameter
+namespace: model_ontology
+def: "Model parameters are used within detection models or meta-models. Collectively, parameters describe numerical or other measurable factors that define models, providing the framework for development of analytical tools. For example, many detection models rely on a curated expectation value or bitscore cut-off value to differentiate between functional homologs of known sequences and more divergent homologs with different function. " []
+is_a: MO:0000036 ! detection model or parameter
+
+[Term]
+id: MO:0000039
+name: mutation in regulatory element
+namespace: model_ontology
+def: "An AMR detection model parameter to describe mutations in regulatory elements upstream of a coding DNA region shown to confer resistance to an antibiotic drug or drug class. Regulatory element mutations in CARD use the following notation: nt[wild-type][-][position][mutation]." []
+is_a: MO:0000038 ! detection parameter
+relationship: part_of MO:0000002 ! protein variant model
+relationship: part_of MO:0000006 ! rRNA gene variant model
+relationship: part_of MO:0000032 ! protein overexpression model
+
+[Term]
+id: MO:0000040
+name: insertion mutation
+namespace: model_ontology
+def: "An AMR detection model parameter to describe a set of mapped insertion mutations. An insertion mutation refers to the addition of one or more nucleotides to a DNA strand. In publications, insertion mutations may be reported in peptide or in nucleotide format. Insertions not of a multiple of 3 cause frameshifts in the nucleotide open reading frame. However, the insertion mutation parameter only refers to insertions which modify the peptide sequence and/or change its function, but do not result in premature termination or functional protein knockout (see: frameshift mutation, which covers these cases)." []
+is_a: MO:0000038 ! detection parameter
+
+[Term]
+id: MO:0000041
+name: deletion mutation
+namespace: model_ontology
+def: "A detection model parameter to describe a set of mapped deletion mutations. A deletion mutation refers to the removal of one or more nucleotides or from a DNA strand. In publications, deletion mutations may be reported in nucleotide or in peptide format. Deletion mutations not of a multiple of 3 cause frameshifts in the nucleotide open reading frame. However, the deletion mutation parameter only refers to insertions which modify the peptide sequence and/or change its function, but do not result in premature termination or functional protein knockout (see: frameshift mutation, which covers these cases)." []
+is_a: MO:0000038 ! detection parameter
+
+[Term]
+id: MO:0000042
+name: deletion mutation from peptide sequence
+namespace: model_ontology
+def: "A subtype of the deletion mutation detection model parameter. This parameter is used when a set of deletion mutations is reported in a peptide sequence format. These are specific to codon deletions, where a multiple of 3 nucleotides are deleted. Mutations of this type are reported in the CARD with the notation: [-][AAs][position range]." []
+is_a: MO:0000041 ! deletion mutation
+
+[Term]
+id: MO:0000043
+name: deletion mutation from nucleotide sequence
+namespace: model_ontology
+def: "A subtype of the deletion mutation detection model parameter. This parameter is used when a set of deletion mutations is reported in a nucleotide sequence format. Such mutations may be of variable length - possibly causing a frameshift, but not premature termination of functional knockout. Mutation parameters of this type are reported in the CARD with the notation: [-]nt[position]:[nucleotides]." []
+is_a: MO:0000041 ! deletion mutation
+
+[Term]
+id: MO:0000044
+name: insertion mutation from peptide sequence
+namespace: model_ontology
+def: "A subtype of the insertion mutation detection model parameter. This parameter is used when a set of insertion mutations is reported in a peptide sequence format. These are specific to codon insertions, where a multiple of three nucleotides are inserted. This does not cause a frameshift mutation. Mutation parameters of this type are reported in CARD with the notation: [+][AAs][position range]." []
+is_a: MO:0000040 ! insertion mutation
+
+[Term]
+id: MO:0000045
+name: insertion mutation from nucleotide sequence
+namespace: model_ontology
+def: "A subtype of the insertion mutation detection model parameter. This parameter is used when a set of insertion mutations is reported in a nucleotide sequence format. Such mutations may be of variable length - possibly causing a frameshift, but not causing premature termination or a functional knockout. Mutation parameters of this type are reported in CARD with the notation: [+]nt[position]:[nucleotides]." []
+is_a: MO:0000040 ! insertion mutation
+
+[Typedef]
+id: part_of
+name: part_of
+xref: RO:part_of
+
+[Typedef]
+id: is_a
+name: is_a
+xref: RO:is_a
+

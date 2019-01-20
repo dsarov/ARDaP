@@ -1,0 +1,1338 @@
+Accession	Name	Model Type	Parameter Type	Mutations
+3003817	Acinetobacter baumannii gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S83L
+3003817	Acinetobacter baumannii gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	G81C
+3003818	Acinetobacter baumannii parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	D87E
+3003818	Acinetobacter baumannii parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S83L
+3003818	Acinetobacter baumannii parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80L
+3004049	Escherichia coli fabG mutations conferring resistance to triclosan	protein variant model	single resistance variant	Y151V
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	M159T
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	F203L
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	G93A
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	F203V
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	F203A
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	F203C
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	G93S
+3004045	Escherichia coli fabI mutations conferring resistance to isoniazid and triclosan	protein variant model	single resistance variant	G93V
+3004145	AxyZ	protein variant model	single resistance variant	V29G
+3003788	Bacillus subtilis pgsA with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	A64V
+3003297	Bartonella bacilliformis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D95N
+3003297	Bartonella bacilliformis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D90G
+3003302	Bartonella bacilliformis gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R184Q
+3003302	Bartonella bacilliformis gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	G124S
+3003302	Bartonella bacilliformis gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	T214I
+3003302	Bartonella bacilliformis gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	T214A
+3003582	basR	protein variant model	single resistance variant	L157Q
+3003582	basR	protein variant model	single resistance variant	L71R
+3003504	Borrelia burgdorferi 16S rRNA mutation conferring resistance to gentamicin	rRNA gene variant model	single resistance variant	A1401G
+3003503	Borrelia burgdorferi 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	A1401G
+3003502	Borrelia burgdorferi 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	A1184G
+3003502	Borrelia burgdorferi 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1185U
+3003777	Borrelia burgdorferi murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	D116C
+3004133	Brachyspira hyodysenteriae 23S rRNA with mutation conferring resistance to tylosin	rRNA gene variant model	single resistance variant	A2058U
+3004133	Brachyspira hyodysenteriae 23S rRNA with mutation conferring resistance to tylosin	rRNA gene variant model	single resistance variant	A2058G
+3003789	Campylobacter jejuni gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	T86I
+3003931	Capnocytophaga gingivalis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	G80N
+3004174	Chlamydia trachomatis 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2109C
+3004174	Chlamydia trachomatis 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2663C
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	G1125A
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	U14G
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A474C
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C856U
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A858C
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A859G
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A1123G
+3003978	Chlamydomonas reinhardtii 16S rRNA (rrnS) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A1123C
+3004132	Chlamydomonas reinhardtii 23S rRNA with mutation conferring resistance to erythromycin	rRNA gene variant model	single resistance variant	G1627A
+3004132	Chlamydomonas reinhardtii 23S rRNA with mutation conferring resistance to erythromycin	rRNA gene variant model	single resistance variant	G1628G
+3003485	Chlamydophila psittaci 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1193U
+3003485	Chlamydophila psittaci 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1193G
+3003485	Chlamydophila psittaci 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	A1192G
+3003485	Chlamydophila psittaci 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1194C
+3003357	Clostridium difficile EF-Tu mutants conferring resistance to elfamycin	protein variant model	single resistance variant	G261E
+3003995	Clostridium difficile gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A384D
+3003970	D-Ala-D-Ala ligase	protein variant model	single resistance variant	P313L
+3003970	D-Ala-D-Ala ligase	protein variant model	single resistance variant	E13G
+3003970	D-Ala-D-Ala ligase	protein variant model	single resistance variant	D295G
+3003970	D-Ala-D-Ala ligase	protein variant model	single resistance variant	V241D
+3003970	D-Ala-D-Ala ligase	protein variant model	single resistance variant	G99R
+3003761	eatAv	protein variant model	single resistance variant	T450I
+3003374	Enterobacter aerogenes acrR with mutation conferring multidrug antibiotic resistance	protein variant model	frameshift mutation	A47fs
+3003374	Enterobacter aerogenes acrR with mutation conferring multidrug antibiotic resistance	protein variant model	single resistance variant	R45C
+3003385	Enterobacter aerogenes Omp36	protein variant model	single resistance variant	G133D
+3003760	Enterococcus faecalis cls with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	H215R
+3003760	Enterococcus faecalis cls with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	R218Q
+3003760	Enterococcus faecalis cls with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	R267H
+3003813	Enterococcus faecalis drmA with mutation conferring daptomycin resistance	protein variant model	frameshift mutation	N150fs
+3003813	Enterococcus faecalis drmA with mutation conferring daptomycin resistance	protein variant model	nonsense mutation	L4STOP
+3003805	Enterococcus faecalis gshF with mutation conferring daptomycin resistance	protein variant model	single resistance variant	E554K
+3003077	Enterococcus faecalis liaF mutant conferring daptomycin resistance	protein variant model	single resistance variant	T194I
+3003792	Enterococcus faecalis liaR mutant conferring daptomycin resistance	protein variant model	single resistance variant	D191N
+3003791	Enterococcus faecalis liaS mutant conferring daptomycin resistance	protein variant model	single resistance variant	A180T
+3003815	Enterococcus faecalis YvlB with mutation conferring daptomycin resistance	protein variant model	frameshift mutation	V289fs
+3003797	Enterococcus faecalis YybT with mutation conferring daptomycin resistance	protein variant model	single resistance variant	I440S
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	K59T
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	A20D
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	R218Q
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	N13T
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	D27N
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	H215R
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	R267H
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	G178T
+3003092	Enterococcus faecium cls conferring resistance to daptomycin	protein variant model	single resistance variant	N13I
+3003438	Enterococcus faecium EF-Tu mutants conferring resistance to GE2270A	protein variant model	single resistance variant	G258A
+3003438	Enterococcus faecium EF-Tu mutants conferring resistance to GE2270A	protein variant model	single resistance variant	G275A
+3003790	Enterococcus faecium liaF mutant conferring daptomycin resistance	protein variant model	single resistance variant	L39F
+3003790	Enterococcus faecium liaF mutant conferring daptomycin resistance	protein variant model	single resistance variant	I144T
+3003078	Enterococcus faecium liaR mutant conferring daptomycin resistance	protein variant model	single resistance variant	W73C
+3003079	Enterococcus faecium liaS mutant conferring daptomycin resistance	protein variant model	single resistance variant	T120A
+3003079	Enterococcus faecium liaS mutant conferring daptomycin resistance	protein variant model	single resistance variant	E192G
+3003079	Enterococcus faecium liaS mutant conferring daptomycin resistance	protein variant model	single resistance variant	H264Q
+3003079	Enterococcus faecium liaS mutant conferring daptomycin resistance	protein variant model	single resistance variant	A180T
+3003223	Escherichia coli 16S rRNA mutation conferring resistance to edeine	rRNA gene variant model	single resistance variant	U1506A
+3003223	Escherichia coli 16S rRNA mutation conferring resistance to edeine	rRNA gene variant model	single resistance variant	A1499G
+3003377	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1068A
+3003406	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	G527U
+3003406	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C528U
+3003411	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	A1055G
+3003411	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	G1053A
+3003411	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	A964G
+3003411	Escherichia coli 16S rRNA (rrnB) mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	C1054U
+3003397	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to G418	rRNA gene variant model	single resistance variant	U1406A
+3003396	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to gentamicin C	rRNA gene variant model	single resistance variant	A1408G
+3003399	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	A1408G
+3003399	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	U1406A
+3003402	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to neomycin	rRNA gene variant model	single resistance variant	A1408G
+3003403	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to paromomycin	rRNA gene variant model	single resistance variant	A1408G
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1064A
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1192A
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1064C
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1064U
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1192U
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1066U
+3003376	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1192G
+3003405	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A523C
+3003410	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	G1058C
+3003408	Escherichia coli 16S rRNA (rrsB) mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	U1406A
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	G926U
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	A1519C
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	G926A
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	A794G
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	G926C
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	A1519G
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	A794U
+3003333	Escherichia coli 16S rRNA (rrsC) mutation conferring resistance to kasugamicin	rRNA gene variant model	single resistance variant	A1519U
+3003372	Escherichia coli 16S rRNA (rrsH) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1192U
+3004150	Escherichia coli 23S rRNA with mutation conferring resistance to chloramphenicol	rRNA gene variant model	single resistance variant	G2057A
+3004160	Escherichia coli 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	G2032U
+3004149	Escherichia coli 23S rRNA with mutation conferring resistance to clindamycin	rRNA gene variant model	single resistance variant	G2032A
+3004131	Escherichia coli 23S rRNA with mutation conferring resistance to erythromycin and telithromycin	rRNA gene variant model	single resistance variant	A2058U
+3004131	Escherichia coli 23S rRNA with mutation conferring resistance to erythromycin and telithromycin	rRNA gene variant model	single resistance variant	G2057A
+3004131	Escherichia coli 23S rRNA with mutation conferring resistance to erythromycin and telithromycin	rRNA gene variant model	single resistance variant	C2611U
+3004131	Escherichia coli 23S rRNA with mutation conferring resistance to erythromycin and telithromycin	rRNA gene variant model	single resistance variant	U754A
+3004131	Escherichia coli 23S rRNA with mutation conferring resistance to erythromycin and telithromycin	rRNA gene variant model	single resistance variant	A2058G
+3004173	Escherichia coli 23S rRNA with mutation conferring resistance to oxazolidinone antibiotics	rRNA gene variant model	single resistance variant	G2032A
+3004173	Escherichia coli 23S rRNA with mutation conferring resistance to oxazolidinone antibiotics	rRNA gene variant model	single resistance variant	G2447U
+3004173	Escherichia coli 23S rRNA with mutation conferring resistance to oxazolidinone antibiotics	rRNA gene variant model	single resistance variant	G2032C
+3004173	Escherichia coli 23S rRNA with mutation conferring resistance to oxazolidinone antibiotics	rRNA gene variant model	single resistance variant	G2032U
+3003807	Escherichia coli acrR with mutation conferring multidrug antibiotic resistance	protein overexpression model	single resistance variant	R45C
+3003900	Escherichia coli CyaA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	S352T
+3003370	Escherichia coli EF-Tu mutants conferring resistance to Enacyloxin IIa	protein variant model	single resistance variant	Q329H
+3003370	Escherichia coli EF-Tu mutants conferring resistance to Enacyloxin IIa	protein variant model	single resistance variant	Q124K
+3003370	Escherichia coli EF-Tu mutants conferring resistance to Enacyloxin IIa	protein variant model	single resistance variant	G316D
+3003370	Escherichia coli EF-Tu mutants conferring resistance to Enacyloxin IIa	protein variant model	single resistance variant	A375T
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Y161N
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Q125R
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	E379K
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Q125K
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	A376T
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Y161C
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Q125E
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	A376S
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	A376V
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Q330H
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	Y161D
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	G317D
+3003368	Escherichia coli EF-Tu mutants conferring resistance to kirromycin	protein variant model	single resistance variant	L121Q
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	R234F
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	R231C
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	R234S
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	T335A
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	R334C
+3003369	Escherichia coli EF-Tu mutants conferring resistance to Pulvomycin	protein variant model	single resistance variant	R231V
+3003386	Escherichia coli folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	P64S
+3003386	Escherichia coli folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	P64A
+3003386	Escherichia coli folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	P64H
+3003386	Escherichia coli folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	P64R
+3003386	Escherichia coli folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	P64L
+3003889	Escherichia coli GlpT with mutation conferring resistance to fosfomycin	protein variant model	multiple resistance variants	E448K, G302D
+3003889	Escherichia coli GlpT with mutation conferring resistance to fosfomycin	protein variant model	multiple resistance variants	E448K, G33R
+3003889	Escherichia coli GlpT with mutation conferring resistance to fosfomycin	protein variant model	multiple resistance variants	E448K, Q444E, E443Q, L297F
+3003889	Escherichia coli GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	E448K
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	S83L,D87N
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A84P
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A67S
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S83L
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S83W
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	Q106H
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	G81C
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87Y
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87H
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87G
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87V
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S83I
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87N
+3003294	Escherichia coli gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	S83L,D87Y
+3004335	Escherichia coli gyrA with mutation conferring resistance to triclosan	protein variant model	single resistance variant	S83F
+3004335	Escherichia coli gyrA with mutation conferring resistance to triclosan	protein variant model	single resistance variant	D87G
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136G
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136C
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136S
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136I
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136E
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136L
+3003303	Escherichia coli gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136H
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	S3N
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	nonsense mutation	E31STOP
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R94H
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R94S
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R73S
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	V96E
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R58L
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R77L
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	A70T
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	Y137H
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	I49S
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R73C
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	V45E
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	L78M
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	R77C
+3003378	Escherichia coli marR mutant conferring antibiotic resistance	protein overexpression model	single resistance variant	G103S
+3003775	Escherichia coli murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	L370I
+3003775	Escherichia coli murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	C115D
+3003775	Escherichia coli murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	C115E
+3003775	Escherichia coli murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	C115S
+3003775	Escherichia coli murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	D369N
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	S33R
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	G131D
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	R203C
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	nonsense mutation	Q44STOP
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	nonsense mutation	K141STOP
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	nonsense mutation	E233STOP
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	R203L
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	R133S
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	Y45C
+3003751	Escherichia coli nfsA mutations conferring resistance to nitrofurantoin	protein variant model	single resistance variant	R15C
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,N134fs+40413,W138C
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	nonsense mutation	E137STOP
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,N134fs+40413,G192D
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,N134fs+40413,del102-157/nt303-167
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,N134fs+40413,del86-112/nt259-80
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,A119fs+40413,S43fs/nt130-1:C
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,A119fs+40413,G116D
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,A119fs+40413,R107H
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,A119fs+40413,Q44L
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,A119fs+40413,del79-93/nt229-44
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,A119fs+40413,G192A
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,A119fs+40413,V93G
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,A119fs+40413,N211fs/nt635-1:T
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,A119fs+40413,K74fs/nt223-1:A
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,N134fs+40413,G182fs/nt545-2
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent single resistance variant	40407,N134fs+40413,E165A
+3003756	Escherichia coli nfsB with mutation conferring resistance to nitrofurantoin	protein variant model	co-dependent insertion/deletion	40407,N134fs+40413,A156fs/nt466-1:G
+3003308	Escherichia coli parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E84G
+3003308	Escherichia coli parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80I
+3003316	Escherichia coli parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D476N
+3003899	Escherichia coli PtsI with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	V25I
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513L
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513P
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526Y
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R529C
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R529S
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531F
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L533P
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T563P
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	P564L
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	V146F
+3003288	Escherichia coli rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R687H
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	G121D
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	multiple resistance variants	T38S, G74R
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	R90G
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	R20H
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	S31A
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	frameshift mutation	L148fs
+3003381	Escherichia coli soxR with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	R71S
+3003511	Escherichia coli soxS with mutation conferring antibiotic resistance	protein overexpression model	single resistance variant	A12S
+3003893	Escherichia coli UhpA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	G97D
+3003890	Escherichia coli UhpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	E350Q
+3004446	Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	S385T
+3004446	Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	S357N
+3004446	Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	L389F
+3004446	Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	D350N
+3004446	Haemophilus influenzae PBP3 conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	V562L
+3003924	Haemophilus parainfluenzae gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S84Y
+3003925	Haemophilus parainfluenzae parC conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S84F
+3003977	Halobacterium salinarum 16S rRNA mutation conferring resistance to pactamycin	rRNA gene variant model	single resistance variant	C734U
+3003977	Halobacterium salinarum 16S rRNA mutation conferring resistance to pactamycin	rRNA gene variant model	single resistance variant	C735U
+3003977	Halobacterium salinarum 16S rRNA mutation conferring resistance to pactamycin	rRNA gene variant model	single resistance variant	A633G
+3004180	Halobacterium halobium 23S rRNA mutation conferring resistance to chloramphenicol	rRNA gene variant model	single resistance variant	A2088C
+3004180	Halobacterium halobium 23S rRNA mutation conferring resistance to chloramphenicol	rRNA gene variant model	single resistance variant	C2471U
+3003510	Helicobacter pylori 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	A965G
+3003510	Helicobacter pylori 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	multiple resistance variants	A965U,G966U,A967C
+3003510	Helicobacter pylori 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	multiple resistance variants	A965G,G966U
+3003510	Helicobacter pylori 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	A967C
+3003510	Helicobacter pylori 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	multiple resistance variants	A965G,A967C
+3004134	Helicobacter pylori 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2146U
+3004134	Helicobacter pylori 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2147G
+3004134	Helicobacter pylori 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2147C
+3004134	Helicobacter pylori 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2146C
+3004134	Helicobacter pylori 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2146G
+3003585	Klebsiella mutant PhoP conferring antibiotic resistance to colistin	protein variant model	single resistance variant	D191Y
+3003373	Klebsiella pneumoniae acrR with mutation conferring multidrug antibiotic resistance	protein variant model	single resistance variant	M109I
+3003373	Klebsiella pneumoniae acrR with mutation conferring multidrug antibiotic resistance	protein variant model	single resistance variant	Y114F
+3003373	Klebsiella pneumoniae acrR with mutation conferring multidrug antibiotic resistance	protein variant model	single resistance variant	V165I
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	T43M
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	G96D
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	K5E
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	A19V
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	A16D
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	I88N
+3003380	Klebsiella pneumoniae ramR mutants	protein variant model	single resistance variant	T162I
+3003028	lmrA	protein variant model	single resistance variant	Q52P
+3003573	LpxA	protein variant model	single resistance variant	G68D
+3003573	LpxA	protein variant model	single resistance variant	Q72K
+3003573	LpxA	protein variant model	single resistance variant	H159D
+3003574	LpxC	protein variant model	single resistance variant	P30L
+3003575	LpxD	protein variant model	frameshift mutation	K137fs
+3000506	MexR	protein overexpression model	nonsense mutation	L35STOP
+3000506	MexR	protein overexpression model	single resistance variant	R83C
+3000506	MexR	protein overexpression model	single resistance variant	R91C
+3000506	MexR	protein overexpression model	single resistance variant	R91H
+3000506	MexR	protein overexpression model	single resistance variant	L75R
+3000506	MexR	protein overexpression model	single resistance variant	H107P
+3000506	MexR	protein overexpression model	single resistance variant	L75P
+3000506	MexR	protein overexpression model	single resistance variant	L45P
+3000506	MexR	protein overexpression model	single resistance variant	I46N
+3000506	MexR	protein overexpression model	single resistance variant	L57R
+3000506	MexR	protein overexpression model	single resistance variant	I72N
+3000506	MexR	protein overexpression model	single resistance variant	T69I
+3000506	MexR	protein overexpression model	single resistance variant	N53D
+3000506	MexR	protein overexpression model	single resistance variant	L57P
+3000813	MexS	protein overexpression model	single resistance variant	F185L
+3000813	MexS	protein overexpression model	single resistance variant	V104A
+3000813	MexS	protein overexpression model	single resistance variant	F253L
+3000813	MexS	protein overexpression model	single resistance variant	D44E
+3000813	MexS	protein overexpression model	single resistance variant	S60F
+3000813	MexS	protein overexpression model	single resistance variant	V73A
+3000813	MexS	protein overexpression model	single resistance variant	L270Q
+3000813	MexS	protein overexpression model	single resistance variant	C245G
+3000813	MexS	protein overexpression model	single resistance variant	A166P
+3000813	MexS	protein overexpression model	single resistance variant	S60P
+3000813	MexS	protein overexpression model	single resistance variant	L263Q
+3000814	MexT	protein overexpression model	single resistance variant	G258D
+3000814	MexT	protein overexpression model	single resistance variant	Y138D
+3003709	MexZ	protein overexpression model	single resistance variant	Q10Z
+3003709	MexZ	protein overexpression model	single resistance variant	G195E
+3003709	MexZ	protein overexpression model	single resistance variant	V44A
+3003709	MexZ	protein overexpression model	single resistance variant	G46S
+3004138	Moraxella catarrhalis 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2330T
+3003306	Morganella morganii gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S464Y
+3003306	Morganella morganii gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S463A
+3004163	Mycobacterium abscessus 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2272C
+3004163	Mycobacterium abscessus 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2272G
+3004163	Mycobacterium abscessus 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2271G
+3003239	Mycobacterium abscessus 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	U1373A
+3003239	Mycobacterium abscessus 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	G1458U
+3003239	Mycobacterium abscessus 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	A1375G
+3003239	Mycobacterium abscessus 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	C1376U
+3003240	Mycobacterium abscessus 16S rRNA mutation conferring resistance to gentamicin	rRNA gene variant model	single resistance variant	G1458U
+3003240	Mycobacterium abscessus 16S rRNA mutation conferring resistance to gentamicin	rRNA gene variant model	single resistance variant	U1373A
+3003240	Mycobacterium abscessus 16S rRNA mutation conferring resistance to gentamicin	rRNA gene variant model	single resistance variant	C1376U
+3003240	Mycobacterium abscessus 16S rRNA mutation conferring resistance to gentamicin	rRNA gene variant model	single resistance variant	A1375G
+3003236	Mycobacterium abscessus 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	U1373A
+3003236	Mycobacterium abscessus 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	C1376U
+3003236	Mycobacterium abscessus 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	G1458U
+3003236	Mycobacterium abscessus 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	A1375G
+3003238	Mycobacterium abscessus 16S rRNA mutation conferring resistance to neomycin	rRNA gene variant model	single resistance variant	A1375G
+3003237	Mycobacterium abscessus 16S rRNA mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	C1376U
+3003237	Mycobacterium abscessus 16S rRNA mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	U1373A
+3003237	Mycobacterium abscessus 16S rRNA mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	A1375G
+3003237	Mycobacterium abscessus 16S rRNA mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	G1458U
+3004164	Mycobacterium avium 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2272C
+3004164	Mycobacterium avium 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2274G
+3004164	Mycobacterium avium 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2274U
+3003325	Mycobacterium bovis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Q998R
+3003325	Mycobacterium bovis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	F1012S
+3003325	Mycobacterium bovis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	T610K
+3003779	Mycobacterium bovis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	V329A
+3003779	Mycobacterium bovis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	R202W
+3003779	Mycobacterium bovis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	L239P
+3003779	Mycobacterium bovis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	D366G
+3003514	Mycobacterium chelonae 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	A1355G
+3003517	Mycobacterium chelonae 16S rRNA mutation conferring resistance to gentamicin C	rRNA gene variant model	single resistance variant	A1355G
+3003515	Mycobacterium chelonae 16S rRNA mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	A1355G
+3003518	Mycobacterium chelonae 16S rRNA mutation conferring resistance to neomycin	rRNA gene variant model	single resistance variant	A1355G
+3003516	Mycobacterium chelonae 16S rRNA mutation conferring resistance to tobramycin	rRNA gene variant model	single resistance variant	A1355G
+3004165	Mycobacterium chelonae 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2273G
+3004165	Mycobacterium chelonae 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2273C
+3004165	Mycobacterium chelonae 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2272C
+3004165	Mycobacterium chelonae 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2272G
+3004167	Mycobacterium intracellulare 23S rRNA with mutation conferring resistance to azithromycin	rRNA gene variant model	single resistance variant	A2268C
+3004166	Mycobacterium intracellulare 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2266G
+3004166	Mycobacterium intracellulare 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2266C
+3004166	Mycobacterium intracellulare 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2266U
+3004168	Mycobacterium kansasii 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2265U
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	T53N
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55T
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55R
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	T53A
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	T53I
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	T53P
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	V48G
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	V48A
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	V48F
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55L
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55S
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55A
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	P55H
+3003389	Mycobacterium leprae folP with mutation conferring resistance to dapsone	protein variant model	single resistance variant	R54G
+3003304	Mycobacterium leprae gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	D464N
+3003304	Mycobacterium leprae gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	N502D
+3003304	Mycobacterium leprae gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E504V
+3003284	Mycobacterium leprae rpoB mutations conferring resistance to rifampicin	protein variant model	single resistance variant	V472I
+3003284	Mycobacterium leprae rpoB mutations conferring resistance to rifampicin	protein variant model	single resistance variant	S456L
+3003539	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	C1480U
+3003539	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	U1482C
+3003539	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	U1389C
+3003543	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	A1391G
+3003543	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	U1389A
+3003544	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to neomycin	rRNA gene variant model	single resistance variant	U1389A
+3003546	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to viomycin	rRNA gene variant model	single resistance variant	G1475U
+3003546	Mycobacterium smegmatis 16S rRNA (rrsA) mutation conferring resistance to viomycin	rRNA gene variant model	single resistance variant	G1475A
+3003540	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	C1439U
+3003540	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	U1348C
+3003540	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to hygromycin B	rRNA gene variant model	single resistance variant	U1441C
+3003542	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	U1389A
+3003542	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to kanamycin A	rRNA gene variant model	single resistance variant	A1391G
+3003545	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to neomycin	rRNA gene variant model	single resistance variant	U1389A
+3003541	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C502U
+3003541	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	G504C
+3003541	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C506U
+3003541	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A503C
+3003547	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to viomycin	rRNA gene variant model	single resistance variant	G1475U
+3003547	Mycobacterium smegmatis 16S rRNA (rrsB) mutation conferring resistance to viomycin	rRNA gene variant model	single resistance variant	G1475A
+3004169	Mycobacterium smegmatis 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2266G
+3004169	Mycobacterium smegmatis 23S rRNA with mutation conferring resistance to clarithromycin	rRNA gene variant model	single resistance variant	A2267G
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	V246A
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	V272E
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	Y122N
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	G84D
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	F170S
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	R145C
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	V300G
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	A187P
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	Q335H
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	L100P
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	I17T
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	T29P
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	A115T
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	H46P
+3003778	Mycobacterium smegmatis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	Y361H
+3003481	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to amikacin	rRNA gene variant model	single resistance variant	A1401G
+3003436	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	C1402U
+3003436	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	C1402A
+3003436	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	A1401G
+3003436	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to kanamycin	rRNA gene variant model	single resistance variant	G1484U
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C517U
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A906G
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A1401G
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A514U
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C516U
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	G427C
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C513U
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	A514C
+3003480	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to streptomycin	rRNA gene variant model	single resistance variant	C492U
+3003437	Mycobacterium tuberculosis 16S rRNA mutation conferring resistance to viomycin	rRNA gene variant model	single resistance variant	A1401G
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	A462V
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	G350D
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	G321S
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	A201T
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	D833A
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	P913S
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	G5S
+3003453	Mycobacterium tuberculosis embA mutant conferring resistance to ethambutol	protein variant model	single resistance variant	D4N
+3003465	Mycobacterium tuberculosis embB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Y333H
+3003465	Mycobacterium tuberculosis embB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Y319D
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D959A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D328Y
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D328G
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	F330V
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	G406A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	L413P
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	S297A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D299E
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	M306L
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	M306V
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	M306I
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	M306T
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D311H
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	L239P
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D240H
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Y334H
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	A356V
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	A357S
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	E368A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	P375A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	E378A
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	S380R
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	P397Q
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	N399H
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	G406S
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	G406C
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	G406D
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	P446H
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	R460C
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	I465D
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	R469P
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	R471P
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Q497R
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Q497K
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	G745D
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	M1000R
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D1024N
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	E504Q
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	R507G
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	D331Y
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	multiple resistance variants	A314G,Y322C
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Y319C
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Y333C
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	Y319N
+3003326	Mycobacterium tuberculosis embB mutations conferring resistance to ethambutol	protein variant model	single resistance variant	T630I
+3003455	Mycobacterium tuberculosis embR mutant conferring resistance to ethambutol	protein variant model	single resistance variant	C110Y
+3003455	Mycobacterium tuberculosis embR mutant conferring resistance to ethambutol	protein variant model	single resistance variant	Q379R
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	G413D
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	T392A
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	G385D
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	A381P
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	R463S
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	I338S
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	E223K
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	G43S
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	G43C
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	P51L
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	D58A
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	D55A
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	T186K
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	T84D
+3003458	Mycobacterium tuberculosis ethA with mutation conferring resistance to ethionamide	protein variant model	single resistance variant	T342K
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	A420V
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	E153A
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	T20P
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	E40G
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	E40Q
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	I43T
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	E153G
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	I43S
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	I43A
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	R49P
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	R49W
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	L56V
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	R91W
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	S150G
+3004157	Mycobacterium tuberculosis folC with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	S150C
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	I55S
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	P75S
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	A200E
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	V188G
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	A183E
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	A183T
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	W45S
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	P84L
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	H48Y
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	G30R
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	nonsense mutation	C52STOP
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	N52T
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	G117E
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	L79F
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	L49F
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	G164C
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	W148R
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	P84C
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	V188M
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	W45C
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	A138E
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	A134E
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	Q127P
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	G71V
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	S70R
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	D67H
+3003470	Mycobacterium tuberculosis gidB mutation conferring resistance to streptomycin	protein variant model	single resistance variant	R47Q
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D89V
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94G
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94Y
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	G88A
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	G88C
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A90V
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94T
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S91P
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94N
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	P102H
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	L109V
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S95T
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A90G
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D89G
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	T80A
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	co-dependent single resistance variant	39879,A90V+40052,D472H
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	A90V,D94G
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A74S
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D89N
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	co-dependent single resistance variant	39879,G247S+40052,D500N
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94A
+3003295	Mycobacterium tuberculosis gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D94V
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	N538D
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	co-dependent single resistance variant	39879,A90V+40052,D472H
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	N510D
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	multiple resistance variants	R485C,T539N
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	co-dependent single resistance variant	39879,G247S+40052,D500N
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	T539P
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	T539N
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	V340L
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	D500H
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	multiple resistance variants	R485C,T546M
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E540V
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	N538K
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	multiple resistance variants	N538D,T546M
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E540D
+3003459	Mycobacterium tuberculosis gyrB mutant conferring resistance to fluoroquinolone	protein variant model	multiple resistance variants	N538T,T546M
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I16T
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V78A
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S94A
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I95P
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I194T
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I21V
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I21T
+3003393	Mycobacterium tuberculosis inhA mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I47T
+3003448	Mycobacterium tuberculosis iniA mutant conferring resistance to Ethambutol	protein variant model	single resistance variant	G308R
+3003448	Mycobacterium tuberculosis iniA mutant conferring resistance to Ethambutol	protein variant model	single resistance variant	P3A
+3003448	Mycobacterium tuberculosis iniA mutant conferring resistance to Ethambutol	protein variant model	single resistance variant	R537H
+3003448	Mycobacterium tuberculosis iniA mutant conferring resistance to Ethambutol	protein variant model	single resistance variant	S501W
+3004135	Mycobacterium tuberculosis iniB with mutation conferring resistance to ethambutol	protein variant model	single resistance variant	A47T
+3003451	Mycobacterium tuberculosis iniC mutant conferring resistance to ethambutol	protein variant model	single resistance variant	W83G
+3003451	Mycobacterium tuberculosis iniC mutant conferring resistance to ethambutol	protein variant model	single resistance variant	P248A
+3003451	Mycobacterium tuberculosis iniC mutant conferring resistance to ethambutol	protein variant model	nonsense mutation	Q351STOP
+3003784	Mycobacterium tuberculosis intrinsic murA conferring resistance to fosfomycin	protein variant model	single resistance variant	C117D
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	G312S
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	G269S
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	D66N
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	F413L
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	G387D
+3003463	Mycobacterium tuberculosis kasA mutant conferring resistance to isoniazid	protein variant model	single resistance variant	R121K
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T306P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M255I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R385W
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D387G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M255C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T394M
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q439P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	P131Q
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R128Q
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L101P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L472Q
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L472K
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q471H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	F483L
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A541D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q471Y
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L436G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	P131R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T435R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W91R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R463L
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S315T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G32D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V47E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D194G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W107F
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A256T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L430V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T667P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M624V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A717P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	I335T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q127P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q352E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Y98C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A379T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G269R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A431V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S383P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	N133T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S17T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A93T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	nonsense mutation	E454STOP
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D36E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A110V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A139V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G300W
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	H276M
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q295H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S17N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G19D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q224E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A243S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A550D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	P2S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S140N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G279D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G285D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G316D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S457I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G593D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R418L
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	P232S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Q127E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D735N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G629S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L587M
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S315R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S315G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A350S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Y337C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W328G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T275P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S315I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M126I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S315N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	H97R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	multiple resistance variants	N596S, Y597H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	nonsense mutation	E506STOP
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473F
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473W
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473Y
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473M
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473K
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V473D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L472I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T262R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W300G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Y229F
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	N138S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	N138D
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	H108Q
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	H108E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W107R
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R104L
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D63E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A234G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D194Y
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S303L
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	S303C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	nonsense mutation	Y304STOP
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D311N
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D311S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	L427I
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	V68G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R489S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M420T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D387H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G123E
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G299S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D419H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M176T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	R632C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D542H
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Y64S
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	Y95C
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	P131T
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A139P
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	D142G
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	A162V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W328F
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	W321F
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	T275V
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	M255Y
+3003392	Mycobacterium tuberculosis katG mutations conferring resistance to isoniazid	protein variant model	single resistance variant	G269D
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	T270I,Y296H,G308D,G325S
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	V981L
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	N394D
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	Y327N
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	W326R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	G325S
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	M310K
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	Y309N
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	G308D
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	A307T
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	V303G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	R302G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	M300R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	I297T
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	I297L
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	Y296S
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	Y296H
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	G288V
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	G288W
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	V287F
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	H285Y
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	A254G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	L251R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	A247P
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	L502P
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	Q491R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	P398S
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	T270I
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	R738Q
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	I297L,W326R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	A244T,G288W,V303G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	T270I,I297T
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	V287F,T309N
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	L251R,A254G,T270I
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	G288V,M310K,Y327N
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	T270I,G288W,V303G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	G288W,V303G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	G272S,H285Y,M300R,A307T
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	A247P,T270I,I297T
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	Y296S,R302G
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	V287F,Y309N
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	multiple resistance variants	A247P,I297L,W326R
+3003327	Mycobacterium tuberculosis mutant embC conferring resistance to ethambutol	protein variant model	single resistance variant	S244T
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	R13C
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	A300P
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	R268H
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	T110A
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	G313R
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	V18A
+3003461	Mycobacterium tuberculosis ndh with mutation conferring resistance to isoniazid	protein variant model	single resistance variant	L50V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A121P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T47P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T168N
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C138S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A134V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	G97S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H82R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H71E
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D53A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A46V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H59D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	M175V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D136N
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T135P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C72W
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	P54L
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L27P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A3E
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D136H
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A171V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Q10P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A26G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Y41H
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	P69R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	P62H
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H51Y
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C72R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L85P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A171T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L172A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V180F
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L172P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L159R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	W68S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	W68STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T76I
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	G78D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L85R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	K96Q
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	Y41STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D12E
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Y34S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T47A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T142M
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T142K
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V139L
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	K96N
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V155G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	W119STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Y103S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Y103H
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	N118T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	G132S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H137P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C138Y
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	G17D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D8Y
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Q10K
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	Q10STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T47S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D49V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	S66P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	K96E
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A102T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A102V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	Y103STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L116R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V125D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	I133T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Q141P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	R154G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T160P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A161P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D12A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D12N
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H51Q
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A171P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H57D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	W68L
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V139A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	R121P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	H137R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	W119R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	F94P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	T76P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L19P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	S104C
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	I90S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	M1S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	L4W
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V7D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V7F
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A8G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V9G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	multiple resistance variants	Q10P,Y99D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C14R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	C14Y
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	G23V
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	multiple resistance variants	A25E,A26G,A28D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V45G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A46E
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D49A
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	F58L
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Y68D
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	S67P
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	W68R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	multiple resistance variants	V130G,+nt420:GG
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	multiple resistance variants	D53N,+nt349:CACTG
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	W68G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	Y99STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A140S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	I5S
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V7G
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	Q10R
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	D136Y
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	S88STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	P54T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	A146T
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	nonsense mutation	Q141STOP
+3003394	Mycobacterium tuberculosis pncA mutations conferring resistance to pyrazinamide	protein variant model	single resistance variant	V139M
+3004184	Mycobacterium tuberculosis ribD with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	G8R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	E562G,P564L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526C
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L533R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L538R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526Y
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L533P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531W
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531G
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526S
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	K527Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516T
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516Y
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	M515I
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	M515V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L511P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	I572F
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S522L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	V176F
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q438K
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D441V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D441Y
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S447Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H451Y
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H451C
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H451D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H451R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S456L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S456W
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	V146F
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	A381V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L521P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S522W
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q490H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	E504A
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513K
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516G
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S450L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S509R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S509Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q517L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L524S
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R528P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526T
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R529Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S512I
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L511R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S512T
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531C
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526E
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L511V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	N518T
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S522Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	K527N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R528H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S512R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L521M
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526G
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	F505L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S574L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	G507S
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	G507D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T508P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T508A
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T508H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	nonsense mutation	Q513STOP
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513E
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	N519K
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	G523A
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526F
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S531F
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	S531L,S622A
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526S,M515V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526S,P535H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526Y,E541G
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	D516Y,L511R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	D516E,S522L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D518H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	S531L,F514V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	S531L,H526C
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	L511R,D516V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	L511P,M515I
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	L524W,T525P,H526Q,-527K
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	Q513H,-514F,-515M,-516D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q513R
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	nonsense mutation	S522STOP
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H526P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q517H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T508S
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L511M
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	D516K
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	N518H
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	N518I
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	-519N,S522L,S531L
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526D,S531
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	L511P,S512T,D516V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	T516I,G523W,D525Y
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526D,E541G,S553A
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	H526P,K527Q
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L538P
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L545M
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L571V
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	R633C
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	E672D
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	multiple resistance variants	-515M,-516D,-517Q,-518N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	T508N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	S512N
+3003283	Mycobacterium tuberculosis rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	P520T
+3003395	Mycobacterium tuberculosis rpsL mutations conferring resistance to Streptomycin	protein variant model	single resistance variant	K43R
+3003395	Mycobacterium tuberculosis rpsL mutations conferring resistance to Streptomycin	protein variant model	single resistance variant	T40I
+3003395	Mycobacterium tuberculosis rpsL mutations conferring resistance to Streptomycin	protein variant model	single resistance variant	K88Q
+3003395	Mycobacterium tuberculosis rpsL mutations conferring resistance to Streptomycin	protein variant model	single resistance variant	K88R
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	nonsense mutation	W98STOP
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	G91R
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	R235P
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	nonsense mutation	W83STOP
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	W83C
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	V77F
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	nonsense mutation	G76STOP
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	Y36C
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	T202A
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	T22A
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	H75N
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	C161T
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	F152V
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	W101R
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	H207R
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	I211V
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	P224L
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	R126Q
+3004153	Mycobacterium tuberculosis thyA with mutation conferring resistance to para-aminosalicylic acid	protein variant model	single resistance variant	S105P
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	L118P
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	L150P
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	A91E
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	N236K
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	R14W
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	nonsense mutation	R3STOP
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	P183L
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	E238K
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	F185L
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	nonsense mutation	Q184STOP
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	V128E
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	K69E
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	single resistance variant	A67E
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	nonsense mutation	Q22STOP
+3003445	Mycobacterium tuberculosis tlyA mutations conferring resistance to aminoglycosides	protein variant model	nonsense mutation	R18STOP
+3003298	Mycobaterium leprae gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A91T
+3004177	Mycoplasma fermentans 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	G2057A
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	A2517U
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	A2586U
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	G2075U
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	A2073G
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	C2069A
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	G2461U
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	U2518G
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	G2461A
+3004159	Mycoplasma gallisepticum 23S rRNA mutation conferring resistance to pleuromutilin antibiotics	rRNA gene variant model	single resistance variant	A2072G
+3004176	Mycoplasma hominis 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2578U
+3004176	Mycoplasma hominis 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	G2087A
+3003310	Mycoplasma hominis parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	K134R
+3003310	Mycoplasma hominis parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80I
+3004179	Mycoplasma pneumoniae 23S rRNA mutation conferring resistance to erythromycin	rRNA gene variant model	single resistance variant	A2063G
+3004179	Mycoplasma pneumoniae 23S rRNA mutation conferring resistance to erythromycin	rRNA gene variant model	single resistance variant	A2064G
+3000818	nalC	protein overexpression model	single resistance variant	S209R
+3000818	nalC	protein overexpression model	single resistance variant	G71E
+3000818	nalC	protein overexpression model	single resistance variant	A186T
+3000818	nalC	protein overexpression model	single resistance variant	R97G
+3000819	nalD	protein overexpression model	single resistance variant	S32N
+3003495	Neisseria gonorrhoeae 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1198U
+3003928	Neisseria gonorrhoeae gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D95G
+3003928	Neisseria gonorrhoeae gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S91F
+3003928	Neisseria gonorrhoeae gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D95N
+3000464	Neisseria gonorrhoeae porin PIB (por)	protein variant model	multiple resistance variants	G120P,A121P
+3000464	Neisseria gonorrhoeae porin PIB (por)	protein variant model	single resistance variant	G120K
+3000464	Neisseria gonorrhoeae porin PIB (por)	protein variant model	single resistance variant	G120D
+3000464	Neisseria gonorrhoeae porin PIB (por)	protein variant model	single resistance variant	A121D
+3000464	Neisseria gonorrhoeae porin PIB (por)	protein variant model	multiple resistance variants	G120R,A121H
+3003929	Neisseria gonorrhoeae parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S87R
+3003929	Neisseria gonorrhoeae parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E91G
+3003497	Neisseria meningitidis 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	G1065C
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	A510V
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	A501P
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	G545S
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	N512Y
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	V316T
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	G482S
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	F504L
+3003937	Neisseria meningititis PBP2 conferring resistance to beta-lactam	protein variant model	single resistance variant	I312M
+3003493	Pasteurella multocida 16S rRNA mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1194G
+3003361	Planobispora rosea EF-Tu mutants conferring resistance to inhibitor GE2270A	protein variant model	single resistance variant	V278A
+3003361	Planobispora rosea EF-Tu mutants conferring resistance to inhibitor GE2270A	protein variant model	single resistance variant	G261S
+3003361	Planobispora rosea EF-Tu mutants conferring resistance to inhibitor GE2270A	protein variant model	single resistance variant	V295C
+3003361	Planobispora rosea EF-Tu mutants conferring resistance to inhibitor GE2270A	protein variant model	single resistance variant	G279A
+3004161	Propionibacteria 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	G2281A
+3004161	Propionibacteria 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	G2295A
+3004161	Propionibacteria 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	G2294A
+3003499	Propionibacterium acnes 16S rRNA mutation conferring resistance to tetracycline	rRNA gene variant model	single resistance variant	G1032C
+3003974	Propionibacterium acnes gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S101L
+3003974	Propionibacterium acnes gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D105G
+3003702	Pseudomonas aeruginosa gyrA and parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80L
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	T83I,D87N
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	T83I
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	H80R
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87N
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	T83I,D87G
+3003684	Pseudomonas aeruginosa gyrA conferring resistance to fluoroquinolones	protein variant model	multiple resistance variants	T83I,D87H
+3003390	Escherichia coli ompF with mutation conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	R154D
+3003390	Escherichia coli ompF with mutation conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	G141D
+3003390	Escherichia coli ompF with mutation conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	G141E
+3003390	Escherichia coli ompF with mutation conferring resistance to beta-lactam antibiotics	protein variant model	single resistance variant	R154A
+3003686	Pseudomonas aeruginosa oprD with mutation conferring resistance to imipenem	protein variant model	single resistance variant	Q142X
+3003685	Pseudomonas aeruginosa parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A473V
+3003685	Pseudomonas aeruginosa parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	M437I
+3003895	Pseudomonas mutant PhoP conferring resistance to colistin	protein variant model	single resistance variant	A110V
+3003895	Pseudomonas mutant PhoP conferring resistance to colistin	protein variant model	single resistance variant	R117L
+3003896	Pseudomonas mutant PhoQ conferring resistance to colistin	protein variant model	single resistance variant	V260G
+3003896	Pseudomonas mutant PhoQ conferring resistance to colistin	protein variant model	single resistance variant	K123Q
+3003930	rpsJ	protein variant model	single resistance variant	V57L
+3003930	rpsJ	protein variant model	single resistance variant	V57M
+3003926	Salmonella enterica gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87Y
+3003926	Salmonella enterica gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S97P
+3003926	Salmonella enterica gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S83F
+3003926	Salmonella enterica gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D87N
+3004334	Salmonella enterica gyrA with mutation conferring resistance to triclosan	protein variant model	single resistance variant	D87G
+3004334	Salmonella enterica gyrA with mutation conferring resistance to triclosan	protein variant model	single resistance variant	S83F
+3003939	Salmonella enterica parC conferring resistance to fluoroquinolones	protein variant model	single resistance variant	W106G
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	M84I
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	Y59H
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	T18P
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	G25A
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	E160D
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	R46P
+3003379	Salmonella enterica ramR mutants	protein variant model	single resistance variant	T50P
+3003512	Salmonella enterica 16S rRNA (rrsD) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1065U
+3003512	Salmonella enterica 16S rRNA (rrsD) mutation conferring resistance to spectinomycin	rRNA gene variant model	single resistance variant	C1192U
+3003382	Salmonella enterica soxR with mutation conferring antibiotic resistance	protein variant model	single resistance variant	R20H
+3003382	Salmonella enterica soxR with mutation conferring antibiotic resistance	protein variant model	single resistance variant	G121D
+3003307	Salmonella serovars gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E466D
+3003317	Salmonella serovars parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	V461G
+3003383	Salmonella serovars soxS with mutation conferring antibiotic resistance	protein variant model	single resistance variant	E52K
+3003940	Shigella flexneri gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	H80P
+3003940	Shigella flexneri gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	N57K
+3003941	Shigella flexneri parC conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D111H
+3003941	Shigella flexneri parC conferring resistance to fluoroquinolones	protein variant model	single resistance variant	A85T
+3003941	Shigella flexneri parC conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S129P
+3004058	Staphylococcus aureus 23S rRNA with mutation conferring resistance to linezolid	rRNA gene variant model	single resistance variant	G2604T
+3004058	Staphylococcus aureus 23S rRNA with mutation conferring resistance to linezolid	rRNA gene variant model	single resistance variant	C2579T
+3003803	Staphylococcus aureus agrA with mutation conferring resistance to daptomycin	protein variant model	nonsense mutation	Y100STOP
+3003074	Staphylococcus aureus cls conferring resistance to daptomycin	protein variant model	single resistance variant	T33N
+3003074	Staphylococcus aureus cls conferring resistance to daptomycin	protein variant model	single resistance variant	A23V
+3003074	Staphylococcus aureus cls conferring resistance to daptomycin	protein variant model	single resistance variant	L52F
+3003074	Staphylococcus aureus cls conferring resistance to daptomycin	protein variant model	single resistance variant	F60S
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	V213I
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	F3I
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	L27F
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	W137R
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	A100V
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	G352D
+3003901	Staphylococcus aureus GlpT with mutation conferring resistance to fosfomycin	protein variant model	nonsense mutation	W355STOP
+3003296	Staphylococcus aureus gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	E88A
+3003296	Staphylococcus aureus gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	E88K
+3003296	Staphylococcus aureus gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S85P
+3003296	Staphylococcus aureus gyrA conferring resistance to fluoroquinolones	protein variant model	single resistance variant	S84L
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	T173A
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	I56S
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	G85S
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R144S
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	S128L
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	R144I
+3003301	Staphylococcus aureus gyrB conferring resistance to aminocoumarin	protein variant model	single resistance variant	I102S
+3003729	Staphylococcus aureus ileS with mutation conferring resistance to mupirocin	protein variant model	single resistance variant	V588F
+3003729	Staphylococcus aureus ileS with mutation conferring resistance to mupirocin	protein variant model	single resistance variant	V631F
+3003917	Staphylococcus aureus menA with mutation conferring resistance to lysocin	protein variant model	single resistance variant	G33D
+3003769	Staphylococcus aureus mprF	protein variant model	single resistance variant	T345A
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	S337L
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	T345A
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	T345I
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	P314L
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	L826F
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	G61V
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	S295L
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	I418N
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	F57S
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	I420N
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	T345K
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	T472K
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	M347R
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	L341S
+3003319	Staphylococcus aureus mprF with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	V351E
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	nonsense mutation	L42STOP
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	G257D
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	V65L
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	E291D
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	D278E
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	Q362R
+3003776	Staphylococcus aureus murA with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	T396N
+3003312	Staphylococcus aureus parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80Y
+3003312	Staphylococcus aureus parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E84G
+3003312	Staphylococcus aureus parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80F
+3003314	Staphylococcus aureus parE conferring resistance to aminocoumarin	protein variant model	single resistance variant	R136G
+3003314	Staphylococcus aureus parE conferring resistance to aminocoumarin	protein variant model	single resistance variant	G78S
+3003315	Staphylococcus aureus parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D434N
+3003315	Staphylococcus aureus parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	P587S
+3003315	Staphylococcus aureus parE conferring resistance to fluoroquinolones	protein variant model	single resistance variant	D434H
+3003323	Staphylococcus aureus pgsA mutations conferring resistance to daptomycin	protein variant model	single resistance variant	A64V
+3003323	Staphylococcus aureus pgsA mutations conferring resistance to daptomycin	protein variant model	single resistance variant	K66R
+3003323	Staphylococcus aureus pgsA mutations conferring resistance to daptomycin	protein variant model	single resistance variant	S177F
+3003323	Staphylococcus aureus pgsA mutations conferring resistance to daptomycin	protein variant model	single resistance variant	V59N
+3003287	Staphylococcus aureus rpoB mutants conferring resistance to daptomycin	protein variant model	single resistance variant	I953S
+3003287	Staphylococcus aureus rpoB mutants conferring resistance to daptomycin	protein variant model	single resistance variant	A1085V
+3003287	Staphylococcus aureus rpoB mutants conferring resistance to daptomycin	protein variant model	single resistance variant	A621E
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	L466S
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	H481N
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q468K
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	Q465R
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	A473T
+3003285	Staphylococcus aureus rpoB mutants conferring resistance to rifampicin	protein variant model	single resistance variant	A477T
+3003291	Staphylococcus aureus rpoC conferring resistance to daptomycin	protein variant model	single resistance variant	Q961K
+3003291	Staphylococcus aureus rpoC conferring resistance to daptomycin	protein variant model	single resistance variant	F632S
+3003902	Staphylococcus aureus UhpT with mutation conferring resistance to fosfomycin	protein variant model	nonsense mutation	W228STOP
+3003902	Staphylococcus aureus UhpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	W425R
+3003902	Staphylococcus aureus UhpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	G112E
+3003902	Staphylococcus aureus UhpT with mutation conferring resistance to fosfomycin	protein variant model	single resistance variant	G358V
+3003902	Staphylococcus aureus UhpT with mutation conferring resistance to fosfomycin	protein variant model	nonsense mutation	Y314STOP
+3003794	Staphylococcus aureus walK with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	R263C
+3003794	Staphylococcus aureus walK with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	S221P
+3003794	Staphylococcus aureus walK with mutation conferring resistance to daptomycin	protein variant model	single resistance variant	L10F
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	A376V
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	R464H
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	G452C
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	G451V
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	D434N
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	V407F
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	P404Q
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	Q115L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	F88L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	P406L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	F652S,Y654N
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	R464C
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	L456F
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	G452S
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	T436I
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	L461F
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	L461S
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	A70V,A160V,H457Y
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	T387I,E449K
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	D189V,L430S
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	V90I
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	V90A
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	F441Y
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	G452C,R659L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	P404L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	M453I
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	H457Q
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	V90I,H457Q,L461K,A655V
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	H457Y,S416F
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	L461K
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	H457Y
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	multiple resistance variants	A67T,P406L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	R464S
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	R464L
+3003735	Staphylococcus aureus fusA with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	G452V
+3003737	Staphylococcus aureus fusE with mutation conferring resistance to fusidic acid	protein variant model	single resistance variant	Q140L
+3004097	Streptococcus mitis CdsA with mutation conferring daptomycin resistance	protein variant model	single resistance variant	D222N
+3004181	Streptococcus pneumoniae 23S rRNA mutation conferring resistance to macrolides and streptogramins antibiotics	rRNA gene variant model	single resistance variant	A2129C
+3004170	Streptococcus pneumoniae 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	C2641A
+3004170	Streptococcus pneumoniae 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	C2641G
+3004170	Streptococcus pneumoniae 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2125G
+3004170	Streptococcus pneumoniae 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2126G
+3003311	Streptococcus pneumoniae parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80F
+3003311	Streptococcus pneumoniae parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S80Y
+3003311	Streptococcus pneumoniae parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	D84H
+3003041	Streptococcus pneumoniae PBP1a conferring resistance to amoxicillin	protein variant model	single resistance variant	S575T
+3003041	Streptococcus pneumoniae PBP1a conferring resistance to amoxicillin	protein variant model	single resistance variant	N609D
+3003042	Streptococcus pneumoniae PBP2b conferring resistance to amoxicillin	protein variant model	single resistance variant	E475G
+3003042	Streptococcus pneumoniae PBP2b conferring resistance to amoxicillin	protein variant model	single resistance variant	T445A
+3003042	Streptococcus pneumoniae PBP2b conferring resistance to amoxicillin	protein variant model	single resistance variant	T488A
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	M339F
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	M400T
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	N605T
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	L546V
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	N514H
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	R384G
+3003043	Streptococcus pneumoniae PBP2x conferring resistance to amoxicillin	protein variant model	single resistance variant	I371T
+3003387	Streptococcus pyogenes folP with mutation conferring resistance to sulfonamides	protein variant model	single resistance variant	F25I
+3004171	Streptomyces ambofaciens 23S rRNA with mutation conferring resistance to macrolide antibiotics	rRNA gene variant model	single resistance variant	A2305G
+3003359	Streptomyces cinnamoneus EF-Tu mutants conferring resistance to elfamycin	protein variant model	single resistance variant	A379T
+3003479	tetR	protein overexpression model	single resistance variant	H64Y
+3003479	tetR	protein overexpression model	single resistance variant	N82H
+3003479	tetR	protein overexpression model	single resistance variant	T103I
+3004059	Type A NfxB	protein overexpression model	single resistance variant	R42G
+3004060	Type B NfxB	protein overexpression model	single resistance variant	H87R
+3003305	Ureaplasma urealyticum  gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	P462S
+3003305	Ureaplasma urealyticum  gyrB conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E502Q
+3003309	Ureaplasma urealyticum parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S84P
+3003309	Ureaplasma urealyticum parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	E87Q
+3003309	Ureaplasma urealyticum parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S83L
+3003309	Ureaplasma urealyticum parC conferring resistance to fluoroquinolone	protein variant model	single resistance variant	S83W

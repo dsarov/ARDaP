@@ -1,0 +1,3 @@
+ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName
+AUS964,BARCODE,Jones,Douglas,1890-01-01,Oxford,Sputum,ABDH615D!,1916-12-25; 15:33,Pulmonary,MGIT Cultured Isolate,Oxford,1917-01-03,No words needed,Doppelganglius Bob,Dr. Requestor Name,req_contact@genome.com,2.2.1,East-Asian Beijing
+AUS959,BARCODE,Cole,Gordon,1862-12-12,Cambridge,Sputum,ABD7895715,1916-12-26; 14:22,Pulmonary,MGIT Cultured Isolate,Oxford,1917-01-06,I'm worried about coup,Mycobacterium tuberculosis,Dr. Requestor Name,req_contact@genome.com,2.2.1,East-Asian Beijing

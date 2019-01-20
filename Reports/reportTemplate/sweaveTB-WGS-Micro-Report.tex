@@ -1,0 +1,93 @@
+%%----------------------------------------------
+%  DETAILS FOR TB WGS CLINICAL REPORT TEMPLATE
+%%---------------------------------------------
+% Version : Sweave 1.0 
+% Latex template is also available on Overleaf: TBR
+%
+% Report template is not provided for diagnostic purposes.
+% Report template's design decision outline in the following publication: TBR
+% Maintained by: Anamaria Crisan (acrisan@cs.ubc.ca)
+
+
+\documentclass{article}
+%%------------------------------------------
+%  THIRD PARTY PACKAGES
+%%------------------------------------------
+% Note: make sure these packages are install on your machine before using
+\usepackage[letterpaper, margin=0.75in,headheight=77pt,top=3.5cm]{geometry}
+\usepackage{Sweave} %this needs to go before "fontspec" in order to get Lato font to work
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage{tabu}
+\usepackage{collcell}
+\usepackage{multirow}
+\usepackage[skins]{tcolorbox}
+\usepackage{fontspec}
+  \setmainfont{Lato}
+
+%--------- NEW COMMANDS
+\newcolumntype{U}{>{\collectcell\MakeUppercase}l<{\endcollectcell}}
+
+\tcbuselibrary{listings,breakable}
+
+%bounding box for report sections
+\newtcolorbox{reportSection}[2][]{%
+  attach boxed title to top left
+  			   = {xshift=10pt, yshift=-8pt},
+  colback      = white!5!white,
+  colframe     = white!75!black,
+  fonttitle    = \bfseries,
+  colbacktitle = white,
+  title        = \textbf{\large{#2}},
+  coltitle	   = black,
+  arc = 0mm,
+  opacityframe = 0.5,
+  boxrule=1pt,
+  boxed title style={%
+    sharp corners, 
+    rounded corners=northwest, 
+    colback=white, 
+    boxrule=0pt,
+    titlerule=0mm},
+  enhanced,
+}
+
+
+
+%--------------------------------------------
+% Creating Header & Footer with Text, Logo and Page Number
+%-------------------------------------------
+
+%-------------- HEADER CONTENT ------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+% HEADER TEXT
+\lhead{\Large{\textbf{MYCOBACTERIUM TUBERCULOSIS WHOLE\\ GENOME SEQUENCING REPORT}} \\ \normalsize{NOT FOR DIAGNOSTIC USE}}
+\chead{}
+\rhead{PICTURE HERE}
+
+%-------------- FOOTER CONTENT ------------
+\rfoot{This is a test}
+
+%%------------------------------------------
+%  DOCUMENT CONTENT
+%%------------------------------------------
+
+\begin{document}
+\input{sweaveTB-WGS-Micro-Report-concordance}
+%\SweaveOpts{concordance=TRUE}
+
+\tabulinesep=5pt
+\noindent 
+\taburulecolor{lightgray}
+\noindent \begin{tabu} to \textwidth {|XU||XU|}
+\hline
+
+% Making the table manually
+% you may wonder: where does magical pInfo variable come from, the answer is "runReportExample.R", the variable
+% get's automatically passed to the text document by the Sweave commands in the "makeReport" function.
+

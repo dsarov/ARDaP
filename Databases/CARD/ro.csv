@@ -1,0 +1,14 @@
+Accession	Name	Description
+catalyze	catalyze	enzymes that facilitates the movement of transposons
+confers_resistance_to	confers_resistance_to	A relationship ontology term in which the subject (e.g. a gene family) confers or contributes to antibiotic resistance to the object (e.g. a drug class). It is a qualitative measure of antibiotic resistance, based on an experiment illustrating elevated MIC even outside of a clinical setting.
+confers_resistance_to_drug	confers_resistance_to_drug	A relationship ontology term in which the subject (usually an enzyme, protein or other gene product) confers or contributes to clinically relevant resistance to a specific antibiotic drug.
+derives_from	derives_from	A relationship ontology term in which the subject has its origins from the object (paraphrased from Relationship Ontology).
+has_part	has_part	A core relation that holds between a whole and its part. The subject has_part object. (paraphrased from Relationship Ontology)
+is_a	is_a	An axiomatic relationship ontology term in which the subject is placed into a higher order classification (paraphrased from Relationship Ontology).
+participates_in	participates_in	A relation between a continuant and a process, in which the continuant is somehow involved in the process, e.g., this input material (or this output material) participates in this process.
+part_of	part_of	A relationship ontology term in which the subject is but part of the object (paraphrased from Relationship Ontology).
+regulates	regulates	A relationship ontology term in which the subject regulates expression of the object.
+relationship	relationship	A relationship between two ontology terms.
+represses	represses	A relationship between a transcriptional regulator and a gene or gene product, in which the regulator is plays a negative role in the transcriptional process.
+targeted_by	targeted_by	A relationship ontology term in which the subject is targeted by the object (usually a class of antibiotics).
+targeted_by_drug	targeted_by_drug	A relationship ontology term in which the subject is targeted by a specific antibiotic.

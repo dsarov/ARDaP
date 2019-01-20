@@ -1,0 +1,33 @@
+.headers ON
+
+SELECT
+	Variants_SNP_indel.Gene_name,
+	Variants_SNP_indel.Variant_annotation,
+	Variants_SNP_indel.Alternate_variant_annotation,
+	Variants_SNP_indel.Antibiotic_affected,
+	Variants_SNP_indel.Comments,
+	MICs.MIC_TIC,
+	MICs.MIC_TZP,
+	MICs.MIC_ATM,
+	MICs.MIC_CAZ,
+	MICs.MIC_FEP,
+	MICs.MIC_CZT,
+	MICs.MIC_CIP,
+	MICs.MIC_PIP,
+	MICs.Comments,
+	MICs.MIC_MER,
+	MICs.MIC_IMP,
+	Publications.Title,
+	Publications.Primary_author,
+	Publications.Comments,
+	Publications.PubmedID 
+FROM
+	Variants_SNP_indel,
+	MICs
+	INNER JOIN Publication_Variant_SNP_indel ON Publication_Variant_SNP_indel.VariantID = Variants_SNP_indel.VariantID
+	INNER JOIN Publications ON Publication_Variant_SNP_indel.PubMedID = Publications.PubmedID
+WHERE
+	Variants_SNP_indel.Gene_name = 'AmpC'
+	AND Variants_SNP_indel.Variant_annotation = 'E247K'
+	AND Variants_SNP_indel.VariantID = Publication_Variant_SNP_indel.VariantID 
+	AND Variants_SNP_indel.MICID = MICs.MICID;
