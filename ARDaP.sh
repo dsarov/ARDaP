@@ -23,24 +23,28 @@
 #
 # Written by Derek Sarovich and Erin Price - University of the Sunshine Coast, Queensland, Australia
 # Please send bug reports to dereksarovich@gmail.com
-# Version 1.2
+# Version 1.4
 #
 #################################################################
+
 usage()
 {
-echo -e  "\n\n\n\nThanks for using ARDaP v1.0
+echo -e  "\n\n\n\nThanks for using ARDaP v1.4
 \nUsage:
-   ARDaP.sh -r|--reference <reference, without .fasta extension> -d|--database <Species specific database for resistance determination>
+   ARDaP.sh -r|--reference <fasta reference genome> -d|--database <Species specific database for resistance determination>
    
 Optional Parameter:
 
-  -g|--gwas       Perform genome wide association analysis (yes/no)
-  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains (yes/no)
-  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker. 
-  -m|--mixtures   This feature is currently experimental. ARDaP will assume that your data is a mixture of multiple strains and attempt to call resistance in that mixture (yes/no)
-  -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no)\n
+  -g|--gwas       Perform genome wide association analysis (yes/no). Default=no
+  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains (yes/no). Default=no
+  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker. Default=4Mbp
+  -m|--mixtures   This feature is currently experimental. ARDaP will assume that your data is a mixture of multiple strains and attempt to call resistance in that mixture (yes/no). Default=no
+  -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no\n
 
   ARDaP requires at least a reference genome and the name of the associated database
+  Currently there are databases available for:
+  Pseudomonas aeruginosa (-v Pseudomonas_aeruginosa_pao1)
+  Burkholderia pseudomallei (-v Burkholderia_pseudomallei_k96243)
   
   For example:
   ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1 --gwas no
@@ -69,8 +73,43 @@ If you do not wish to run the genome wide association component, please set the 
 For a more detailed description of how to use ARDaP and its capability, refer to the ARDaP manual
 
 _EOF_
-
+versions
 }
+
+versions()
+{
+#get BWA version
+"$BWA" &> bwa_temp.txt
+bwa_ver=$(cat bwa_temp.txt | grep 'Version' | awk '{ print $2 }')
+
+samtools_ver=$($SAMTOOLS --version | head -n1 | awk '{ print $2}')
+bedtools_ver=$($BEDTOOLS --version | awk '{print $2 }')
+"$PAUP" --version &> paup_temp.txt
+paup_ver=$(cat paup_temp.txt | tail -n1 | awk '{ print $2 }')
+mosdepth_ver=$($MOSDEPTH --version | awk '{print $2 }')
+pindel_ver=$($PINDEL | grep 'version' | head -n1 | awk '{ print $3}' | sed 's/,//g' )
+sqlite3_ver=$($SQLITE --version | awk '{ print $1 }')
+"$SEQTK" &> seqtk_temp.txt
+seqtk_ver=$(cat seqtk_temp.txt | grep 'Version' | awk '{ print $2 }' )
+"$GATK_NO_GC" --version &> gatk_temp.txt
+gatk_ver=$(cat gatk_temp.txt | grep '(GATK)' | awk '{ print $6 }')
+echo -e "ARDaP uses multiple software packages to identify antibiotic resistance.
+The current version of ARDaP is version 1.4
+And is using:
+paup version=$paup_ver
+seqtk version=$seqtk_ver
+pindel version=$pindel_ver
+sqlite3 version=$sqlite3_ver
+samtools version=$samtools_ver
+mosdepth version=$mosdepth_ver
+bwa version=$bwa_ver
+bedtools version=$bedtools_ver
+trimmomatic version=$trimmomatic_ver
+gatk version=$gatk_ver
+
+"
+}
+
 
 #Define path to ARDaP install
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
@@ -153,9 +192,8 @@ cd "$PBS_O_WORKDIR"
 
 size=$(echo "$size/4" | bc)
 
-## file checks and program checks
+##file checks and program checks
 ##Variant genome and database checks
-
 
 RESISTANCE_DB="$SCRIPTPATH"/Databases/"$variant_genome"/"$variant_genome".db 
 CARD_DB="$SCRIPTPATH"/Databases/"$variant_genome"/"$variant_genome"_CARD.db
@@ -233,10 +271,16 @@ if [ -z "$samtools_test" ]; then
 	    echo "ERROR: ARDaP requires SAMtools to function. Please make sure the correct path is specified in ARDaP.config"
 		exit 1
 fi
-if [ ! -f "$GATK" ]; then
-	    echo "ERROR: ARDaP requires the Genome Analysis toolkit and java to function. Please make sure the correct path is specified in ARDaP.config"
-		exit 1
-fi
+
+
+#TO DO - Need to write a quick GATK check as specifying java options breaks a simple file check.
+
+#if [ ! -f "$GATK" ]; then
+#	    echo "ERROR: ARDaP requires the Genome Analysis toolkit and java to function. Please make sure the correct path is specified in ARDaP.config"
+#		exit 1
+#fi
+
+
 if [ -z "$bedtools_test" ]; then
 	    echo "ERROR: ARDaP requires  BEDtools to function. Please make sure the correct path is specified in ARDaP.config"
 		exit 1
@@ -276,7 +320,7 @@ if [ "$strain" == all ]; then
 	unset IFS
     n=${#sequences[@]}
 	
-    if [ $n == 0 ]; then
+    if [ "$n" == 0 ]; then
         echo -e "Program couldn't find any sequence files to process"
         echo -e "Sequences must be in the format STRAIN_1_sequence.fastq.gz STRAIN_2_sequence.fastq.gz for paired end reads"
     	echo -e "and STRAIN_1_sequence.fastq.gz for single end data\n"
@@ -294,7 +338,7 @@ if [ "$pairing" == PE -a "$strain" == all ]; then
 	unset IFS
     n2=${#sequences2[@]}
 	
-    if [ $n != $n2 ]; then
+    if [ "$n" != "$n2" ]; then
 	    echo "Number of forward reads don't match number of reverse reads. Please check that for running in PE mode all read files have correctly named pairs"
 		exit 1
 	fi
@@ -348,15 +392,10 @@ if [ "$matrix" == no -a "$indel_merge" == yes ]; then
 	matrix=yes
 fi
 	
-	## create directory structure
-	
-
+## create directory structure
 if [ ! -d "$seq_directory"/BEDcov ]; then
     mkdir "$seq_directory"/BEDcov
 fi
-#if [ ! -d "$seq_directory"/tmp ]; then
-#	mkdir "$seq_directory"/tmp
-#fi
 if [ ! -d "$seq_directory"/Outputs ]; then
 	mkdir "$seq_directory"/Outputs
 fi
@@ -436,7 +475,7 @@ if [ "$annotate" == yes ]; then
 		echo -e "Running the following command:"
 		echo "java $JAVA_PROXY -jar $SNPEFF download -v $variant_genome"
         echo -e "In the following directory $PBS_O_WORKDIR\n"		
-		java ${JAVA_PROXY} -jar $SNPEFF download -v $variant_genome
+		java ${JAVA_PROXY} -jar "$SNPEFF" download -v "$variant_genome"
 	else 
         echo -e "Annotated reference database has already been downloaded for SnpEff\n"
     fi	
@@ -444,8 +483,9 @@ fi
 
 if [ "$SCHEDULER" == PBS -o "$SCHEDULER" == SGE -o "$SCHEDULER" == SLURM -o "$SCHEDULER" == NONE ]; then
 	echo -e "ARDaP will use $SCHEDULER for resource management\n"
-	else
+else
 	echo -e "ARDaP requires you to set the SCHEDULER variable to one of the following: PBS, SGE, SLURM or NONE. \nIt looks like you might have specified the variable incorrectly.\n"
+	exit 1
 fi
 
 
@@ -501,13 +541,13 @@ fi
     echo -e "Submitting qsub job for SAMtools reference indexing\n"
     cmd="${SAMTOOLS} faidx ${seq_directory}/${ref}.fasta && ${BWA} index -a is -p ${seq_directory}/${ref} ${seq_directory}/${ref}.fasta\
 	&& ${BWA} index ${seq_directory}/${CARD_db}.fasta && ${SAMTOOLS} faidx ${seq_directory}/${CARD_db}.fasta "
-    qsub_id=$(qsub -N SAM_index -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=1,walltime=$WALL_T -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
+    qsub_id=$(qsub -N SAM_index -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
     echo -e "SAM_index\t$qsub_id" >> ref_index_ids.txt
   fi
   if [ ! -s "$REF_DICT" ]; then
     echo -e "Submitting qsub job for ${ref}.dict creation\n"
-    cmd="source ${SCRIPTPATH}/ARDaP.config && $GATK CreateSequenceDictionary -R ${seq_directory}/${ref}.fasta -O $REF_DICT && $GATK CreateSequenceDictionary -R ${seq_directory}/${CARD_db}.fasta -O ${CARD_db}.dict"
-	qsub_id=$(qsub -N PICARD_dict -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=1,walltime=$WALL_T -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
+    cmd="source ${SCRIPTPATH}/ARDaP.config && $GATK_NO_GC CreateSequenceDictionary -R ${seq_directory}/${ref}.fasta -O $REF_DICT && $GATK_NO_GC CreateSequenceDictionary -R ${seq_directory}/${CARD_db}.fasta -O ${CARD_db}.dict"
+	qsub_id=$(qsub -N PICARD_dict -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
 	echo -e "PICARD_dict\t$qsub_id" >> ref_index_ids.txt
   fi
   
@@ -515,7 +555,7 @@ fi
     echo -e "Submitting qsub job for BED file construction with BEDTools\n"
 	depend=$(depend_id ref_index_ids.txt)
     cmd="${BEDTOOLS} makewindows -g ${REF_INDEX_FILE} -w $window > ${REF_BED} && ${BEDTOOLS} makewindows -g ${REF_INDEX_FILE} -w 90000000 > ${ref}.coverage.bed && ${BEDTOOLS} makewindows -g ${CARD_db}.fasta.fai -w 90000 > ${CARD_db}.coverage.bed"
-    qsub_id=$(qsub -N BED_window -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=1,walltime=$WALL_T $depend -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
+    qsub_id=$(qsub -N BED_window -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM $depend -v command="$cmd" "$SCRIPTPATH"/Header.pbs)
     echo -e "BED_window\t$qsub_id" >> ref_index_ids.txt
   fi
 
@@ -523,19 +563,19 @@ variants () {
   for (( i=0; i<n; i++ )); do
     if [ ! -s "${PBS_O_WORKDIR}"/Outputs/SNPs_indels_PASS/"${sequences[$i]}".snps.PASS.vcf -a ! -s "${PBS_O_WORKDIR}"/Outputs/SNPs_indels_PASS/"${seq}".snps.indels.PASS.mixed.vcf -o ! -s "${PBS_O_WORKDIR}"/Outputs/AbR_reports/"${sequences[$i]}"_strain.pdf ]; then
 	  echo -e "Submitting qsub job for sequence alignment and variant calling for ${sequences[$i]}\n"
-      var="seq=${sequences[$i]},mixtures=$mixtures,size=$size,ref=$ref,org=$org,strain=$strain,variant_genome=$variant_genome,annotate=$annotate,tech=$tech,pairing=$pairing,seq_path=$seq_directory,SCRIPTPATH=$SCRIPTPATH"
+      var="phylogeny=$phylogeny,seq=${sequences[$i]},mixtures=$mixtures,size=$size,ref=$ref,org=$org,strain=$strain,variant_genome=$variant_genome,annotate=$annotate,tech=$tech,pairing=$pairing,seq_path=$seq_directory,SCRIPTPATH=$SCRIPTPATH"
 	  #echo $var
 	  depend=$(depend_id ref_index_ids.txt)
 	  #echo $depend
 	  #echo "qsub -N aln_${sequences[$i]} -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=2,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Align_SNP_indel.sh"
-	  qsub_array_id=$(qsub -N Variant_calling_${sequences[$i]} -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=2,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Align_SNP_indel.sh)
+	  qsub_array_id=$(qsub -N Variant_calling_${sequences[$i]} -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Align_SNP_indel.sh)
       echo -e "aln_${sequences[$i]}\t$qsub_array_id" >> qsub_array_ids.txt
 	  echo -e "aln_${sequences[$i]}\t$qsub_array_id" > Single_job_depend.txt
 	  
 	  depend=$(depend_id Single_job_depend.txt)
 	  echo -e "Submitting antibiotic detection queries for ${sequences[$i]}\n"
-      var="seq=${sequences[$i]},mixtures=$mixtures,ref=$ref,org=$org,strain=$strain,variant_genome=$variant_genome,annotate=$annotate,tech=$tech,pairing=$pairing,seq_path=$seq_directory,SCRIPTPATH=$SCRIPTPATH"
-	  qsub_AbR_id=$(qsub -N Resistance_ID_${sequences[$i]} -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=1,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Ab_report.sh)
+      var="phylogeny=$phylogeny,seq=${sequences[$i]},mixtures=$mixtures,ref=$ref,org=$org,strain=$strain,variant_genome=$variant_genome,annotate=$annotate,tech=$tech,pairing=$pairing,seq_path=$seq_directory,SCRIPTPATH=$SCRIPTPATH"
+	  qsub_AbR_id=$(qsub -N Resistance_ID_${sequences[$i]} -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Ab_report.sh)
 	  
 	fi
   done
@@ -548,7 +588,7 @@ if [ ! -s "${PBS_O_WORKDIR}"/Phylo/out/out.filtered.vcf ]; then
     var="ref=$ref,seq_path=$seq_directory,SCRIPTPATH=$SCRIPTPATH,indel_merge=$indel_merge"
     depend=$(depend_id qsub_array_ids.txt)
 	#echo "$depend"
-    qsub_matrix_id=$(qsub -N Joint_genotyping -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=2,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Master_vcf.sh)
+    qsub_matrix_id=$(qsub -N Joint_genotyping -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/Master_vcf.sh)
     echo -e "Matrix_vcf\t$qsub_matrix_id" >> mastervcf_id.txt
 fi
 
@@ -556,7 +596,7 @@ if [ ! -s "${PBS_O_WORKDIR}"/Outputs/Comparative/Ortho_SNP_matrix.nex ]; then
     echo -e "Submitting qsub job for creation of phylogenetic tree and final annotated variant outputs\n"
 	depend=$(depend_id mastervcf_id.txt)
     var="ref=$ref,seq_path=$seq_directory,variant_genome=$variant_genome,annotate=$annotate,SCRIPTPATH=$SCRIPTPATH,indel_merge=$indel_merge,tri_tetra_allelic=$tri_tetra_allelic"
-	qsub_matrix_id=$(qsub -N Phylogeny_and_reports -j $ERROR_OUTPUT -m $MAIL -M $ADDRESS -l ncpus=2,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/SNP_matrix.sh)
+	qsub_matrix_id=$(qsub -N Phylogeny_and_reports -j $ERROR_OUTPUT $PBS_ACCOUNT -m $MAIL -M $ADDRESS -l nodes=$NODES:ppn=$PPN,walltime=$WALL_T,pmem=$PBS_MEM $depend -v "$var" "$SCRIPTPATH"/SNP_matrix.sh)
 	echo -e "Matrix_vcf\t$qsub_matrix_id" >> matrix_id.txt
 fi
 
