@@ -70,10 +70,25 @@ echo -e "Preparing input files\n"
 # need to check if a patient metadata file has been supplied. If no metadatafile has been supplied then make dummy file with appropriate strain ID
 
 if [ ! -s "$seq_path"/patientMetaData.csv ]; then #test for initial file provided by user if none then create dummy file
+	echo "Couldn't find patient metadata, creating default template"
 	echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > "$seq_path"/"$seq"/unique/patientMetaData.csv
-	echo -e "$seq,BARCODE,Jones,Douglas,1890-01-01,Oxford,Sputum,ABDH615D!,1916-12-25; 15:33,Pulmonary,MGIT Cultured Isolate,Oxford,1917-01-03,No words needed,Doppelganglius Bob,Dr. Requestor Name,req_contact@genome.com,2.2.1,East-Asian Beijing" >> "$seq_path"/"$seq"/unique/patientMetaData.csv
+	date=$(date +"%F")
+	echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> "$seq_path"/"$seq"/unique/patientMetaData.csv
 else
-	echo -e "TO DO: include test for specific strain\nIf strain not found create dummy, if found copy line to unique dir\n"
+	echo -e "Found patientMetaData.csv"
+	echo -e "Importing isolate data"
+	echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > "$seq_path"/"$seq"/unique/patientMetaData.csv
+	date=$(date +"%F")
+	echo -e "Looking for specific strain in the metadata file"
+	grep -w "$seq" "$seq_path"/patientMetaData.csv
+	status=$?
+    if [ $status == 0 ]; then
+      echo "Found strain information"
+	  grep -w "$seq" "$seq_path"/patientMetaData.csv >> "$seq_path"/"$seq"/unique/patientMetaData.csv
+	else
+      echo "Couldn't find strain data, reverting to default"
+      echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> "$seq_path"/"$seq"/unique/patientMetaData.csv	  
+    fi  
 fi
 
 if [ ! -d "$seq_path"/"$seq"/unique/data ]; then
@@ -135,7 +150,7 @@ if [ "$mixtures" = yes ]; then
 		awk '{
 		  if (match($0,"ANN=")){print substr($0,RSTART)}
 		 }' "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost > "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost.annotations
-		awk -F "|" '{ print $4,$10,$11,$15 }' "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost.annotations | sed 's/c\.//' | sed 's/p\.//' | sed 's/n\.//'> "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost.annotations.tmp
+		awk -F "|" '{ print $4,$11,$15 }' "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost.annotations | sed 's/c\.//' | sed 's/p\.//' | sed 's/n\.//'> "$seq_path"/"$seq"/unique/annotated/"${seq}".ALL.func.lost.annotations.tmp
 		grep -E "#|\|HIGH\|" "$seq_path"/"$seq"/unique/annotated/"$seq".ALL.annotated.mixed.vcf > "$seq_path"/"$seq"/unique/annotated/ALL.annotated.func.lost.vcf
         log_eval "$seq_path"/"$seq"/unique/annotated "$GATK VariantsToTable -V ${seq_path}/${seq}/unique/annotated/ALL.annotated.func.lost.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -GF AD -GF DP -O ${seq_path}/${seq}/unique/annotated/ALL.annotated.func.lost.table"
 		tail -n +2 "$seq_path"/"$seq"/unique/annotated/ALL.annotated.func.lost.table | awk '{ print $5,$6,$7,$8 }' > "$seq_path"/"$seq"/unique/annotated/ALL.annotated.func.lost.table.headerless
@@ -152,7 +167,7 @@ if [ "$mixtures" = yes ]; then
 		paste "$seq_path"/"$seq"/unique/start.coords.list "$seq_path"/"$seq"/unique/end.coords.list "$seq_path"/"$seq"/unique/mutant_depth.D "$seq_path"/"$seq"/unique/depth.D > "$seq_path"/"$seq"/unique/deletion_summary_mix.txt
 	fi
 	if [ ! -s "$seq_path"/"$seq"/unique/duplication_summary_mix.txt ]; then
-		grep -v '#' "$seq_path"/"$seq"/unique/pindel.out_TD.vcf | awk '{ print $1,$2 }' > "$seq_path"/"$seq"/unique/start.coords.list
+		grep -v '#' "$seq_path"/"$seq"/unique/pindel.out_TD.vcf | awk -v OFS="\t" '{ print $1,$2 }' > "$seq_path"/"$seq"/unique/start.coords.list
 		grep -v '#' "$seq_path"/"$seq"/unique/pindel.out_TD.vcf | gawk 'match($0, /END=([0-9]+);/,arr){ print arr[1]}' > "$seq_path"/"$seq"/unique/end.coords.list
 		grep -v '#' "$seq_path"/"$seq"/unique/pindel.out_TD.vcf | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > "$seq_path"/"$seq"/unique/mutant_depth.TD
 		grep -v '#' "$seq_path"/"$seq"/unique/pindel.out_TD.vcf | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > "$seq_path"/"$seq"/unique/depth.TD
@@ -218,12 +233,13 @@ _EOF_
 
 sed -i 's/|/ /g' "$seq_path"/"$seq"/unique/annotated/Variant_ignore.txt 
 
+
 while read f; do 
 	grep -vw "$f" "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt > "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt.tmp
 	mv "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt.tmp "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt
 done < "$seq_path"/"$seq"/unique/annotated/Variant_ignore.txt
 
-
+ 
 
 if [ ! -d "$seq_path"/"$seq"/unique/annotated/statements ]; then
 	mkdir "$seq_path"/"$seq"/unique/annotated/statements
@@ -323,7 +339,7 @@ EOF
 
 COUNTER=$((COUNTER+1))
 done < "$seq_path"/"$seq"/unique/deletion_summary_mix.txt
-LOSS_COUNT="$COUNTER"
+LOSS_COUNT_MIX="$COUNTER"
 }
 
 declare -A SQL_upregulation_report_mix=()
@@ -354,7 +370,7 @@ EOF
 
 COUNTER=$((COUNTER+1))
 done < "$seq_path"/"$seq"/unique/duplication_summary_mix.txt
-UPREG_COUNT="$COUNTER"
+UPREG_COUNT_MIX="$COUNTER"
 }
 
 declare -A SQL_loss_report=()
@@ -437,7 +453,8 @@ SELECT
 FROM
     Coverage
 WHERE
-    Coverage.Gene = '$gene';
+    Coverage.Gene = '$gene'
+	AND Coverage.Upregulation_or_loss LIKE 'loss';
 EOF
 )
 
@@ -528,8 +545,7 @@ if [ ! -s  "$seq_path"/"$seq"/unique/AbR_output.txt ]; then
 			rm "$seq_path"/"$seq"/unique/output.temp
 		fi
 		echo "Running duplication detection queries"
-		#todo include upregulation and gene loss in mixture analysis
-		for (( i=1; i<"$UPREG_COUNT"; i++ )); do 
+		for (( i=1; i<"$UPREG_COUNT_MIX"; i++ )); do 
 			$SQLITE "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee "$seq_path"/"$seq"/unique/output.temp >> "$seq_path"/"$seq"/unique/AbR_output.txt
 			if [ -s "$seq_path"/"$seq"/unique/output.temp ]; then
 				echo "Found upregulation mechanism. Determining mixture percent"
@@ -542,11 +558,12 @@ if [ ! -s  "$seq_path"/"$seq"/unique/AbR_output.txt ]; then
 				mixture_percent="$mixture_percent"%
 				sed -i '$ d' "$seq_path"/"$seq"/unique/AbR_output.txt
 				echo "$mixture_percent" | paste "$seq_path"/"$seq"/unique/output.temp - >> "$seq_path"/"$seq"/unique/AbR_output.txt
+				rm "$seq_path"/"$seq"/unique/output.temp
 			fi
 		done
 		echo "done"
 		echo "Running loss of coverage queries"
-		for (( i=1; i<"$LOSS_COUNT"; i++ )); do 
+		for (( i=1; i<"$LOSS_COUNT_MIX"; i++ )); do 
 			$SQLITE "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee "$seq_path"/"$seq"/unique/output.temp >> "$seq_path"/"$seq"/unique/AbR_output.txt
 			if [ -s "$seq_path"/"$seq"/unique/output.temp ]; then
 				echo "Found deletion mechanism. Determining mixture percent"
@@ -560,6 +577,7 @@ if [ ! -s  "$seq_path"/"$seq"/unique/AbR_output.txt ]; then
 				mixture_percent="$mixture_percent"%
 				sed -i '$ d' "$seq_path"/"$seq"/unique/AbR_output.txt
 				echo "$mixture_percent" | paste "$seq_path"/"$seq"/unique/output.temp - >> "$seq_path"/"$seq"/unique/AbR_output.txt
+				rm "$seq_path"/"$seq"/unique/output.temp
 			fi
 		done
 		echo "done"
@@ -567,12 +585,13 @@ if [ ! -s  "$seq_path"/"$seq"/unique/AbR_output.txt ]; then
 		for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do
 			$SQLITE "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee "$seq_path"/"$seq"/unique/output.temp >> "$seq_path"/"$seq"/unique/AbR_output.txt
 			if [ -s "$seq_path"/"$seq"/unique/output.temp ]; then
-				depth=$(awk -v i="$i" 'FNR==i' "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt | awk '{ print $7 }' )
-				mutant_depth=$(awk -v i="$i" 'FNR==i' "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt | awk '{ print $6 }' | awk -F"," '{ print $2 }' )
+				depth=$(awk -v i="$i" 'FNR==i' "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt | awk '{ print $6 }' ) #column printed changed due to error in mix pipeline
+				mutant_depth=$(awk -v i="$i" 'FNR==i' "$seq_path"/"$seq"/unique/annotated/Function_lost_list.txt | awk '{ print $5 }' | awk -F"," '{ print $2 }' ) #column printed changed due to error in mix pipeline
 				mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
 				mixture_percent="$mixture_percent"%
 				sed -i '$ d' "$seq_path"/"$seq"/unique/AbR_output.txt
 				echo "$mixture_percent" | paste "$seq_path"/"$seq"/unique/output.temp - >> "$seq_path"/"$seq"/unique/AbR_output.txt
+				rm "$seq_path"/"$seq"/unique/output.temp
 			fi
 		done
 		echo "done"
