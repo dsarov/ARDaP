@@ -22,7 +22,7 @@
 # 
 #
 # Written by Derek Sarovich and Erin Price - University of the Sunshine Coast, Queensland, Australia
-# Please send bug reports to dereksarovich@gmail.com
+# Please send bug reports to dsarovich@usc.edu.au
 # Version 1.4
 #
 #################################################################
@@ -36,21 +36,18 @@ echo -e  "\n\n\n\nThanks for using ARDaP v1.4
 Optional Parameter:
 
   -g|--gwas       Perform genome wide association analysis (yes/no). Default=no
-  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains (yes/no). Default=no
-  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker. Default=4Mbp
-  -m|--mixtures   This feature is currently experimental. ARDaP will assume that your data is a mixture of multiple strains and attempt to call resistance in that mixture (yes/no). Default=no
+  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains and/or metagenomic data (yes/no). Default=no
+  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000 
   -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no\n
 
   ARDaP requires at least a reference genome and the name of the associated database
   Currently there are databases available for:
-  Pseudomonas aeruginosa (-v Pseudomonas_aeruginosa_pao1)
-  Burkholderia pseudomallei (-v Burkholderia_pseudomallei_k96243)
+  Pseudomonas aeruginosa (-d Pseudomonas_aeruginosa_pao1)
+  Burkholderia pseudomallei (-d Burkholderia_pseudomallei_k96243)
   
   For example:
-  ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1 --gwas no
-  
-  Optionally, if you do not wish to run the associated GWAS component please specify -g to no\n\n\n\n"
-  
+  ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1
+  "
 }
 
 help()
@@ -220,7 +217,7 @@ if [ ! -s "$ref".fasta ]; then
 		  echo "Found with .fasta extension. Great"
 		  ref=$(echo "$ref" | sed 's/\.fasta//g')
 		else
-		  echo "Still couldn't find reference. Please make sure that reference file is in the analysis directory,\n you have specified the reference name correctly\n"
+		  echo -e "Still couldn't find reference. Please make sure that reference file is in the analysis directory,\n you have specified the reference name correctly\n"
           exit 1
 		fi
     else
