@@ -76,8 +76,8 @@ Optional Parameter: \
   -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no \
   ARDaP requires at least a reference genome and the name of the associated database \
   Currently there are databases available for: \
-  Pseudomonas aeruginosa (-d Pseudomonas_aeruginosa_pao1) \
-  Burkholderia pseudomallei (-d Burkholderia_pseudomallei_k96243) \
+  <i>Pseudomonas aeruginosa</i> (-d Pseudomonas_aeruginosa_pao1) \
+  <i>Burkholderia pseudomallei</i> (-d Burkholderia_pseudomallei_k96243) \
   
   For example: \
   ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1 \
@@ -97,6 +97,8 @@ Reads not in this format will be ignored.
 
 By default, all reads in ARDaP format (i.e. strain_1_sequence.fastq.gz) in the present working directory are processed. Sequence files are aligned against the reference using BWA. Alignments are subsequently filtered and converted using SAMtools and Picard Tools. SNPs and indels are identified with GATK and coverage assessed with BEDtools. 
 
-- [Custom database creation](#Database-creation)
+### Database-creation
+
+TO BE ADDED
 
 Please send bug reports to derek.sarovich@gmail.com.
