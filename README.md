@@ -20,10 +20,10 @@ ARDaP (Antimicrobial Resistance Detection and Prediction) is a genomics pipeline
 for the comprehensive identification of antibiotic resistance markers from whole-genome
 sequencing data. The impetus behind the creation of ARDaP was our frustration 
 with current methodology not being able to detect antimicrobial resistance when confered by "complex" mechanisms.
-Our two species of interest, <i>Burkholderia pseudomallei</i> and <i>Pseudomonas aeruginosa</i>, develop antimicrobial resistance
+Our two species of interest, <i>Burkholderia pseudomallei</i> and <i>Pseudomonas aeruginosa*</i>, develop antimicrobial resistance
 in a multiple ways but predominately through chromosomal mutations, including gene loss, copy number variation, single nucleotide polymorphisms and indels. ARDaP will first identify all genetic variation in a sample and then interrogate this information against a user created database of resistance mechanisms. The software will then summarise the identified mechanisms and produce a simple report for the user.
 
-
+*P. aeruginosa module is still under development
 ## Installation
 
 **Github**
@@ -31,10 +31,12 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 1) Download the latest installation with git clone
 
 ```
-https://github.com/dsarov/ARDaP.git
+git clone https://github.com/dsarov/ARDaP.git
 ```
 
-2) Install the nextflow pipeline manager if not already installed
+2) Install the dependencies
+Option 1
+
 
 More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
 ```
