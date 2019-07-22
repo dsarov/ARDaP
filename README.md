@@ -36,13 +36,11 @@ git clone https://github.com/dsarov/ARDaP.git
 ```
 
 2) Install the dependencies \
-Option 1 - Use conda to install all dependencies. 
+Option 1 - Use conda to install all dependencies. \
 Users are encouraged to use this option as there are fewer chances of failure and downstream errors
 
-
-More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
 ```
-wget -qO- https://get.nextflow.io | bash
+conda create -n ARDaP_v1.5 bwa seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite nextflow R 
 ```
 3) Change into the ARDaP directory and activate/install the conda environment
 
@@ -65,16 +63,17 @@ ARDaP is mostly written in the nextflow language and as such has support for mos
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- Burrows Wheeler Aligner (BWA)
-- SAMTools
-- Picard
-- Genome Analysis Toolkit (GATK)
-- BEDTools
-- SNPEff
-- VCFtools
+- Burrows Wheeler Aligner (BWA) (reference)
+- SAMTools (ref)
+- Picard (ref)
+- Genome Analysis Toolkit (GATK) (ref)
+- BEDTools (ref)
+- SNPEff (ref)
+- VCFtools (ref)
 
 ## Usage (will change once nextflow implementation is complete)
-
+To control the data pipeline, ARDaP is implemented in nextflow language
+More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
 ```
 ARDaP.sh -r|--reference <fasta reference genome> -d|--database <Species specific database for resistance determination>
 ```
