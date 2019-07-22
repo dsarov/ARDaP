@@ -42,16 +42,6 @@ Users are encouraged to use this option as there are fewer chances of failure an
 ```
 conda create -n ARDaP_v1.5 bwa seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite nextflow R 
 ```
-3) Change into the ARDaP directory and activate/install the conda environment
-
-```
-cd ARDaP
-
-```
-
-**Optional for GWAS** 
-
-
 
 ## Resource Managers
 
@@ -79,15 +69,15 @@ ARDaP.sh -r|--reference <fasta reference genome> -d|--database <Species specific
 ```
 ## Parameters
    
-Optional Parameter: /
-  -g|--gwas       Perform genome wide association analysis (yes/no). Default=no /
-  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains and/or metagenomic data (yes/no). Default=no /
-  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000 /
-  -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no /
-  ARDaP requires at least a reference genome and the name of the associated database /
-  Currently there are databases available for: /
-  Pseudomonas aeruginosa (-d Pseudomonas_aeruginosa_pao1) /
-  Burkholderia pseudomallei (-d Burkholderia_pseudomallei_k96243) /
+Optional Parameter: \
+  -g|--gwas       Perform genome wide association analysis (yes/no). Default=no \
+  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains and/or metagenomic data (yes/no). Default=no \
+  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000 \
+  -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no \
+  ARDaP requires at least a reference genome and the name of the associated database \
+  Currently there are databases available for: \
+  Pseudomonas aeruginosa (-d Pseudomonas_aeruginosa_pao1) \
+  Burkholderia pseudomallei (-d Burkholderia_pseudomallei_k96243) \
   
   For example: \
   ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1 \
