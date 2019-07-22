@@ -31,30 +31,35 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 1) Download the latest installation with git clone
 
 ```
-git clone https://github.com/dsarov/SPANDx.git
+https://github.com/dsarov/ARDaP.git
 ```
 
-2) Change into the SPANDx directory and alter file permissions
+2) Install the nextflow pipeline manager if not already installed
 
-```cd SPANDx/
-chmod +x ./*
+More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
+```
+wget -qO- https://get.nextflow.io | bash
+```
+3) Change into the ARDaP directory and activate/install the conda environment
+
+```
+cd ARDaP
+
 ```
 
 **Optional for GWAS** 
 
-3) Download and install PLINK and Roary if you would like to use the GWAS ability of SPANDx.
 
-4) Change the install location in the SPANDx.config file to direct SPANDx to its dependencies. Make sure that you have selected the correct resource manager for your system in the scheduler.config file (see below).
-
-5) SPANDx should now be good to go!
 
 ## Resource Managers
 
-From v2.7 onwards, SPANDx  works with SLURM, SGE and PBS (Torque) resource managers. SPANDx can also be run directly without a resource handler (set SCHEDULER=NONE in scheduler.config), although this is not recommended, particularly for modest to large datasets.
+ARDaP is mostly written in the nextflow language and as such has support for most common resource management systems.
 
-## SPANDx Workflow
+//Need to include information about how to activate different schedulers
 
-To achieve high-quality variant calls, SPANDx incorporates the following programs into its workflow:
+## ARDaP Workflow
+
+To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
 - Burrows Wheeler Aligner (BWA)
 - SAMTools
