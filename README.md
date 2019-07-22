@@ -35,7 +35,7 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 git clone https://github.com/dsarov/ARDaP.git
 ```
 
-2) Install the dependencies
+2) Install the dependencies \
 Option 1 - Use conda to install all dependencies. 
 Users are encouraged to use this option as there are fewer chances of failure and downstream errors
 
