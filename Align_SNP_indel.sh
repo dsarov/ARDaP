@@ -2,7 +2,7 @@
 #PBS -o logs/Alignment_${seq}.txt
 #$ -S /bin/bash
 #$ -cwd
-#PBS -M danielle.madden@research.usc.edu.au
+#PBS -M $mail
 #PBS -m a
 
 
@@ -15,9 +15,8 @@
 # Version 2.1
 # v0.1
 #
-#
 ############################################################################
-#### Variables required seq ref org strain seq_path annotate pairing tech window ####
+#### Variables required seq ref org strain seq_path annotate pairing tech window phylogeny ####
 
 #source variables
 source "$SCRIPTPATH"/ARDaP.config
@@ -84,6 +83,7 @@ GATK_SNP_FAIL="$seq_path"/"${seq}"/unique/"${seq}".snps.FAIL.vcf
 GATK_INDELS_HEAD2="$seq_path"/"${seq}"/unique/"${seq}".indels.head2.vcf
 GATK_INDELS_FAIL="$seq_path"/"${seq}"/unique/"${seq}".indels.FAIL.vcf
 GATK_RAW_SNPS_INDELS="$seq_path"/"${seq}"/unique/"${seq}".snps.indels.raw.vcf
+GATK_RAW_VARIANTS="$seq_path"/"${seq}"/unique/"${seq}".variants.raw.gvcf
 
 #------------- Variable for CARD alignment
 CARD_REF_FILE="$seq_path"/CARD_db.fasta
@@ -120,17 +120,17 @@ if [ ! -s "$READ1_FILE" -o ! -s "$READ2_FILE" ]; then
   #downsample to 50x
   size_actual=$(echo "$size" | bc)
   echo "Down-sampling to ~50x. Assuming genome size of $size_actual"
-  $SEQTK sample -s 11 "$seq_path"/Clean_reads/"${seq}"_1.fq.gz $size | gzip - > $READ1_FILE.tmp
-  mv $READ1_FILE.tmp $READ1_FILE
-  $SEQTK sample -s 11 "$seq_path"/Clean_reads/"${seq}"_2.fq.gz $size | gzip - > $READ2_FILE.tmp
-  mv $READ2_FILE.tmp $READ2_FILE
+  "$SEQTK" sample -s 11 "$seq_path"/Clean_reads/"${seq}"_1.fq.gz "$size" | gzip - > "$READ1_FILE".tmp
+  mv "$READ1_FILE".tmp "$READ1_FILE"
+  "$SEQTK" sample -s 11 "$seq_path"/Clean_reads/"${seq}"_2.fq.gz "$size" | gzip - > "$READ2_FILE".tmp
+  mv "$READ2_FILE".tmp "$READ2_FILE"
   rm "$seq_path"/Clean_reads/"${seq}"_1.fq.gz
   rm "$seq_path"/Clean_reads/"${seq}"_2.fq.gz
 fi  
  
   
 #########################################################################
-##   -infile(s) - SE of PE NGS reads $READ1_FILE and $READ2_file       ## 
+##   -infile(s) - PE NGS reads $READ1_FILE and $READ2_file             ## 
 ##                                                                     ##
 ##                                                                     ## 
 ## Illumina 1.8+ alignment with BWA mem for both PE and SE             ##   
@@ -144,11 +144,7 @@ if [ "$tech" == Illumina -a "$pairing" == PE ]; then
 		log_eval "$PBS_O_WORKDIR" "$BWA mem -R '@RG\tID:${org}\tSM:${seq}\tPL:ILLUMINA' -a -t 2 $REF_FILE $READ1_FILE $READ2_FILE > $SAM"   		
 	fi
 fi
-	#if [ "$tech" == Illumina -a "$pairing" == SE ]; then
-        #if [ ! -s "$SAM" -a ! -s "$GATK_REALIGNED_BAM" ]; then
-         #   log_eval "$PBS_O_WORKDIR" "$BWA mem -R '@RG\tID:${org}\tSM:${seq}\tPL:ILLUMINA' -a -t 2 $REF_FILE $READ1_FILE > $SAM"
-	    #fi
-	#fi
+
 if [ ! -s "$BAM_UNIQUE_FILE.bam" -a ! -s "$GATK_REALIGNED_BAM" ]; then
 	log_eval "$PBS_O_WORKDIR" "$SAMTOOLS view -h -b -@ 1 -q 1 -o $BAM_TEMP_FILE $SAM && $SAMTOOLS sort -@ 1 -o $BAM_UNIQUE_FILE $BAM_TEMP_FILE"
 	rm "$BAM_TEMP_FILE"
@@ -159,32 +155,24 @@ fi
 
 
 ### Removal of duplicates using GATK/Picard 
-if [ "$REMOVE_DUPS" == 1 ]; then
-  if [ ! -s "$BAM_DUPLICATESREM_FILE" -a ! -s "$GATK_REALIGNED_BAM" ]; then 
+
+if [ ! -s "$BAM_DUPLICATESREM_FILE" -a ! -s "$GATK_REALIGNED_BAM" ]; then 
       log_eval "$PBS_O_WORKDIR" "$GATK MarkDuplicates -I $BAM_UNIQUE_FILE -O $BAM_DUPLICATESREM_FILE --REMOVE_DUPLICATES true --METRICS_FILE $DUP_METRICS --VALIDATION_STRINGENCY LENIENT"
 	  mv "$BAM_DUPLICATESREM_FILE" "$GATK_REALIGNED_BAM" && log_eval "$PBS_O_WORKDIR" "$SAMTOOLS index $GATK_REALIGNED_BAM"
-  fi
 fi
-#if [ "$REMOVE_DUPS" == 0 ]; then
-  #if [ ! -s "$BAM_DUPLICATESREM_FILE" -a ! -s "$GATK_REALIGNED_BAM" ]; then 
-    #  log_eval "$PBS_O_WORKDIR" "mv $BAM_UNIQUE_FILE $BAM_DUPLICATESREM_FILE"
-  #fi
- # if [ ! -s "$BAM_DUPLICATESREM_FILE_INDEX" -a ! -s "$GATK_REALIGNED_BAM" ]; then
-   #   log_eval "$PBS_O_WORKDIR" "$SAMTOOLS index $BAM_DUPLICATESREM_FILE"
-  #fi
-#fi
+
 
 ### cleanup ###
-if [ -f "$BAM_DUPLICATESREM_FILE" ]; then
+if [ -s "$BAM_DUPLICATESREM_FILE" ]; then
     rm "$BAM_UNIQUE_FILE" "$BAM_DUPLICATESREM_FILE_INDEX" "$GATK_TARGET_FILE"
 fi
-if [ -f "$BAM_UNIQUE_INDEX_FILE" ]; then
+if [ -s "$BAM_UNIQUE_INDEX_FILE" ]; then
     rm "$BAM_UNIQUE_INDEX_FILE"
 fi
-if [ -f "$BAM_UNIQUE_FILE" ]; then
+if [ -s "$BAM_UNIQUE_FILE" ]; then
     rm "$BAM_UNIQUE_FILE"
 fi
-if [ -f "$SAM" ]; then
+if [ -s "$SAM" ]; then
 	rm "$SAM"
 fi
 
@@ -209,7 +197,7 @@ if [ "$mixtures" = yes ]; then
 		log_eval "$PBS_O_WORKDIR" "$GATK HaplotypeCaller -R $REF_FASTA --I $GATK_REALIGNED_BAM -O ${seq_path}/${seq}/unique/${seq}.snps.indels.raw.mixed.vcf" #can include db SNPs here
 	fi
 	if [ ! -s "$PBS_O_WORKDIR"/"${seq}"/unique/"${seq}".snps.indels.filtered.mixed.vcf -a ! -s "$PBS_O_WORKDIR"/Outputs/SNPs_indels_PASS/"${seq}".ALL.PASS.vcf ]; then
-		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O ${seq_path}/${seq}/unique/${seq}.snps.indels.filtered.mixed.vcf -V ${seq_path}/${seq}/unique/${seq}.snps.indels.raw.mixed.vcf -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"FSFilter\" -filter \"HaplotypeScore > $HAPLO_SNP\" --filter-name \"HaplotypeScoreFilter\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"StandardFilters\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP))>0.1)'\" --filter-name \"HARD_TO_VALIDATE\""
+		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O ${seq_path}/${seq}/unique/${seq}.snps.indels.filtered.mixed.vcf -V ${seq_path}/${seq}/unique/${seq}.snps.indels.raw.mixed.vcf -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"FSFilter\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"StandardFilters\""
 	fi 
 	if [ ! -s "$GATK_PASS_SNPS_FILE" -a ! -s "$PBS_O_WORKDIR"/Outputs/SNPs_indels_PASS/"${seq}".snps.PASS.vcf ]; then 
 		header=`grep -n "#CHROM" ${seq_path}/${seq}/unique/${seq}.snps.indels.filtered.mixed.vcf | cut -d':' -f 1`
@@ -241,7 +229,6 @@ if [ "$mixtures" = yes ]; then
 		echo -e "${seq}.realigned.bam\t250\tB" > "${PBS_O_WORKDIR}"/"${seq}"/unique/pindel.bam.config
 	fi
 	
-	#echo -e "CTAP23_AHHFIM01_S1.realigned.bam\t250\tB250\tB" > Pindel.bam.config
 	if [ ! -s "${PBS_O_WORKDIR}"/"${seq}"/unique/pindel.out_D ]; then
 		log_eval "${PBS_O_WORKDIR}"/"${seq}"/unique/ "$PINDEL -f $REF_FASTA -i ${PBS_O_WORKDIR}/${seq}/unique/pindel.bam.config -o ${PBS_O_WORKDIR}/${seq}/unique/pindel.out"
 	fi
@@ -264,11 +251,17 @@ if [ "$mixtures" = yes ]; then
 	##TODO variants to table here for post processing?
 fi
 
-if [ "$mixtures" = no ]; then
+if [ "$mixtures" = no -o "$phylogeny" = yes ]; then
 	if [ ! -s "$GATK_RAW_SNPS_INDELS" -a ! -s "$seq_path/Outputs/SNPs_indels_PASS/${seq}.snps.PASS.vcf" ]; then
 		log_eval "$PBS_O_WORKDIR" "$GATK HaplotypeCaller -R $REF_FASTA --ploidy 1 --I $GATK_REALIGNED_BAM -O $GATK_RAW_SNPS_INDELS" #can include db SNPs
 	fi
-
+	
+	#Emit GVCFs.
+	
+    if [ ! -s "$GATK_RAW_VARIANTS" -a ! -s "$seq_path/Outputs/SNPs_indels_PASS/${seq}.snps.PASS.vcf" -a "$phylogeny" = yes ]; then
+		log_eval "$PBS_O_WORKDIR" "$GATK HaplotypeCaller -R $REF_FASTA -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS" #can include db SNPs
+	fi
+	
 		#split SNPs and indels
 	if [ ! -s "$GATK_RAW_SNPS_FILE" ]; then
 		log_eval "$PBS_O_WORKDIR" "$GATK SelectVariants -R $REF_FASTA -V $GATK_RAW_SNPS_INDELS -O $GATK_RAW_SNPS_FILE -select-type SNP"
@@ -280,7 +273,7 @@ if [ "$mixtures" = no ]; then
 	# Filter the SNPs #TODO use select variants here rather than filtering to parse snp and indel files
 
 	if [ ! -s "$GATK_FILTER_SNPS_FILE" -a ! -s "$seq_path/Outputs/SNPs_indels_PASS/${seq}.snps.PASS.vcf" ]; then
-		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_FILTER_SNPS_FILE -V $GATK_RAW_SNPS_FILE --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"MLEAF < $MLEAF_SNP\" --filter-name \"AFFilter\" -filter \"QD < $QD_SNP\" --filter-name \"QDFilter\" -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"FSFilter\" -filter \"HaplotypeScore > $HAPLO_SNP\" --filter-name \"HaplotypeScoreFilter\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"StandardFilters\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP))>0.1)'\" --filter-name \"HARD_TO_VALIDATE\""
+		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_FILTER_SNPS_FILE -V $GATK_RAW_SNPS_FILE --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"MLEAF < $MLEAF_SNP\" --filter-name \"AFFilter\" -filter \"QD < $QD_SNP\" --filter-name \"QDFilter\" -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"FSFilter\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"StandardFilters\""
 	fi 
 	if [ ! -s "$GATK_PASS_SNPS_FILE" -a ! -s "$seq_path/Outputs/SNPs_indels_PASS/${seq}.snps.PASS.vcf" ]; then 
 		header=`grep -n "#CHROM" $GATK_FILTER_SNPS_FILE | cut -d':' -f 1`
@@ -291,7 +284,7 @@ if [ "$mixtures" = no ]; then
 	# Reapply filters to the raw SNPs file to generate a list of failed SNP calls
 
 	if [ ! -s "$GATK_SNP_AMB" -a ! -s "${seq_path}/Outputs/SNPs_indels_FAIL/${seq}.snps.FAIL.vcf" ]; then
-		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_SNP_AMB -V $GATK_RAW_SNPS_FILE --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"MLEAF < $MLEAF_SNP\" --filter-name \"FAIL\" -filter \"QD < $QD_SNP\" --filter-name \"FAIL1\" -filter \"MQ < $MQ_SNP\" --filter-name \"FAIL2\" -filter \"FS > $FS_SNP\" --filter-name \"FAIL3\" -filter \"HaplotypeScore > $HAPLO_SNP\" --filter-name \"FAIL4\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"FAIL5\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP)) > 0.1)'\" --filter-name \"FAIL6\""
+		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_SNP_AMB -V $GATK_RAW_SNPS_FILE --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"MLEAF < $MLEAF_SNP\" --filter-name \"FAIL\" -filter \"QD < $QD_SNP\" --filter-name \"FAIL1\" -filter \"MQ < $MQ_SNP\" --filter-name \"FAIL2\" -filter \"FS > $FS_SNP\" --filter-name \"FAIL3\" -filter \"QUAL < $QUAL_SNP\" --filter-name \"FAIL5\""
 	fi
 	if [ ! -s "$GATK_SNP_FAIL" -a ! -s "${seq_path}/Outputs/SNPs_indels_FAIL/${seq}.snps.FAIL.vcf" ]; then
 		header_amb=`grep -n "#CHROM" $GATK_SNP_AMB | cut -d':' -f 1`
@@ -301,7 +294,7 @@ if [ "$mixtures" = no ]; then
 
 
 	if [ ! -s "$GATK_FILTER_INDELS_FILE" -a ! -s "$seq_path/Outputs/SNPs_indels_FAIL/${seq}.indels.PASS.vcf" ]; then
-		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_FILTER_INDELS_FILE -V $GATK_RAW_INDELS_FILE -filter \"MLEAF < $MLEAF_INDEL\" --filter-name \"AFFilter\" -filter \"MQ < $MQ_INDEL\" --filter-name \"MQFilter\" -filter \"QD < $QD_INDEL\" --filter-name \"QDFilter\" -filter \"FS > $FS_INDEL\" --filter-name \"FSFilter\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP)) > 0.1)'\" --filter-name \"HARD_TO_VALIDATE\" -filter \"QUAL < $QUAL_INDEL\" --filter-name \"QualFilter\""
+		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_FILTER_INDELS_FILE -V $GATK_RAW_INDELS_FILE -filter \"MLEAF < $MLEAF_INDEL\" --filter-name \"AFFilter\" -filter \"MQ < $MQ_INDEL\" --filter-name \"MQFilter\" -filter \"QD < $QD_INDEL\" --filter-name \"QDFilter\" -filter \"FS > $FS_INDEL\" --filter-name \"FSFilter\" -filter \"QUAL < $QUAL_INDEL\" --filter-name \"QualFilter\""
 	fi    
 	if [ ! -s "$GATK_PASS_INDELS_FILE" -a ! -s "$seq_path/Outputs/SNPs_indels_FAIL/${seq}.indels.PASS.vcf" ]; then		
 		header_indel=`grep -n "#CHROM" $GATK_FILTER_INDELS_FILE | cut -d':' -f 1`
@@ -309,7 +302,7 @@ if [ "$mixtures" = no ]; then
 		cat "$GATK_FILTER_INDELS_FILE" | grep PASS | cat "$GATK_INDEL_HEAD" - > "$GATK_PASS_INDELS_FILE"
 	fi
 	if [ ! -s "$GATK_INDELS_AMB" -a ! -s "${seq_path}/Outputs/SNPs_indels_FAIL/${seq}.indels.FAIL.vcf" ]; then
-		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_INDELS_AMB -V $GATK_RAW_INDELS_FILE -filter \"MLEAF < $MLEAF_INDEL\" --filter-name \"FAIL\" -filter \"MQ < $MQ_INDEL\" --filter-name \"FAIL1\" -filter \"QD < $QD_INDEL\" --filter-name \"FAIL2\" -filter \"FS > $FS_INDEL\" --filter-name \"FAIL3\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP)) > 0.1)'\" --filter-name \"FAIL4\" -filter \"QUAL < $QUAL_INDEL\" --filter-name \"FAIL5\""
+		log_eval "$PBS_O_WORKDIR" "$GATK VariantFiltration -R $REF_FASTA -O $GATK_INDELS_AMB -V $GATK_RAW_INDELS_FILE -filter \"MLEAF < $MLEAF_INDEL\" --filter-name \"FAIL\" -filter \"MQ < $MQ_INDEL\" --filter-name \"FAIL1\" -filter \"QD < $QD_INDEL\" --filter-name \"FAIL2\" -filter \"FS > $FS_INDEL\" --filter-name \"FAIL3\" -filter \"QUAL < $QUAL_INDEL\" --filter-name \"FAIL5\""
 	fi
 	if [ ! -s "$GATK_INDELS_FAIL" -a ! -s "${seq_path}/Outputs/SNPs_indels_FAIL/${seq}.indels.FAIL.vcf" ]; then	
 		header_amb_indel=`grep -n "#CHROM" $GATK_INDELS_AMB | cut -d':' -f 1`
@@ -356,7 +349,7 @@ if [ "$mixtures" = no ]; then
 	  k=$(tail -n1 "$PBS_O_WORKDIR"/"${seq}"/unique/dup.summary.tmp | awk '{ print $3 }')
 	  chr=$(head -n1 "$PBS_O_WORKDIR"/"${seq}"/unique/dup.summary.tmp | awk '{ print $1 }')
 
-	  #The multiple test cases for  i  allow some tolerance in the summary output (2bp of lower coverge). Coverage data can become somewhat noisy so the multiple test condition for the initial if partially smooths the data.
+	  #The multiple test cases for  i  allow some tolerance in the summary output (2bp of lower coverage). Coverage data can become somewhat noisy so the multiple test condition for the initial if partially smooths the data.
 	  awk -v i="$i" -v k="$k" -v chr="$chr" 'BEGIN {printf "chromosome " chr " start " i " "; j=i} {if (i==$2 || i==$2-1 || i==$2-2 ) { 
 		i=$3;	
 		}

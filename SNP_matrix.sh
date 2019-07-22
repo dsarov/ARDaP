@@ -16,12 +16,11 @@
 #source variables
 source "$SCRIPTPATH"/ARDaP.config
 
-if [ ! $PBS_O_WORKDIR ]
-    then
-        PBS_O_WORKDIR="$seq_path"
+if [ ! "$PBS_O_WORKDIR" ]; then
+  PBS_O_WORKDIR="$seq_path"
 fi
  
-cd $PBS_O_WORKDIR
+cd "$PBS_O_WORKDIR"
 
 log_eval()
 {
@@ -31,15 +30,16 @@ log_eval()
   eval "$2"
   status=$?
 
-  if [ ! $status == 0 ]; then
+  if [ ! "$status" == 0 ]; then
     echo "Previous command returned error: $status"
     exit 1
   fi
 }
 
-if [ ! -s $PBS_O_WORKDIR/Phylo/out/out.vcf.table ]; then
-  log_eval $PBS_O_WORKDIR/Phylo/out "$GATK VariantsToTable -V $PBS_O_WORKDIR/Phylo/out/out.filtered.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -O $PBS_O_WORKDIR/Phylo/out/out.vcf.table"
-  log_eval $PBS_O_WORKDIR/Phylo/out "$GATK VariantsToTable -V $PBS_O_WORKDIR/Phylo/out/out.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -O $PBS_O_WORKDIR/Phylo/out/out.vcf.table.all"
+if [ ! -s "$PBS_O_WORKDIR"/Phylo/out/out.vcf.table ]; then
+  echo "Creating VCF tables"
+  log_eval "$PBS_O_WORKDIR"/Phylo/out "$GATK VariantsToTable -V $PBS_O_WORKDIR/Phylo/out/out.filtered.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -O $PBS_O_WORKDIR/Phylo/out/out.vcf.table"
+  log_eval "$PBS_O_WORKDIR"/Phylo/out "$GATK VariantsToTable -V $PBS_O_WORKDIR/Phylo/out/out.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -O $PBS_O_WORKDIR/Phylo/out/out.vcf.table.all"
   else 
     echo -e "out.vcf.table has already been created\n\n"
 fi
@@ -48,33 +48,45 @@ fi
 # Creates the SNP matrix for PAUP
 ############################################################################
 
-if [ ! -s $PBS_O_WORKDIR/Outputs/Comparative/Ortho_SNP_matrix.nex ]; then
-    cd $PBS_O_WORKDIR/Phylo/out/		
-	grep 'SNP' out.vcf.table | grep -v ',' |grep -v '*' |grep -v '\.' > out.vcf.table.snps.clean
-	taxa=$(cut -f3,6- out.vcf.table | head -n1 | sed 's/.GT//g') 
+if [ ! -s "$PBS_O_WORKDIR"/Outputs/Comparative/Ortho_SNP_matrix.nex ]; then
+    echo "Creating SNP matrix"
+    cd "$PBS_O_WORKDIR"/Phylo/out/		
+	grep 'SNP' out.vcf.table | grep -v ',' | grep -v '*' | grep -v '\.' > out.vcf.table.snps.clean
+	# replace A/A, C/C, G/G, T/T genotypes with single nucleotides A, G, C, T etc etc 
+	sed -i 's#A/A\|A|A#A#g' out.vcf.table.snps.clean
+	sed -i 's#G/G\|G|G#G#g' out.vcf.table.snps.clean
+	sed -i 's#C/C\|C|C#C#g' out.vcf.table.snps.clean
+	sed -i 's#T/T\|T|T#T#g' out.vcf.table.snps.clean
+	grep -v '|' out.vcf.table.snps.clean | grep -v '/' > vcf.table.tmp #remove mixed genotypes
+	mv vcf.table.tmp out.vcf.table.snps.clean
+	echo "Broken pipe here"
+	taxa=$(head -n1 out.vcf.table | cut -f3,6- | sed 's/.GT//g')
     ntaxa=$(awk '{print NF-4; exit }' out.vcf.table)
 	nchar=$(cat out.vcf.table.snps.clean | wc -l)
 	awk '{print $1,$2}' out.vcf.table.snps.clean | sed 's/ /_/g' > snp.location
-	cut -f3,6- out.vcf.table.snps.clean >grid.nucleotide
+	cut -f3,6- out.vcf.table.snps.clean > grid.nucleotide
 	grid=$(paste snp.location grid.nucleotide)
 	echo -e "\n#nexus\nbegin data;\ndimensions ntax=$ntaxa nchar=$nchar;\nformat symbols=\"AGCT\" gap=. transpose;\ntaxlabels $taxa;\nmatrix\n$grid\n;\nend;" > Ortho_SNP_matrix.nex
-	cp $PBS_O_WORKDIR/Phylo/out/Ortho_SNP_matrix.nex $PBS_O_WORKDIR/Outputs/Comparative/Ortho_SNP_matrix.nex
+	cp "$PBS_O_WORKDIR"/Phylo/out/Ortho_SNP_matrix.nex "$PBS_O_WORKDIR"/Outputs/Comparative/Ortho_SNP_matrix.nex
 fi
 
 ##run paup to create tree
 
-if [ ! -s $PBS_O_WORKDIR/Outputs/Comparative/MP_phylogeny.tre -a "$ntaxa" -gt 4 ]; then
+if [ ! -s "$PBS_O_WORKDIR"/Outputs/Comparative/MP_phylogeny.tre -a "$ntaxa" -gt 4 ]; then
+  echo "Running PAUP"
 #PAUP block to be inserted into nexus file
-cat <<_EOF_ > $PBS_O_WORKDIR/Phylo/out/tmpnex
+cat <<_EOF_ > "$PBS_O_WORKDIR"/Phylo/out/tmpnex
 begin paup;
 Set AllowPunct=Yes;
 lset nthreads=2;
 hsearch;
 savetrees from=1 to=1 brlens=yes;
 _EOF_
-  cat $PBS_O_WORKDIR/Outputs/Comparative/Ortho_SNP_matrix.nex $PBS_O_WORKDIR/Phylo/out/tmpnex > $PBS_O_WORKDIR/Phylo/out/run.nex
-  $PAUP -n $PBS_O_WORKDIR/Phylo/out/run.nex >& $PBS_O_WORKDIR/logs/paup_log.txt
-  mv $PBS_O_WORKDIR/Phylo/out/Ortho_SNP_matrix.tre $PBS_O_WORKDIR/Outputs/Comparative/MP_phylogeny.tre
+  cat "$PBS_O_WORKDIR"/Outputs/Comparative/Ortho_SNP_matrix.nex "$PBS_O_WORKDIR"/Phylo/out/tmpnex > "$PBS_O_WORKDIR"/Phylo/out/run.nex
+  "$PAUP" -n "$PBS_O_WORKDIR"/Phylo/out/run.nex >& "$PBS_O_WORKDIR"/logs/paup_log.txt
+  mv "$PBS_O_WORKDIR"/Phylo/out/run.tre "$PBS_O_WORKDIR"/Outputs/Comparative/MP_phylogeny.tre
+else
+  echo "Fewer than 4 taxa found. Skipping creation of MP tree"
 fi
 
 ###############################################
@@ -86,25 +98,49 @@ fi
 ##
 ##################################################
 
-if [ ! -s $PBS_O_WORKDIR/Output/Comparative/All_SNPs_indels_annotated.txt -a "$annotate" == yes ]; then
-    if [ ! -d $PBS_O_WORKDIR/Phylo/annotated ]; then
-	    mkdir $PBS_O_WORKDIR/Phylo/annotated
+if [ ! -s "$PBS_O_WORKDIR"/Output/Comparative/All_SNPs_indels_annotated.txt -a "$annotate" == yes ]; then
+    if [ ! -d "$PBS_O_WORKDIR"/Phylo/annotated ]; then
+	    mkdir "$PBS_O_WORKDIR"/Phylo/annotated
 	fi
-	cp $PBS_O_WORKDIR/Phylo/out/out.vcf $PBS_O_WORKDIR/Phylo/annotated/out.vcf
-	cp $PBS_O_WORKDIR/Phylo/out/out.vcf.table.all $PBS_O_WORKDIR/Phylo/annotated/out.vcf.table.all
-	cd $PBS_O_WORKDIR/Phylo/annotated
+	cp "$PBS_O_WORKDIR"/Phylo/out/out.vcf "$PBS_O_WORKDIR"/Phylo/annotated/out.vcf
+	cp "$PBS_O_WORKDIR"/Phylo/out/out.vcf.table.all "$PBS_O_WORKDIR"/Phylo/annotated/out.vcf.table.all
+	cd "$PBS_O_WORKDIR"/Phylo/annotated
+	
+	#clean-up the out.vcf.table.all because GATK outputs A/A
+	sed -i 's#|#/#g' "$PBS_O_WORKDIR"/Phylo/annotated/out.vcf.table.all
+	awk ' { for (i=6; i<=NF; i++) {
+             if ($i == "A/A") $i="A"; 
+             if ($i == "G/G") $i="G"; 
+             if ($i == "C/C") $i="C"; 
+             if ($i == "T/T") $i="T"; 
+             if ($i == "*/*") $i="*"; 
+             if ($i == "./.") $i=".";
+             }};
+             {print $0} ' out.vcf.table.all > out.vcf.table.all.tmp	 
+		 
+    awk ' { for (i=6; i<=NF; i++) {
+          if ($i ~ /\//) { 
+            split($i, a, "/");
+            if (a[1] == a[2]) $i=a[1];
+           }
+         }
+       }; 
+       {print $0} ' out.vcf.table.all.tmp > out.vcf.table.all
+
+	
+
 	
 	#SnpEff version control. Versions post 4.1 use a slightly different format for variants
 	
-	SnpEff_version=`($JAVA $SET_VAR $SNPEFF -h 2>&1 | head -n1 |awk '{ print $4 }' | awk '{print substr($1,0,3)}' | bc)`
+	SnpEff_version=$($JAVA $SET_VAR $SNPEFF -h 2>&1 | head -n1 |awk '{ print $4 }' | awk '{print substr($1,0,3)}' | bc)
 	if [ "$(echo $SnpEff_version '>=' 4.1 | bc -l)" -eq 1 ]; then
-		
+		echo "Checking SnpEff version"
 		echo -e "Version of snpEff is 4.1 or greater\n"
 		echo -e "Version of SnpEff is $SnpEff_version"
-		log_eval $PBS_O_WORKDIR/Phylo/annotated "$JAVA $SET_VAR $SNPEFF eff -no-downstream -no-intergenic -ud 100 -formatEff -v $variant_genome $PBS_O_WORKDIR/Phylo/annotated/out.vcf > $PBS_O_WORKDIR/Phylo/annotated/out.annotated.vcf"
+		log_eval "$PBS_O_WORKDIR"/Phylo/annotated "$JAVA $SET_VAR $SNPEFF eff -no-downstream -no-intergenic -ud 100 -formatEff -v $variant_genome $PBS_O_WORKDIR/Phylo/annotated/out.vcf > $PBS_O_WORKDIR/Phylo/annotated/out.annotated.vcf"
 	else
 		echo -e "Version of snpEff is less than 4.1\n"
-		log_eval $PBS_O_WORKDIR/Phylo/annotated "$JAVA $SET_VAR $SNPEFF eff -no-downstream -no-intergenic -ud 100 -v $variant_genome $PBS_O_WORKDIR/Phylo/annotated/out.vcf > $PBS_O_WORKDIR/Phylo/annotated/out.annotated.vcf"
+		log_eval "$PBS_O_WORKDIR"/Phylo/annotated "$JAVA $SET_VAR $SNPEFF eff -no-downstream -no-intergenic -ud 100 -v $variant_genome $PBS_O_WORKDIR/Phylo/annotated/out.vcf > $PBS_O_WORKDIR/Phylo/annotated/out.annotated.vcf"
 	fi	
 		
 	rm snpEff_genes.txt
@@ -128,13 +164,15 @@ if [ ! -s $PBS_O_WORKDIR/Output/Comparative/All_SNPs_indels_annotated.txt -a "$a
 	rm effects
     
 	tail -n+2 out.vcf.table.all > out.vcf.table.all.headerless
+	sed -i 's/ /\t/g' out.vcf.table.all.headerless
 	paste out.vcf.table.all.headerless effects.mrg > out.vcf.headerless.plus.effects
 	head -n1 out.vcf.table.all | sed 's/.GT//g' > header.left
 	echo -e "Effect\tImpact\tFunctional_Class\tCodon_change\tProtein_and_nucleotide_change\tAmino_Acid_Length\tGene_name\tBiotype" > header.right
 	paste header.left header.right > header
 	cat header out.vcf.headerless.plus.effects > All_SNPs_indels_annotated.txt
 	
-	mv All_SNPs_indels_annotated.txt $PBS_O_WORKDIR/Outputs/Comparative/All_SNPs_indels_annotated.txt
+	
+	mv All_SNPs_indels_annotated.txt "$PBS_O_WORKDIR"/Outputs/Comparative/All_SNPs_indels_annotated.txt
 	
 fi	
 	
@@ -226,7 +264,7 @@ skip () {
 	##run cleanup
 	#cleanup
 	
-	}
+}
 
 echo "ARDaP has finished"
 

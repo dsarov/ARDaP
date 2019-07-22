@@ -36,8 +36,9 @@ log_eval()
 {
   cd $1
   echo -e "\nIn $1\n"
-  echo "Running: $2"
-  eval "$2"
+  echo "Running: $2" 
+  #eval "$2"
+  eval "time $2"
   status=$?
 
   if [ ! $status == 0 ]; then
@@ -45,6 +46,7 @@ log_eval()
     exit 1
   fi
 }
+
 #########################################################################
 ## checks and creates directory structure
 #########################################################################
@@ -85,7 +87,7 @@ if [ "$(ls -A $PBS_O_WORKDIR/Phylo/snps)" ]; then
    echo "skipping linking and renaming of vcf files"
    echo -e "if the snp vcf files are not in snps directory, make sure the directory is empty and restart\n"
   else
-   log_eval $PBS_O_WORKDIR/Phylo/snps "ls ../../*/unique/*snps.indels.raw.vcf|while read f; do ln -s \$f; done;"
+   log_eval $PBS_O_WORKDIR/Phylo/snps "ls ../../*/unique/*variants.raw.gvcf|while read f; do ln -s \$f; done;"
    #log_eval $PBS_O_WORKDIR/Phylo/snps "for f in *.snps.PASS.vcf; do mv \$f \${f//.snps.PASS.vcf/.vcf}; done;"
 fi
 #if [ "$(ls -A $PBS_O_WORKDIR/Phylo/indels)" ]; then
@@ -101,7 +103,7 @@ if [ "$(ls -A $PBS_O_WORKDIR/Phylo/bams)" ]; then
    echo "skipping linking and renaming of bam and bai files"
    echo -e "if the bam and bai files are not in bams directory, make sure the directory is empty and restart\n"
   else
-   log_eval $PBS_O_WORKDIR/Phylo/bams "ls ../../*/unique/*.realigned* |while read f; do ln -s \$f; done;"
+   log_eval $PBS_O_WORKDIR/Phylo/bams "ls $PBS_O_WORKDIR/*/unique/*.realigned* |while read f; do ln -s \$f; done;"
    log_eval $PBS_O_WORKDIR/Phylo/bams "for f in *.bam; do mv \$f \${f//.realigned.bam/.bam}; done;"
    log_eval $PBS_O_WORKDIR/Phylo/bams "for f in *.bai; do mv \$f \${f//.realigned.bam.bai/.bai}; done;"
 fi
@@ -116,7 +118,7 @@ fi
 #########################################################################
 
 if [ ! -s $PBS_O_WORKDIR/Phylo/out/master.vcf ]; then
-    array=($(find $PBS_O_WORKDIR/Phylo/snps/*.vcf -printf "%f "))
+    array=($(find $PBS_O_WORKDIR/Phylo/snps/*.gvcf -printf "%f "))
     n="${#array[@]}"
     array2=("${array[@]/#/-V }")
     #n=${#array3[@]}
@@ -136,7 +138,7 @@ fi
   #  log_eval $PBS_O_WORKDIR/Phylo/indels "$GATK CombineGVCFs -R $PBS_O_WORKDIR/${ref}.fasta ${array2[*]} -O $PBS_O_WORKDIR/Phylo/indels/out/master_indels.vcf"
 #fi
 if [ ! -s "$seq_path/Phylo/out/out.filtered.vcf" ]; then
-        log_eval $PBS_O_WORKDIR "$GATK VariantFiltration -R $PBS_O_WORKDIR/${ref}.fasta -O $seq_path/Phylo/out/out.filtered.vcf -V $seq_path/Phylo/out/out.vcf --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"QD < $QD_SNP\" --filter-name \"QDFilter\" -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"FSFilter\" -filter \"HaplotypeScore > $HAPLO_SNP\" --filter-name \"HaplotypeScoreFilter\" -filter \"MQ0 >= 4 && '((MQ0 / (1.0 * DP))>0.1)'\" --filter-name \"HARD_TO_VALIDATE\""
+        log_eval $PBS_O_WORKDIR "$GATK VariantFiltration -R $PBS_O_WORKDIR/${ref}.fasta -O $seq_path/Phylo/out/out.filtered.vcf -V $seq_path/Phylo/out/out.vcf --cluster-size $CLUSTER_SNP -window $CLUSTER_WINDOW_SNP -filter \"QD < $QD_SNP\" --filter-name \"QDFilter\" -filter \"MQ < $MQ_SNP\" --filter-name \"MQFilter\" -filter \"FS > $FS_SNP\" --filter-name \"HaplotypeScoreFilter\""
 fi 
 
  
