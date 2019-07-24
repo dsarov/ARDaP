@@ -41,7 +41,7 @@ Users are encouraged to use this option as there are fewer chances of failure an
 
 ```
 conda config --add channels bioconda
-conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite nextflow R 
+conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff nextflow R 
 ```
 
 ## Resource Managers
