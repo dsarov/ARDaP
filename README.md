@@ -1,4 +1,11 @@
-# ARDaP - Antimicrobial Resistance Detection and Prediction
+# ARDaP - Antimicrobial Resistance Detection and Prediction <img src='image.png' align="right" height="210" />
+
+
+![](https://img.shields.io/badge/version-alpha-red.svg)
+![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
+![](https://img.shields.io/badge/docs-latest-green.svg)
+![](https://img.shields.io/badge/BioRxiv-prep-green.svg)
+
 
 ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)), Eike Steinig and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)) at University of the Sunshine Coast, Queensland, Australia.
 ## Contents
