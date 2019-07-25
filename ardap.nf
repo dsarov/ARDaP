@@ -561,17 +561,17 @@ if (params.strain == "all") {
     			if (match($0,"ANN=")){print substr($0,RSTART)}
     			}' !{indels} > indel.effects.tmp
 
-    		awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> annotated.indel.effects
+    		awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> ${id}.annotated.indel.effects
 
     		awk '{
     			if (match($0,"ANN=")){print substr($0,RSTART)}
     			}' !{snps} > snp.effects.tmp
-    		awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > annotated.snp.effects
+    		awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > ${id}.annotated.snp.effects
 
     		echo 'Identifying high consequence mutations'
 
-    		grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> Function_lost_list.txt
-    		grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> Function_lost_list.txt
+    		grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> ${id}.Function_lost_list.txt
+    		grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> ${id}.Function_lost_list.txt
 
     		sed -i 's/p\\.//' ${id}.Function_lost_list.txt
         '''
@@ -612,7 +612,7 @@ if (params.strain == "all") {
       set id, file(card_bam), file(card_bai) from card_coverage
 
       output:
-      set id, file("${id}.card.bedcov")
+      set id, file("${id}.card.bedcov") into CARDqueries
 
       """
       bedtools coverage -abam $card_bam -b card.coverage.bed > ${id}.card.bedcov
@@ -644,22 +644,53 @@ process SqlSnpsIndelsMix {
 
   output:
   file("${id}.Abr_output.txt") into AbrReport
+  //Not sure if the out needs to be specific for each process or can be merged easily
 
+  script:
   """
-  run SQL_queries_SNP_indel.sh $id $resistance_db $card_db $GWAS_cutoff
-
+  SQL_queries_SNP_indel_mix.sh "$id" "$resistance_db"
   """
-//seq=$1
-//RESISTANCE_DB=$2 
-//CARD_DB=$3
-
-//##GWAS cutoff value
-//cutoff=$4
-
-
 }
 
+process SqlSnpsIndelsNoMix { 
+  label "genomic_queries"
+  tag { "$id" }
+  
+  input:
+  file("${id}.annotated.indel.effects") from VariantSummariesSQL
+  file("${id}.annotated.snp.effects") from VariantSummariesSQL
+  file("${id}.Function_lost_list.txt") from VariantSummariesSQL
+
+  output:
+  file("${id}.Abr_output.txt") into AbrReport
+  //Not sure if the out needs to be specific for each process or can be merged easily
+
+  script:
+  """
+  SQL_queries_SNP_indel.sh "$id" "$resistance_db"
+  """
+
+}
+        
 process SqlDeletionDuplication {
+  label "genomic_queries"
+  tag { "$id" }
+
+  input:
+  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+  file("${id}.deletion_summary.txt") VariantSummaries
+  file("${id}.duplication_summary.txt") VariantSummaries
+
+  output:
+  file("${id}.Abr_output.txt") into AbrReport
+
+  script:
+  """
+  SQL_queries_DelDup.sh "$id" "$resistance_db"
+  """
+}
+
+process SqlDeletionDuplicationMix {
   label "genomic_queries"
   tag { "$id" }
 
@@ -667,14 +698,30 @@ process SqlDeletionDuplication {
   file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
   file("${id}.deletion_summary_mix.txt") MixturesSummariesSQL
   file("${id}.duplication_summary_mix.txt") MixturesSummariesSQL
-}
 
-process SqlSnpsIndelsNoMix { 
-  label "genomic_queries"
+  output:
+  file("${id}.Abr_output.txt") into AbrReport
+
+  script:
+  """
+  SQL_queries_DelDupMix.sh "$id" "$resistance_db"
+  """
+}
+process CARDqueries {
+  label "card_queries"
   tag { "$id" }
+
+  input:
+  file("${id}.card.bedcov") from CoverageCARD
+
+  output:
+  file("${id}.Abr_output.txt") into AbrReport
+
+  script:
+  """
+  SQL_queries_DelDup.sh "$id" "$resistance_db" "$CARD_db"
+  """
 }
-
-
         file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
         file("${id}.Function_lost_list.txt") into SqlDeletionDuplication, SqlSnpsIndelsMix, SqlSnpsIndelsNoMix
         file("${id}.deletion_summary_mix.txt") into SqlDeletionDuplication
