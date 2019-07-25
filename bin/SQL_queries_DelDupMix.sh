@@ -105,7 +105,7 @@ STATEMENT_UPREGULATION_MIX
 
 echo "Running duplication detection queries"
 for (( i=1; i<"$UPREG_COUNT_MIX"; i++ )); do 
-	$SQLITE "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
 	if [ -s output.temp ]; then
 		echo "Found upregulation mechanism. Determining mixture percent"
 		depth=$(awk -v i="$i" 'FNR==i' ${seq}.duplication_summary_mix.txt | awk '{ print $5 }' )
@@ -123,7 +123,7 @@ done
 echo "done"
 echo "Running loss of coverage queries"
 for (( i=1; i<"$LOSS_COUNT_MIX"; i++ )); do 
-	$SQLITE "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
 	if [ -s output.temp ]; then
 		echo "Found deletion mechanism. Determining mixture percent"
 		echo "Mechanism on line $i"
@@ -142,7 +142,7 @@ done
 echo "done"
 echo -e "Looking for loss of function mutations and potential mixtures"
 for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do
-	$SQLITE "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
 	if [ -s output.temp ]; then
 		depth=$(awk -v i="$i" 'FNR==i' ${seq}.Function_lost_list.txt | awk '{ print $6 }' ) #column printed changed due to error in mix pipeline
 		mutant_depth=$(awk -v i="$i" 'FNR==i'${seq}.Function_lost_list.txt | awk '{ print $5 }' | awk -F"," '{ print $2 }' ) #column printed changed due to error in mix pipeline
@@ -154,3 +154,5 @@ for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do
 	fi
 done
 echo "done"
+
+exit 0

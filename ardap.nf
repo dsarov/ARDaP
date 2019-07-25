@@ -489,9 +489,10 @@ if (params.strain == "all") {
       }
 
       process AnnotateIndels {
-
+        // TO DO
         // Need to split and optimize with threads
 
+        // TO DO - Add publish Dir
         label "spandx_snpeff"
         tag { "$id" }
 
@@ -553,6 +554,10 @@ if (params.strain == "all") {
         set id, file(indels) from annotatedIndels
         set id, file(snps) from annotatedSNPs
 
+        output:
+        file("${id}.annotated.indel.effects") into SqlSnpsIndels
+        file("${id}.annotated.snp.effects") into SqlSnpsIndels
+        file("${id}.Function_lost_list.txt") into SqlSnpsIndels
 
         shell:
 
@@ -632,97 +637,157 @@ if (params.strain == "all") {
 *
 *
 */
+ if (params.mixtures) {
 
-process SqlSnpsIndelsMix {
+  process SqlSnpsIndelsMix {
 
-  label "genomic_queries"
-  tag { "$id" }
+    label "genomic_queries"
+    tag { "$id" }
 
-  input:
-  file("${id}.annotated.ALL.effects") from MixturesSummariesSQL
-  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+    input:
+    file("${id}.annotated.ALL.effects") from MixturesSummariesSQL
+    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
 
-  output:
-  file("${id}.Abr_output.txt") into AbrReport
-  //Not sure if the out needs to be specific for each process or can be merged easily
+    output:
+    file("${id}.Abr_output.txt") into AbrReport
+    //Not sure if the out needs to be specific for each process or can be merged easily
 
-  script:
-  """
-  SQL_queries_SNP_indel_mix.sh "$id" "$resistance_db"
-  """
-}
+    script:
+    """
+    SQL_queries_SNP_indel_mix.sh "$id" "$resistance_db"
+    """
+  }
 
-process SqlSnpsIndelsNoMix { 
-  label "genomic_queries"
-  tag { "$id" }
+
+
+  process SqlDeletionDuplicationMix {
+    label "genomic_queries"
+    tag { "$id" }
+
+    input:
+    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+    file("${id}.deletion_summary_mix.txt") MixturesSummariesSQL
+    file("${id}.duplication_summary_mix.txt") MixturesSummariesSQL
+
+    output:
+    file("${id}.Abr_output.txt") into AbrReport
+
+    script:
+    """
+    SQL_queries_DelDupMix.sh "$id" "$resistance_db"
+    """
+  }
+
+  process CARDqueries {
+    label "card_queries"
+    tag { "$id" }
+
+    input:
+    file("${id}.card.bedcov") from CoverageCARD
+
+    output:
+    file("${id}.Abr_output.txt") into AbrReport
+
+    script:
+    """
+    SQL_queries_CARD.sh "$id" "$CARD_db"
+    """
+  }
+  process AbrReport {
+
+    label "report"
+    tag { "$id" }
+    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
+
+    input: 
+    file("${id}.Abr_output.txt") from CARDqueries
+    file("${id}.Abr_output.txt") from SqlDeletionDuplicationMix
+    file("${id}.Abr_output.txt") from SqlSnpsIndelsMix
   
-  input:
-  file("${id}.annotated.indel.effects") from VariantSummariesSQL
-  file("${id}.annotated.snp.effects") from VariantSummariesSQL
-  file("${id}.Function_lost_list.txt") from VariantSummariesSQL
+    output:
+    file("${id}.Abr_output.txt")
+    file("${id}.Abr_output.txt")
 
-  output:
-  file("${id}.Abr_output.txt") into AbrReport
-  //Not sure if the out needs to be specific for each process or can be merged easily
-
-  script:
-  """
-  SQL_queries_SNP_indel.sh "$id" "$resistance_db"
-  """
-
+    script:
+    """
+    Ab_report.sh "$id"
+    """
+  }
 }
+else {
+  process SqlSnpsIndels { 
+    label "genomic_queries"
+    tag { "$id" }
+  
+    input:
+    file("${id}.annotated.indel.effects") from VariantSummariesSQL
+    file("${id}.annotated.snp.effects") from VariantSummariesSQL
+    file("${id}.Function_lost_list.txt") from VariantSummariesSQL
+
+    output:
+    file("${id}.Abr_output.txt") into AbrReport
+    //Not sure if the out needs to be specific for each process or can be merged easily
+
+    script:
+    """
+    SQL_queries_SNP_indel.sh "$id" "$resistance_db"
+    """
+
+  }
         
-process SqlDeletionDuplication {
-  label "genomic_queries"
-  tag { "$id" }
+  process SqlDeletionDuplication {
+    label "genomic_queries"
+    tag { "$id" }
 
-  input:
-  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
-  file("${id}.deletion_summary.txt") VariantSummaries
-  file("${id}.duplication_summary.txt") VariantSummaries
+    input:
+    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+    file("${id}.deletion_summary.txt") from VariantSummaries
+    file("${id}.duplication_summary.txt") from VariantSummaries
 
-  output:
-  file("${id}.Abr_output.txt") into AbrReport
+    output:
+    file("${id}.Abr_output.txt") into AbrReport
 
-  script:
-  """
-  SQL_queries_DelDup.sh "$id" "$resistance_db"
-  """
+    script:
+    """
+    SQL_queries_DelDup.sh "$id" "$resistance_db"
+    """
+  }
+
+  process CARDqueries {
+    label "card_queries"
+    tag { "$id" }
+
+    input:
+    file("${id}.card.bedcov") from CoverageCARD
+
+    output:
+    file("${id}.CARD_primary_output.txt") into AbrReport
+
+    script:
+    """
+    SQL_queries_CARD.sh "$id" "$CARD_db"
+    """
+  }
+  process AbrReport {
+
+    label "report"
+    tag { "$id" }
+    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
+
+    input: 
+    file("${id}.CARD_primary_output.txt") from CARDqueries
+    file("${id}.Abr_output.txt") from SqlDeletionDuplication
+    file("${id}.Abr_output.txt") from SqlSnpsIndels
+  
+    output:
+    file("${id}.Abr_output.txt")
+    file("${id}.Abr_output.txt")
+
+    script:
+    """
+    Ab_report.sh "$id"
+    """
+  }
 }
 
-process SqlDeletionDuplicationMix {
-  label "genomic_queries"
-  tag { "$id" }
 
-  input:
-  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
-  file("${id}.deletion_summary_mix.txt") MixturesSummariesSQL
-  file("${id}.duplication_summary_mix.txt") MixturesSummariesSQL
-
-  output:
-  file("${id}.Abr_output.txt") into AbrReport
-
-  script:
-  """
-  SQL_queries_DelDupMix.sh "$id" "$resistance_db"
-  """
-}
-process CARDqueries {
-  label "card_queries"
-  tag { "$id" }
-
-  input:
-  file("${id}.card.bedcov") from CoverageCARD
-
-  output:
-  file("${id}.Abr_output.txt") into AbrReport
-
-  script:
-  """
-  SQL_queries_DelDup.sh "$id" "$resistance_db" "$CARD_db"
-  """
-}
-        file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
-        file("${id}.Function_lost_list.txt") into SqlDeletionDuplication, SqlSnpsIndelsMix, SqlSnpsIndelsNoMix
-        file("${id}.deletion_summary_mix.txt") into SqlDeletionDuplication
-        file("${id}.duplication_summary_mix.txt") into SqlDeletionDuplication
