@@ -643,7 +643,7 @@ process SqlSnpsIndelsMix {
   file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
 
   output:
-  //Abr_output.txt
+  file("${id}.Abr_output.txt") into AbrReport
 
   """
   run SQL_queries_SNP_indel.sh $id $resistance_db $card_db $GWAS_cutoff
@@ -659,6 +659,20 @@ process SqlSnpsIndelsMix {
 
 }
 
+process SqlDeletionDuplication {
+  label "genomic_queries"
+  tag { "$id" }
+
+  input:
+  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+  file("${id}.deletion_summary_mix.txt") MixturesSummariesSQL
+  file("${id}.duplication_summary_mix.txt") MixturesSummariesSQL
+}
+
+process SqlSnpsIndelsNoMix { 
+  label "genomic_queries"
+  tag { "$id" }
+}
 
 
         file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
