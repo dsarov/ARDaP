@@ -36,12 +36,15 @@ Optional Parameters:
 ==================================================================
 """
 
+
 /*  Index Section
  *
  *  Create a bunch of indices for ARDaP
  *
  */
 
+// Define Parameters
+// $resistance_db $card_db $GWAS_cutoff
 
 // Don't forget to assign CPU for tasks to optimize!
 
@@ -50,6 +53,10 @@ Optional Parameters:
 fastq = Channel
 		.fromFilePairs("${params.fastq}", flat: true)
 		.ifEmpty { exit 1, "Input read files could not be found." }
+
+
+
+
 
 process IndexReference {
 
@@ -76,7 +83,7 @@ process IndexReference {
 
 }
 
-// Reference Alignment and Variant Calling - SPANDx
+// Reference Alignment and Variant Calling - Updated SPANDx pipeline
 
 if (params.strain == "all") {
 
@@ -108,6 +115,7 @@ if (params.strain == "all") {
 
         label "spandx_default"
         tag { "$id" }
+        publishDir "./Clean_reads", mode: 'copy', overwrite: false
 
         input:
         set id, file(forward), file(reverse) from downsample
@@ -196,7 +204,7 @@ if (params.strain == "all") {
         """
     }
 
-    if (params.mixtures){
+    if (params.mixtures) {
 
       process VariantCallingMixture {
 
@@ -226,7 +234,7 @@ if (params.strain == "all") {
 
         label "spandx_gatk"
         tag { "$id" }
-
+        publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
         input:
         file(reference) from Channel.fromPath("${params.reference}")
         file(fai) from mixtureFilterReferenceIndex
@@ -306,11 +314,14 @@ if (params.strain == "all") {
         file(pindelTD) from mixtureDuplicationSummary
 
         output:
-
+        file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
+        file("${id}.Function_lost_list.txt") into SqlDeletionDuplication, SqlSnpsIndelsMix, SqlSnpsIndelsNoMix
+        file("${id}.deletion_summary_mix.txt") into SqlDeletionDuplication
+        file("${id}.duplication_summary_mix.txt") into SqlDeletionDuplication
         // check additional escapes in sed command
 
         // Use shell directive and single quotes to declare Netflow variables as !{var}
-        // prevents fucking around with escaping commands in AWK, \ need to be esacaped still
+        // prevents mucking around with escaping commands in AWK, \ need to be esacaped still
 
         shell:
 
@@ -610,3 +621,47 @@ if (params.strain == "all") {
     }
 
 }
+
+/*
+*These processes will interogate the SQL databases. These have been split to run
+*across different flavours of variants so they can be run in parrallel
+*
+*
+*TO DO 
+*Eventually want to incorporate into nextflow format rather than outsourcing to shell scripts
+*
+*
+*/
+
+process SqlSnpsIndelsMix {
+
+  label "genomic_queries"
+  tag { "$id" }
+
+  input:
+  file("${id}.annotated.ALL.effects") from MixturesSummariesSQL
+  file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+
+  output:
+  //Abr_output.txt
+
+  """
+  run SQL_queries_SNP_indel.sh $id $resistance_db $card_db $GWAS_cutoff
+
+  """
+//seq=$1
+//RESISTANCE_DB=$2 
+//CARD_DB=$3
+
+//##GWAS cutoff value
+//cutoff=$4
+
+
+}
+
+
+
+        file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
+        file("${id}.Function_lost_list.txt") into SqlDeletionDuplication, SqlSnpsIndelsMix, SqlSnpsIndelsNoMix
+        file("${id}.deletion_summary_mix.txt") into SqlDeletionDuplication
+        file("${id}.duplication_summary_mix.txt") into SqlDeletionDuplication

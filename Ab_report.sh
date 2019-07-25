@@ -698,43 +698,7 @@ EOF
 
 fi
 
-if [ "$mixtures" = yes ]; then
-	while read f; do 
-	  grep "$f" "$seq_path"/"$seq"/unique/annotated/annotated.ALL.effects >> "$seq_path"/"$seq"/unique/annotated/annotated.ALL.effects.subset
-	done < "$seq_path"/"$seq"/unique/SNP_gene_list.txt
 
-	declare -A SQL_SNP_report=()
-	STATEMENT_SNPS () {
-	COUNTER=1
-	while read line; do 
-	gene=$(echo "$line" | awk '{print $1}')
-	#echo $gene
-	variant=$(echo "$line" | awk '{print $3}')
-	variant2=$(echo "$line" | awk '{print $2}')
-	#echo $variant
-	SQL_SNP_report[$COUNTER]=$(
-cat << EOF
-SELECT 
-	Variants_SNP_indel.Gene_name, 
-	Variants_SNP_indel.Gene_name,
-	Variants_SNP_indel.Variant_annotation, 
-	Variants_SNP_indel.Antibiotic_affected, 
-	Variants_SNP_indel.Comments 
-FROM 
-	Variants_SNP_indel 
-WHERE 
-	Variants_SNP_indel.Gene_name = '$gene' 
-	AND Variants_SNP_indel.Variant_annotation = '$variant' 
-	OR Variants_SNP_indel.Gene_name = '$gene' 
-	AND Variants_SNP_indel.Variant_annotation = '$variant2';
-EOF
-	)
-
-	COUNTER=$((COUNTER+1))
-	done < "$seq_path"/"$seq"/unique/annotated/annotated.ALL.effects.subset
-	SNP_COUNT="$COUNTER"
-	}
-fi
 
 	#run functions
 echo -e "Creating SNP statements\n"
