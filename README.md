@@ -1,5 +1,6 @@
-# ARDaP - Antimicrobial Resistance Detection and Prediction ![GitHub Logo](image.png)
-![GitHub Logo](image.png)
+![GitHub Logo](image.png) 
+# ARDaP - Antimicrobial Resistance Detection and Prediction 
+
 
 
 ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)), Eike Steinig and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)) at University of the Sunshine Coast, Queensland, Australia.
