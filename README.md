@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/BioRxiv-prep-green.svg)
 
 
-ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig (James Cook University, Australia).
+ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig) (Australian Institute of Tropical Health and Medicine, Australia).
 ## Contents
 
 - [Introduction](#introduction)
@@ -51,11 +51,20 @@ conda config --add channels bioconda
 conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff nextflow R 
 ```
 
+## Usage
+
+ARDaP can be called from the command line through Nextflow. This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
+
+For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
+
+`nextflow dsarov/ARDaP -qs 300 -profile pbs --mixture true`
+
+
 ## Resource Managers
 
 ARDaP is mostly written in the nextflow language and as such has support for most common resource management systems.
 
-//Need to include information about how to activate different schedulers
+List of schedulers and default template profiles in `nextflow.config`
 
 ## ARDaP Workflow
 
