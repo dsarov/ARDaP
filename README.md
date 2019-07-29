@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/BioRxiv-prep-green.svg)
 
 
-ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig) (Australian Institute of Tropical Health and Medicine, Australia).
+ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia).
 ## Contents
 
 - [Introduction](#introduction)
