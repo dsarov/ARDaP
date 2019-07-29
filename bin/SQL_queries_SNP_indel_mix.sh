@@ -40,13 +40,13 @@ FROM
 EOF
 )
 
-$SQLITE "$RESISTANCE_DB" "$SNP_DATA" > SNP_gene_list.txt
+sqlite3 "$RESISTANCE_DB" "$SNP_DATA" > SNP_gene_list.txt
 awk '!seen[$0]++' SNP_gene_list.txt > SNP_gene_list.txt.tmp
 mv SNP_gene_list.txt.tmp SNP_gene_list.txt
 
 while read f; do 
 	grep "$f" ${seq}.annotated.ALL.effects >> ${seq}.annotated.ALL.effects.subset
-done < "$seq_path"/"$seq"/unique/SNP_gene_list.txt
+done < SNP_gene_list.txt
 
 declare -A SQL_SNP_report=()
 STATEMENT_SNPS () {
@@ -76,12 +76,14 @@ EOF
 	)
 
 	COUNTER=$((COUNTER+1))
-done < annotated.ALL.effects.subset
+done < ${seq}.annotated.ALL.effects.subset
 SNP_COUNT="$COUNTER"
 }
 
+echo "SNP_COUNT=$SNP_COUNT"
+
 for (( i=1; i<"$SNP_COUNT"; i++ )); do 
-	"$SQLITE" "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee output.temp >> ${seq}.AbR_output_snp_indel_mix.txt
 		#copy the mixture information that was just found to the output
 		echo "Format out command here"
 		depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $7 }' )
@@ -89,5 +91,11 @@ for (( i=1; i<"$SNP_COUNT"; i++ )); do
 		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
 		mixture_percent="$mixture_percent"%
 		sed -i '$ d' AbR_output.txt
-		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_snp_indel_mix.txt
 done
+
+#if [ ! -s ${seq}.AbR_output_snp_indel_mix.txt ]; then
+	#echo "ARDaP found no snps or indels that cause antibiotic resistance" >> ${seq}.AbR_output_snp_indel_mix.txt
+#fi
+
+exit 0

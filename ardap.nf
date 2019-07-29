@@ -46,15 +46,29 @@ Optional Parameters:
 // Define Parameters
 // $resistance_db $card_db $GWAS_cutoff
 
+// Not sure if CARD database is correctly parsed
+
+
 // Don't forget to assign CPU for tasks to optimize!
 
 // Check what needs to be done for SE, instead of PE
 
 fastq = Channel
-		.fromFilePairs("${params.fastq}", flat: true)
+    .fromFilePairs("${params.fastq}", flat: true)
 		.ifEmpty { exit 1, "Input read files could not be found." }
 
+resistance_database = Channel
+    .fromPath(params.resistance_db)
+    .ifEmpty { exit 1, "Resistance database could not be found." }
+    resistance_database.into { resistance_database_sqldeldup_ch; resistance_database_sqlsnpindel_ch; resistance_database_report_ch }
 
+
+card_db_ch = Channel
+    .fromPath(params.card_db)
+    .ifEmpty { exit 1, "CARD database could not be found." }
+
+patient_meta_ch = Channel
+    .fromPath(params.patientMetaData)
 
 
 
@@ -168,6 +182,7 @@ if (params.strain == "all") {
 
         label "spandx_default"
         tag { "$id" }
+        publishDir "./Outputs/bams", mode: 'copy', overwrite: false
 
         input:
         set id, file(bam), file(bai) from dup
@@ -235,6 +250,7 @@ if (params.strain == "all") {
         label "spandx_gatk"
         tag { "$id" }
         publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
+
         input:
         file(reference) from Channel.fromPath("${params.reference}")
         file(fai) from mixtureFilterReferenceIndex
@@ -262,6 +278,7 @@ if (params.strain == "all") {
 
         label "spandx_snpeff"
         tag { "$id" }
+        publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
 
         input:
         set id, file(variants_pass) from filteredMixture
@@ -307,6 +324,7 @@ if (params.strain == "all") {
       process MixtureSummariesSQL {
 
         label "spandx_default"
+        tag { "$id" }
 
         input:
         set id, file(variants) from mixtureArdapProcessing
@@ -314,10 +332,11 @@ if (params.strain == "all") {
         file(pindelTD) from mixtureDuplicationSummary
 
         output:
-        file("${id}.annotated.ALL.effects") into SqlSnpsIndelsMix
-        file("${id}.Function_lost_list.txt") into SqlDeletionDuplication, SqlSnpsIndelsMix, SqlSnpsIndelsNoMix
-        file("${id}.deletion_summary_mix.txt") into SqlDeletionDuplication
-        file("${id}.duplication_summary_mix.txt") into SqlDeletionDuplication
+        set id, file("${id}.annotated.ALL.effects")  into variants_all_ch
+        set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
+        set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
+        set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
+
         // check additional escapes in sed command
 
         // Use shell directive and single quotes to declare Netflow variables as !{var}
@@ -394,6 +413,7 @@ if (params.strain == "all") {
 
         label "spandx_gatk"
         tag { "$id" }
+        publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
 
         input:
         file(reference) from Channel.fromPath("${params.reference}")
@@ -435,6 +455,7 @@ if (params.strain == "all") {
 
         label "spandx_gatk"
         tag { "$id" }
+        publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
 
         input:
         file(reference) from Channel.fromPath("${params.reference}")
@@ -476,6 +497,7 @@ if (params.strain == "all") {
 
         label "spandx_snpeff"
         tag { "$id" }
+        publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
 
         input:
         set id, file(snp_pass), file(snp_fail) from filteredSNPs
@@ -492,9 +514,9 @@ if (params.strain == "all") {
         // TO DO
         // Need to split and optimize with threads
 
-        // TO DO - Add publish Dir
         label "spandx_snpeff"
         tag { "$id" }
+        publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
 
         input:
         set id, file(indel_pass), file(indel_fail) from filteredIndels
@@ -555,9 +577,9 @@ if (params.strain == "all") {
         set id, file(snps) from annotatedSNPs
 
         output:
-        file("${id}.annotated.indel.effects") into SqlSnpsIndels
-        file("${id}.annotated.snp.effects") into SqlSnpsIndels
-        file("${id}.Function_lost_list.txt") into SqlSnpsIndels
+        set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
+        set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
+        set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
 
         shell:
 
@@ -592,15 +614,18 @@ if (params.strain == "all") {
       tag { "$id" }
 
       input:
-      file(card_indices) from Channel.fromPath("$baseDir/resources/card/latest/card.*").collect()
+      file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
       set id, file(forward), file(reverse) from alignmentCARD
       set id, file(perbase), file(depth) from coverageDataCARD
 
       output:
-      set id, file("${id}.card.bam"), file("${id}.card.bam.bai") into card_coverage
+      set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch
 
       """
-      bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus card.fasta $forward $reverse > ${id}.card.sam
+      bwa index ${card_ref}
+      samtools faidx ${card_ref}
+      bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
+      bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
       samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
       samtools sort -@ 1 -o ${id}.card.bam bam_tmp
       samtools index ${id}.card.bam
@@ -612,15 +637,16 @@ if (params.strain == "all") {
       label "spandx_default"
       tag { "$id" }
 
+//ERROR in input here
+
       input:
-      file(card_coverage) from Channel.fromPath("$baseDir/resources/card/latest/*.bed").collect()
-      set id, file(card_bam), file(card_bai) from card_coverage
+      set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") from card_coverage_ch
 
       output:
-      set id, file("${id}.card.bedcov") into CARDqueries
+      set id, file("${id}.card.bedcov") into card_queries_ch
 
       """
-      bedtools coverage -abam $card_bam -b card.coverage.bed > ${id}.card.bedcov
+      bedtools coverage -abam ${id}.card.bam -b card.coverage.bed > ${id}.card.bedcov
       """
 
     }
@@ -629,10 +655,10 @@ if (params.strain == "all") {
 
 /*
 *These processes will interogate the SQL databases. These have been split to run
-*across different flavours of variants so they can be run in parrallel
+*across different flavours of variants so they can be run in parallel
 *
 *
-*TO DO 
+*TO DO
 *Eventually want to incorporate into nextflow format rather than outsourcing to shell scripts
 *
 *
@@ -645,127 +671,139 @@ if (params.strain == "all") {
     tag { "$id" }
 
     input:
-    file("${id}.annotated.ALL.effects") from MixturesSummariesSQL
-    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
+    set id, file("${id}.annotated.ALL.effects") from variants_all_ch
+    set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
+    file resistance_db from resistance_database_sqlsnpindel_ch
 
     output:
-    file("${id}.Abr_output.txt") into AbrReport
+    set id, file("${id}.AbR_output_snp_indel_mix.txt") into abr_report_snp_indel_mix_ch
     //Not sure if the out needs to be specific for each process or can be merged easily
 
     script:
     """
-    SQL_queries_SNP_indel_mix.sh "$id" "$resistance_db"
+    SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
     """
   }
 
 
 
   process SqlDeletionDuplicationMix {
+
     label "genomic_queries"
     tag { "$id" }
 
     input:
-    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
-    file("${id}.deletion_summary_mix.txt") MixturesSummariesSQL
-    file("${id}.duplication_summary_mix.txt") MixturesSummariesSQL
+    set id, file("${id}.Function_lost_list.txt") from function_lost_ch2
+    set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
+    set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
+    file resistance_db from resistance_database_sqldeldup_ch
 
     output:
-    file("${id}.Abr_output.txt") into AbrReport
+    set id, file("${id}.AbR_output_del_dup_mix.txt") into abr_report_del_dup_mix_ch
 
     script:
     """
-    SQL_queries_DelDupMix.sh "$id" "$resistance_db"
+    SQL_queries_DelDupMix.sh ${id} ${resistance_db}
     """
   }
 
-  process CARDqueries {
+
+  process CARDqueriesMix {
+
     label "card_queries"
     tag { "$id" }
 
     input:
-    file("${id}.card.bedcov") from CoverageCARD
+    set id, file("${id}.card.bedcov") from card_queries_ch
+    file card_db from card_db_ch
 
     output:
-    file("${id}.Abr_output.txt") into AbrReport
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_mix_ch
 
     script:
     """
-    SQL_queries_CARD.sh "$id" "$CARD_db"
+    SQL_queries_CARD.sh ${id} ${card_db} ${baseDir}
     """
   }
-  process AbrReport {
+  process AbrReportMix {
 
     label "report"
     tag { "$id" }
     publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
 
-    input: 
-    file("${id}.Abr_output.txt") from CARDqueries
-    file("${id}.Abr_output.txt") from SqlDeletionDuplicationMix
-    file("${id}.Abr_output.txt") from SqlSnpsIndelsMix
-  
+    input:
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_mix_ch
+    set id, file("${id}.AbR_output_del_dup_mix.txt") from abr_report_del_dup_mix_ch
+    set id, file("${id}.AbR_output_snp_indel_mix.txt") from abr_report_snp_indel_mix_ch
+    file resistance_db from resistance_database_report_ch
+
     output:
-    file("${id}.Abr_output.txt")
-    file("${id}.Abr_output.txt")
+    set id, file("${id}.AbR_output.final.txt") into r_report_ch
 
     script:
     """
-    Ab_report.sh "$id"
+    AbR_reports.sh ${id} ${resistance_db}
     """
   }
 }
 else {
-  process SqlSnpsIndels { 
+  process SqlSnpsIndels {
+
     label "genomic_queries"
     tag { "$id" }
-  
+
     input:
-    file("${id}.annotated.indel.effects") from VariantSummariesSQL
-    file("${id}.annotated.snp.effects") from VariantSummariesSQL
-    file("${id}.Function_lost_list.txt") from VariantSummariesSQL
+    set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
+    set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
+    set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
+    file resistance_db from resistance_database_sqlsnpindel_ch
 
     output:
-    file("${id}.Abr_output.txt") into AbrReport
+    set id, file("${id}.AbR_output_snp_indel.txt") into abr_report_snp_indel_ch
     //Not sure if the out needs to be specific for each process or can be merged easily
 
     script:
     """
-    SQL_queries_SNP_indel.sh "$id" "$resistance_db"
+    SQL_queries_SNP_indel.sh ${id} ${resistance_db}
     """
 
   }
-        
+
   process SqlDeletionDuplication {
+
     label "genomic_queries"
     tag { "$id" }
 
     input:
-    file("${id}.Function_lost_list.txt") from MixturesSummariesSQL
-    file("${id}.deletion_summary.txt") from VariantSummaries
-    file("${id}.duplication_summary.txt") from VariantSummaries
+    set id, file("${id}.Function_lost_list.txt") from function_lost_ch2
+    set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
+    set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
+    file resistance_db from resistance_database_sqldeldup_ch
 
     output:
-    file("${id}.Abr_output.txt") into AbrReport
+    set id, file("${id}.AbR_output_del_dup.txt") into abr_report_del_dup_ch
 
     script:
     """
-    SQL_queries_DelDup.sh "$id" "$resistance_db"
+    SQL_queries_DelDup.sh ${id} ${resistance_db}
     """
   }
 
   process CARDqueries {
+
     label "card_queries"
     tag { "$id" }
 
     input:
-    file("${id}.card.bedcov") from CoverageCARD
+    set id, file("${id}.card.bedcov") from card_queries_ch
+    card_db from card_db_ch
 
     output:
-    file("${id}.CARD_primary_output.txt") into AbrReport
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch
 
     script:
     """
-    SQL_queries_CARD.sh "$id" "$CARD_db"
+    SQL_queries_CARD.sh ${id} ${card_db} ${baseDir}
     """
   }
   process AbrReport {
@@ -774,20 +812,37 @@ else {
     tag { "$id" }
     publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
 
-    input: 
-    file("${id}.CARD_primary_output.txt") from CARDqueries
-    file("${id}.Abr_output.txt") from SqlDeletionDuplication
-    file("${id}.Abr_output.txt") from SqlSnpsIndels
-  
+    input:
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch
+    set id, file("${id}.AbR_output_del_dup.txt") from abr_report_del_dup_ch
+    set id, file("${id}.AbR_output_snp_indel.txt") from abr_report_snp_indel_ch
+    file resistance_db from resistance_database_report_ch
+
     output:
-    file("${id}.Abr_output.txt")
-    file("${id}.Abr_output.txt")
+    set id, file("${id}.AbR_output.final.txt") into r_report_ch
+    //set id, file("${id}.AbR_output.txt")
 
     script:
     """
-    Ab_report.sh "$id"
+    AbR_reports.sh ${id} ${resistance_db}
     """
   }
+  process R_report {
+    label "report"
+    tag { "$id" }
+    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
+
+    input:
+    set id, file("${id}.AbR_output.final.txt") from r_report_ch
+
+
+    output:
+    set id, file("${id}_strain.pdf")
+
+    script:
+    """
+    Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
+    """
+
+  }
 }
-
-

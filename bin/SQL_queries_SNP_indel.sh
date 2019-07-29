@@ -34,7 +34,7 @@ FROM
 EOF
 )
 
-sqlite "$RESISTANCE_DB" "$SNP_DATA" > SNP_gene_list.txt
+sqlite3 "$RESISTANCE_DB" "$SNP_DATA" > SNP_gene_list.txt
 awk '!seen[$0]++' SNP_gene_list.txt > SNP_gene_list.txt.tmp
 mv SNP_gene_list.txt.tmp SNP_gene_list.txt
 
@@ -114,9 +114,15 @@ echo "Creating indel statements"
 STATEMENT_INDELS
 
 echo "Running SNP detection queries"
-for (( i=1; i<"$SNP_COUNT"; i++ )); do sqlite "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" >> ${seq}.AbR_output.txt; done
+for (( i=1; i<"$SNP_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" >> ${seq}.AbR_output_snp_indel.txt; done
 echo "done"
 
 echo -e "Running indel detection queries"
-for (( i=1; i<"$INDEL_COUNT"; i++ )); do sqlite "$RESISTANCE_DB" "${SQL_indel_report[$i]}" >> ${seq}.AbR_output.txt; done
+for (( i=1; i<"$INDEL_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_indel_report[$i]}" >> ${seq}.AbR_output_snp_indel.txt; done
 echo "done"
+
+#if [ ! -s ${seq}.AbR_output_snp_indel.txt ]; then
+#	echo "ARDaP found no snps or indels that cause antibiotic resistance" >> ${seq}.AbR_output_snp_indel.txt
+#fi
+
+exit 0

@@ -1,13 +1,14 @@
 #!/bin/bash
 
 seq=$1
-CARD_DB=$2 
+CARD_DB=$2
+baseDir=$3
 
 #CARD database queries
 #subset on column 7, which is coverage stat (0 to 1). Filter based on 0.98 and 0.95
 
-awk '{ if ( $7 > 0.97) print $0 }' "$seq".bedcov > "$seq"_98p.bedcov
-awk '{ if ( $7 < 0.98 && $7 > 0.94 ) print $0 }' "$seq".bedcov > "$seq"_95p_to_98p.bedcov
+awk '{ if ( $7 > 0.97) print $0 }' "$seq".card.bedcov > "$seq"_98p.bedcov
+awk '{ if ( $7 < 0.98 && $7 > 0.94 ) print $0 }' "$seq".card.bedcov > "$seq"_95p_to_98p.bedcov
 
 #for each line in the bedcov files, lookup the aro database and report 2nd and third term
 
@@ -38,7 +39,7 @@ done < "$seq"_98p.genes
 
 CARD_IGNORE
 
-for f in CARD_ignore_*; do sqlite "$CARD_DB" < $f >> CARD_ignore_output.txt; done
+for f in CARD_ignore_*; do sqlite3 "$CARD_DB" < $f >> CARD_ignore_output.txt; done
 
 while read line; do
   ARO=$(echo "$line" | awk '{print $1}' | sed 's/ARO://g' )
@@ -75,7 +76,7 @@ done < CARD_no_ignore.txt
 
 CARD_PRIMARY
 
-for f in CARD_Primary_*; do sqlite "$CARD_DB" < $f >> ${seq}.CARD_primary_output.txt; done
+for f in CARD_Primary_*; do sqlite3 "$CARD_DB" < $f >> ${seq}.CARD_primary_output.txt; done
 
 fi
 

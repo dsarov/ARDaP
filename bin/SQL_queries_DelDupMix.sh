@@ -105,7 +105,7 @@ STATEMENT_UPREGULATION_MIX
 
 echo "Running duplication detection queries"
 for (( i=1; i<"$UPREG_COUNT_MIX"; i++ )); do 
-	sqlite "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite3 "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output_del_dup_mix.txt
 	if [ -s output.temp ]; then
 		echo "Found upregulation mechanism. Determining mixture percent"
 		depth=$(awk -v i="$i" 'FNR==i' ${seq}.duplication_summary_mix.txt | awk '{ print $5 }' )
@@ -116,14 +116,14 @@ for (( i=1; i<"$UPREG_COUNT_MIX"; i++ )); do
 		echo "$mixture_percent"
 		mixture_percent="$mixture_percent"%
 		sed -i '$ d' ${seq}.AbR_output.txt
-		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
 		rm output.temp
 	fi
 done
 echo "done"
 echo "Running loss of coverage queries"
 for (( i=1; i<"$LOSS_COUNT_MIX"; i++ )); do 
-	sqlite "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite3 "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee output.temp >> ${seq}.AbR_output_del_dup_mix.txt
 	if [ -s output.temp ]; then
 		echo "Found deletion mechanism. Determining mixture percent"
 		echo "Mechanism on line $i"
@@ -135,24 +135,28 @@ for (( i=1; i<"$LOSS_COUNT_MIX"; i++ )); do
 		echo "$mixture_percent"
 		mixture_percent="$mixture_percent"%
 		sed -i '$ d' ${seq}.AbR_output.txt
-		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
 		rm output.temp
 	fi
 done
 echo "done"
 echo -e "Looking for loss of function mutations and potential mixtures"
 for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do
-	sqlite "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee output.temp >> ${seq}.AbR_output.txt
+	sqlite3 "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee output.temp >> ${seq}.AbR_output_del_dup_mix.txt
 	if [ -s output.temp ]; then
 		depth=$(awk -v i="$i" 'FNR==i' ${seq}.Function_lost_list.txt | awk '{ print $6 }' ) #column printed changed due to error in mix pipeline
 		mutant_depth=$(awk -v i="$i" 'FNR==i'${seq}.Function_lost_list.txt | awk '{ print $5 }' | awk -F"," '{ print $2 }' ) #column printed changed due to error in mix pipeline
 		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
 		mixture_percent="$mixture_percent"%
 		sed -i '$ d' ${seq}.AbR_output.txt
-		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
 		rm output.temp
 	fi
 done
 echo "done"
+
+#if [ ! -s ${seq}.AbR_output_del_dep_mix.txt ]; then
+#	echo "ARDaP found no deletions or duplications that cause antibiotic resistance" >> ${seq}.AbR_output_del_dep_mix.txt
+#fi
 
 exit 0
