@@ -70,7 +70,7 @@ List of schedulers and default template profiles in `nextflow.config`
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- Burrows Wheeler Aligner (BWA) [doi: 10.1093/bioinformatics/btp324(https://academic.oup.com/bioinformatics/article/25/14/1754/225615)]
+- Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
 - SAMTools (ref)
 - Picard (ref)
 - Genome Analysis Toolkit (GATK) (ref)
