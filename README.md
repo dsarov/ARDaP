@@ -47,7 +47,7 @@ Option 1 - Use conda to install all dependencies. \
 Users are encouraged to use this option as there are fewer chances of failure and downstream errors
 
 ```
-conda config --add channels bioconda
+conda config --add channels bioconda && conda config --add channels r
 conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
 ```
 
