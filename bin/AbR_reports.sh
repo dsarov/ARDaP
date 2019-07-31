@@ -41,14 +41,14 @@ sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
 }
 
 Report_structure
-cat *.txt | tee AbR_output.txt AbR_output.final.txt
+cat ${seq}.*.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
 
 i=1
 while read f; do 
 	grep -w "$f" AbR_output.txt > "$f".output
-	grep -w "$f"i unique/AbR_output.txt > "$f"i.output
+	grep -w "$f"i AbR_output.txt > "$f"i.output
 	grep -w "$f" ${seq}.CARD_primary_output.txt >> "$f".output
 	grep -w "$f"i ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f" "$f".output &> /dev/null #looks for full resistance
@@ -127,22 +127,7 @@ sed -i '1 i\ID,Class,Drug,Status,Details' drug.table.txt
 cp drug.table.txt patientDrugSusceptibilityData.csv
 
 if [ -s AbR_output.final.txt ]; then
-	cp AbR_output.final.txt "$seq"_AbR_output.final.txt
+	cp AbR_output.final.txt "$seq".AbR_output.final.txt
 fi
 
 exit 0
-
-
-#Command to run Rscript to generate reports
-Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
-
-if [ ! -s "$seq_path"/Outputs/Abr_reports/"$seq"_strain.pdf ]; then
-  mv "$seq_path"/"$seq"/unique/*.pdf "$seq_path"/Outputs/AbR_reports/
-fi
-
-if [ -s "$seq_path"/Outputs/Abr_reports/"$seq"_strain.pdf ]; then
-	echo "Found final report. Cleaning up"
-	rm "$seq_path"/"$seq"/unique/*.output
-	rm "$seq_path"/"$seq"/unique/AbR_output.txt
-	rm "$seq_path"/"$seq"/unique/snp.data
-fi

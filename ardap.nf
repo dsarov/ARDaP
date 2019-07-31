@@ -70,6 +70,12 @@ card_db_ch = Channel
 patient_meta_ch = Channel
     .fromPath(params.patientMetaData)
 
+sweave_report_ch = Channel
+    .fromPath(params.sweaveReport)
+
+r_report_logo_ch = Channel
+    .fromPath(params.logo)
+
 
 
 process IndexReference {
@@ -87,6 +93,7 @@ process IndexReference {
     file("${reference.baseName}.dict") into (gatk_call_snp_ref_picard, gatk_filter_snp_ref_picard, gatk_filter_indel_ref_picard, mixtureFilterReferenceDict)
     file("${reference}.bed") into refcov
 
+    //need to correctly identify reference prefix here
 
     """
     bwa index -a is -p ref $reference
@@ -115,10 +122,11 @@ if (params.strain == "all") {
         set id, file(forward), file(reverse) from fastq
 
         output:
-        set id, file("${id}_1.fq.gz"), file("${id}_2.fq.gz") into downsample
+        set id, "${id}_1.fq.gz", "${id}_2.fq.gz" into downsample
+
 
         """
-        trimmomatic PE -threads $task.cpus $forward $reverse \
+        trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
         ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
         ILLUMINACLIP:${baseDir}/resources/all_adapters.fa:2:30:10: \
         LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
@@ -139,21 +147,22 @@ if (params.strain == "all") {
 
         script:
 
-        if (params.size > 0)
+        if (params.size > 0) {
 
             """
-            seqtk sample -s 11 $forward $params.size | gzip - > ${id}_1_cov.fq.gz
-            seqtk sample -s 11 $reverse $params.size | gzip - > ${id}_2_cov.fq.gz
+            seqtk sample -s 11 ${forward} $params.size | gzip - > ${id}_1_cov.fq.gz
+            seqtk sample -s 11 ${reverse} $params.size | gzip - > ${id}_2_cov.fq.gz
             """
 
-        else
+         } else {
 
             // Rename files even if not downsampled to channel into Alignment
 
             """
-            mv $forward ${id}_1_cov.fq.gz
-            mv $reverse ${id}_2_cov.fq.gz
+            mv ${forward} ${id}_1_cov.fq.gz
+            mv ${reverse} ${id}_2_cov.fq.gz
             """
+          }
     }
 
     process ReferenceAlignment {
@@ -170,9 +179,9 @@ if (params.strain == "all") {
 
         """
         bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-        -t $task.cpus ref $forward $reverse > ${id}.sam
-        samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.sam
-        samtools sort -@ 1 -o ${id}.bam bam_tmp
+        -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+        samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
+        samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
         samtools index ${id}.bam
         """
 
@@ -185,7 +194,7 @@ if (params.strain == "all") {
         publishDir "./Outputs/bams", mode: 'copy', overwrite: false
 
         input:
-        set id, file(bam), file(bai) from dup
+        set id, file("${id}.bam"), file("${id}.bam.bai") from dup
 
         // Saturday, changed brackets here in case somethign goes wrong??
 
@@ -193,7 +202,7 @@ if (params.strain == "all") {
         set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (averageCoverage, variantCalling, mixturePindel)
 
         """
-        gatk MarkDuplicates -I $bam -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
+        gatk MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
         --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT
         samtools index ${id}.dedup.bam
         """
@@ -206,13 +215,13 @@ if (params.strain == "all") {
 
         input:
         file(refcov) from refcov
-        set id, file(dedup_bam), file(dedup_index) from averageCoverage
+        set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from averageCoverage
 
         output:
         set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into (coverageData, coverageDataCARD)
 
         """
-        mosdepth --by $refcov output $dedup_bam
+        mosdepth --by $refcov output ${id}.dedup.bam
         sum_depth=\$(zcat output.regions.bed.gz | awk '{print \$4}' | awk '{s+=\$1}END{print s}')
         total_chromosomes=\$(zcat output.regions.bed.gz | awk '{print \$4}' | wc -l)
         echo "\$sum_depth/\$total_chromosomes" | bc > ${id}.depth.txt
@@ -230,7 +239,7 @@ if (params.strain == "all") {
         file(reference) from Channel.fromPath("${params.reference}")
         file(fai) from gatk_call_snp_ref_sam
         file(dict) from gatk_call_snp_ref_picard
-        set id, file(dedup_bam), file(dedup_index) from variantCalling
+        set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantCalling
 
         output:
         set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
@@ -241,7 +250,7 @@ if (params.strain == "all") {
         // v1.4 has this: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
         """
-        gatk HaplotypeCaller -R $reference --I $dedup_bam -O ${id}.raw.snps.indels.mixed.vcf
+        gatk HaplotypeCaller -R $reference --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
         """
       }
 
@@ -255,7 +264,7 @@ if (params.strain == "all") {
         file(reference) from Channel.fromPath("${params.reference}")
         file(fai) from mixtureFilterReferenceIndex
         file(dict) from mixtureFilterReferenceDict
-        set id, file(variants), file(variants_idx) from mixtureFilter
+        set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") from mixtureFilter
 
         output:
         set id, file("${id}.PASS.snps.indels.mixed.vcf") into filteredMixture
@@ -281,13 +290,13 @@ if (params.strain == "all") {
         publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
 
         input:
-        set id, file(variants_pass) from filteredMixture
+        set id, file("${id}.PASS.snps.indels.mixed.vcf") from filteredMixture
 
         output:
         set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
 
         """
-        snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir $baseDir/resources/snpeff $params.snpeff $variants_pass > ${id}.ALL.annotated.mixture.vcf
+        snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir $baseDir/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
         """
       }
 
@@ -299,7 +308,7 @@ if (params.strain == "all") {
         input:
         file(reference) from Channel.fromPath("${params.reference}")
         file(fai) from pindelReferenceIndex
-        set id, file(alignment), file(alignment_index) from mixturePindel
+        set id, file("${id}.dedup.bam"), file(alignment_index) from mixturePindel
 
         output:
         file("pindel.out_D.vcf") into mixtureDeletionSummary
@@ -309,7 +318,7 @@ if (params.strain == "all") {
         // In the original script, there is a pindel.out_INT, here: pindel.out_INT_final
 
         """
-        echo -e "$alignment\t250\tB" > pindel.bam.config
+        echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
         pindel -f $reference -T $task.cpus -i pindel.bam.config -o pindel.out
 
         rm -f pindel.out_CloseEndMapped pindel.out_INT_final
@@ -328,8 +337,8 @@ if (params.strain == "all") {
 
         input:
         set id, file(variants) from mixtureArdapProcessing
-        file(pindelD) from mixtureDeletionSummary
-        file(pindelTD) from mixtureDuplicationSummary
+        file("pindel.out_D.vcf") from mixtureDeletionSummary
+        file("pindel.out_TD.vcf") from mixtureDuplicationSummary
 
         output:
         set id, file("${id}.annotated.ALL.effects")  into variants_all_ch
@@ -739,6 +748,8 @@ if (params.strain == "all") {
 
     output:
     set id, file("${id}.AbR_output.final.txt") into r_report_ch
+    file("patientMetaData.csv") into r_report_metadata_ch
+    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
 
     script:
     """
@@ -816,10 +827,13 @@ else {
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch
     set id, file("${id}.AbR_output_del_dup.txt") from abr_report_del_dup_ch
     set id, file("${id}.AbR_output_snp_indel.txt") from abr_report_snp_indel_ch
+    file("patientMetaData.csv") from patient_meta_ch
     file resistance_db from resistance_database_report_ch
 
     output:
     set id, file("${id}.AbR_output.final.txt") into r_report_ch
+    file("patientMetaData.csv") into r_report_metadata_ch
+    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
     //set id, file("${id}.AbR_output.txt")
 
     script:
@@ -827,22 +841,27 @@ else {
     AbR_reports.sh ${id} ${resistance_db}
     """
   }
-  process R_report {
-    label "report"
-    tag { "$id" }
-    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
 
-    input:
-    set id, file("${id}.AbR_output.final.txt") from r_report_ch
+}
 
+process R_report {
+  label "report"
+  tag { "$id" }
+  publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
 
-    output:
-    set id, file("${id}_strain.pdf")
+  input:
+  set id, file("${id}.AbR_output.final.txt") from r_report_ch
+  file("ARDaP_logo.png") from r_report_logo_ch
+  file("patientMetaData.csv") from r_report_metadata_ch
+  file("patientDrugSusceptibilityData.csv") from r_report_drug_data_ch
+  file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_ch
 
-    script:
-    """
-    Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
-    """
+  output:
+  set id, file("${id}_strain.pdf")
 
-  }
+  script:
+  """
+  Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
+  """
+
 }

@@ -3,10 +3,10 @@
 
 seq=$1
 RESISTANCE_DB=$2 
-CARD_DB=$3
+#CARD_DB=$3
 
 ##GWAS cutoff value
-cutoff=$4
+#cutoff=$4
 
 
 cat << _EOF_ >  Variant_ignore_Q.txt  
@@ -75,12 +75,14 @@ WHERE
 EOF
 	)
 
-	COUNTER=$((COUNTER+1))
+COUNTER=$((COUNTER+1))
 done < ${seq}.annotated.ALL.effects.subset
 SNP_COUNT="$COUNTER"
 }
 
-echo "SNP_COUNT=$SNP_COUNT"
+STATEMENT_SNPS
+
+#echo "SNP_COUNT=$SNP_COUNT"
 
 for (( i=1; i<"$SNP_COUNT"; i++ )); do 
 	sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee output.temp >> ${seq}.AbR_output_snp_indel_mix.txt
