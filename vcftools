@@ -1,2 +1,0 @@
-#!/bin/bash
-PERL5LIB="/home/dsarovich2/.linuxbrew/Cellar/vcftools/0.1.16/lib/perl5/site_perl" exec "/home/dsarovich2/.linuxbrew/Cellar/vcftools/0.1.16/libexec/bin/vcftools" "$@"
