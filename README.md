@@ -106,8 +106,8 @@ Optional Parameter: \
 ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
 
 ```
-STRAIN_1_sequence.fastq.gz (first pair) 
-STRAIN_2_sequence.fastq.gz (second pair)
+STRAIN_1.fastq.gz (first pair) 
+STRAIN_2.fastq.gz (second pair)
 ```
 Reads not in this format will be ignored. 
 
