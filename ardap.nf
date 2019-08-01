@@ -53,6 +53,8 @@ Optional Parameters:
 
 // Check what needs to be done for SE, instead of PE
 
+ref_index = "$baseDir/Databases/Burkholderia_pseudomallei_k96243/ref"
+
 fastq = Channel
     .fromFilePairs("${params.fastq}", flat: true)
 		.ifEmpty { exit 1, "Input read files could not be found." }
@@ -171,7 +173,7 @@ if (params.strain == "all") {
         tag {"$id"}
 
         input:
-        file(bwa_index) from bwa_alignment // Index
+        //file(bwa_index) from bwa_alignment // Index
         set id, file(forward), file(reverse) from alignment // Reads
 
         output:
@@ -179,7 +181,7 @@ if (params.strain == "all") {
 
         """
         bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-        -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+        -t $task.cpus $ref_index ${forward} ${reverse} > ${id}.sam
         samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
         samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
         samtools index ${id}.bam
