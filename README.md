@@ -97,7 +97,7 @@ Optional Parameter: \
   <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243`
   
   For example: \
-  `ARDaP.sh --database Pseudomonas_aeruginosa_pao1`
+  `nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf --database Pseudomonas_aeruginosa_pao1`
 
 ## Important Information
 
@@ -118,4 +118,5 @@ By default, all reads in ARDaP format (i.e. strain_1_sequence.fastq.gz) in the p
 
 TO BE ADDED
 
-Please send bug reports to derek.sarovich@gmail.com.
+### Bugs!!
+Please send bug reports to derek.sarovich@gmail.com or log them in the github issues tab
