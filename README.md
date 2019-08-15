@@ -85,19 +85,19 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 ## Parameters
    
 Optional Parameter: \
-  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=off/false\
+  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=off/false
   
-  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested. \
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
   
-  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=off/false \
+  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=off/false
   
-  ARDaP requires at least a reference genome and the name of the associated database \
-  Currently there are databases available for: \
-  <i>Pseudomonas aeruginosa</i> (--database Pseudomonas_aeruginosa_pao1) \
-  <i>Burkholderia pseudomallei</i> (--database Burkholderia_pseudomallei_k96243) 
+  ARDaP requires at least a reference genome and the name of the associated database
+  Currently there are databases available for:
+  <i>Pseudomonas aeruginosa</i> `--database Pseudomonas_aeruginosa_pao1`
+  <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243`
   
   For example: \
-  ARDaP.sh --database Pseudomonas_aeruginosa_pao1
+  `ARDaP.sh --database Pseudomonas_aeruginosa_pao1`
 
 ## Important Information
 
