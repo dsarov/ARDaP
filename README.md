@@ -9,6 +9,7 @@
 
 ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia) with database construction, code testing and feature design by Danielle Madden ([@dmadden9](https://twitter.com/demadden9)) and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)).
 
+
 ## Contents
 
 - [Introduction](#introduction)
@@ -48,6 +49,7 @@ Option 1 - Use conda to install all dependencies. \
 Users are encouraged to use this option as there are fewer chances of failure and downstream errors
 
 ```
+
 conda config --add channels bioconda && conda config --add channels r
 conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff=4.3t nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
 ```
@@ -74,7 +76,9 @@ If you need any more information about how to set your resource manager (e.g. me
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
+
 - Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
+
 - SAMTools (ref)
 - Picard (ref)
 - Genome Analysis Toolkit (GATK) (ref)
@@ -99,6 +103,7 @@ Optional Parameter: \
   For example: \
   `nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf --database Pseudomonas_aeruginosa_pao1`
 
+
 ## Important Information
 
 ### File names
@@ -120,3 +125,5 @@ TO BE ADDED
 
 ### Bugs!!
 Please send bug reports to derek.sarovich@gmail.com or log them in the github issues tab
+=======
+Please send bug reports to derek.sarovich@gmail.com.
