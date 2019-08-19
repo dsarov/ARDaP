@@ -1,7 +1,14 @@
-# ARDaP is currently under development. An official release will be available soon
+# ARDaP - Antimicrobial Resistance Detection and Prediction <img src='image.png' align="right" height="210" />
 
 
-# ARDaP - Antimicrobial Resistance Detection and Prediction
+![](https://img.shields.io/badge/version-alpha-red.svg)
+![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
+![](https://img.shields.io/badge/docs-latest-green.svg)
+![](https://img.shields.io/badge/BioRxiv-prep-green.svg)
+
+
+ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) and Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia) with database construction, code testing and feature design by Danielle Madden ([@dmadden9](https://twitter.com/demadden9)) and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)).
+
 
 ## Contents
 
@@ -42,20 +49,36 @@ Option 1 - Use conda to install all dependencies. \
 Users are encouraged to use this option as there are fewer chances of failure and downstream errors
 
 ```
-conda create -n ARDaP_v1.5 bwa seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite nextflow R 
+
+conda config --add channels bioconda && conda config --add channels r
+conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff=4.3t nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
 ```
+ARDaP also requires paup (http://phylosolutions.com/paup-test/), which is included in the distribution. If the distributed binary does not work on your system or has expired, please download a new binary from the above link and include in your path.
+
+## Usage
+To control the data pipeline, ARDaP is implemented in nextflow language
+More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
+
+ARDaP can be called from the command line through Nextflow (https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
+
+For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
+
+`nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf -resume -qs 300 -profile pbs --mixture`
 
 ## Resource Managers
 
-ARDaP is mostly written in the nextflow language and as such has support for most common resource management systems.
+ARDaP is written in the nextflow language and as such has support for most resource management systems.
 
-//Need to include information about how to activate different schedulers
+List of schedulers and default template profiles in `nextflow.config`
+If you need any more information about how to set your resource manager (e.g. memory, queue, acoount settings) see https://www.nextflow.io/docs/latest/executor.html
 
 ## ARDaP Workflow
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- Burrows Wheeler Aligner (BWA) (reference)
+
+- Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
+
 - SAMTools (ref)
 - Picard (ref)
 - Genome Analysis Toolkit (GATK) (ref)
@@ -63,26 +86,23 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 - SNPEff (ref)
 - VCFtools (ref)
 
-## Usage (will change once nextflow implementation is complete)
-To control the data pipeline, ARDaP is implemented in nextflow language
-More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
-```
-ARDaP.sh -r|--reference <fasta reference genome> -d|--database <Species specific database for resistance determination>
-```
 ## Parameters
    
 Optional Parameter: \
-  -g|--gwas       Perform genome wide association analysis (yes/no). Default=no \
-  -m|--mixtures   Optionally perform within species mixtures analysis. Set this parameter to yes if you are dealing with multiple strains and/or metagenomic data (yes/no). Default=no \
-  -s|--size       ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000 \
-  -p|--phylogeny  Please switch to 'yes' if you would like a whole genome phylogeny. Not that this may take a long time if you have a large number of isolates (yes/no). Default=no \
-  ARDaP requires at least a reference genome and the name of the associated database \
-  Currently there are databases available for: \
-  <i>Pseudomonas aeruginosa</i> (-d Pseudomonas_aeruginosa_pao1) \
-  <i>Burkholderia pseudomallei</i> (-d Burkholderia_pseudomallei_k96243) \
+  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=off/false
+  
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  
+  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=off/false
+  
+  ARDaP requires at least a reference genome and the name of the associated database
+  Currently there are databases available for:
+  <i>Pseudomonas aeruginosa</i> `--database Pseudomonas_aeruginosa_pao1`
+  <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243`
   
   For example: \
-  ARDaP.sh --reference Pa_PA01 --database Pseudomonas_aeruginosa_pao1 \
+  `nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf --database Pseudomonas_aeruginosa_pao1`
+
 
 ## Important Information
 
@@ -90,8 +110,8 @@ Optional Parameter: \
 ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
 
 ```
-STRAIN_1_sequence.fastq.gz (first pair) 
-STRAIN_2_sequence.fastq.gz (second pair)
+STRAIN_1.fastq.gz (first pair) 
+STRAIN_2.fastq.gz (second pair)
 ```
 Reads not in this format will be ignored. 
 
@@ -103,4 +123,7 @@ By default, all reads in ARDaP format (i.e. strain_1_sequence.fastq.gz) in the p
 
 TO BE ADDED
 
+### Bugs!!
+Please send bug reports to derek.sarovich@gmail.com or log them in the github issues tab
+=======
 Please send bug reports to derek.sarovich@gmail.com.
