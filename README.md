@@ -55,8 +55,10 @@ conda create -n ARDaP_v1.5 bwa bedtools seqtk pindel trimmomatic mosdepth samtoo
 ```
 ARDaP also requires paup (http://phylosolutions.com/paup-test/), which is included in the distribution. If the distributed binary does not work on your system or has expired, please download a new binary from the above link and include in your path.
 
+3) Once your conda environment is installed, modify the conda variable in the nextflow.config file to point to this directory.
+
 ## Usage
-To control the data pipeline, ARDaP is implemented in nextflow language
+To control the data pipeline, ARDaP is implemented in nextflow
 More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
 
 ARDaP can be called from the command line through Nextflow (https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
