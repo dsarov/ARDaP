@@ -51,7 +51,7 @@ Users are encouraged to use this option as there are fewer chances of failure an
 ```
 
 conda config --add channels bioconda && conda config --add channels r
-conda create -n ARDaP bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff=4.3t nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
+conda create -n ARDaP bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 gatk picard sqlite snpEff=4.3.1t nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
 ```
 ARDaP also requires paup (http://phylosolutions.com/paup-test/), which is included in the distribution. If the distributed binary does not work on your system or has expired, please download a new binary from the above link and include in your path.
 
