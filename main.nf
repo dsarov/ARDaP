@@ -5,75 +5,57 @@
  *  Pipeline            ARDAP
  *  Version             1.5
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
+ *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
  */
 
-/*
-USER INPUT Parameters
-*/
-
-params.help   =   null
-
-
 log.info """
-==================================================================
+===============================================================================
                            NF-ARDAP
                              v1.5
-==================================================================
+================================================================================
 
-Required Parameters:
+Input Parameter:
 
---database  <Species specific database for resistance determination>
+    --fastq      Input PE read file wildcard (default: *_{1,2}.fastq.gz)
 
 Optional Parameters:
 
---mixtures   Optionally perform within species mixtures analysis.
-                Set this parameter to yes if you are dealing with
-                multiple strains. (default: false)
---size       ARDaP can optionally down-sample your read data to
-                run through the pipeline quicker. (default: 6000000)
---phylogeny  Please switch on if you would like a whole
-                genome phylogeny and merged annotation files. Note that this may take a long time
-                if you have a large number of isolates (default: off)
+    --database   Species specific database for resistance determination
+                 (default: Burkholderia_pseudomallei_k96243)
+
+    --ref        Reference genome for alignment. Must match genome used
+                 in --database (default: k96243.fasta)
+
+    --mixtures   Optionally perform within species mixtures analysis.
+                 Set this parameter to 'true' if you are dealing with
+                 multiple strains. (default: false)
+
+    --gwas       Optionally perform genome-wide association study on
+                 the set of isolates included in the pipeline run.
+                 (default: false)
+
+    --size       ARDaP can optionally down-sample your read data to
+                 run through the pipeline quicker. (default: 6000000)
+
+    --phylogeny  Please set to 'true' if you would like a whole genome
+                 phylogeny (FastTree2) and merged annotation files.
+                 Note that this may take some time if you have a large
+                 number of isolates (default: false)
+
+If you want to make changes to the default `nextflow.config` file
+clone the workflow into a local directory and change parameters
+in `nextflow.config`:
+
+    nextflow clone dsarov/ardap outdir/
+
+Update to the local cache of this workflow:
+
+    nextflow pull dsarov/ardap
 
 ==================================================================
 ==================================================================
 """
-
-if (params.help) {
-log.info """
-==================================================================
-                           NF-ARDAP
-                             v1.5
-==================================================================
-
-USAGE
-
-Optional Parameter:
---mixtures Optionally perform within species mixtures analysis or metagenomic /
-analysis for species of interest. Run ARDaP with the --mixtures flag for analysis /
-with multiple strains and/or metagenomic data. Default=off/false
-
---size ARDaP can optionally down-sample your read data to run through the /
-pipeline quicker (integer value expected). Default=6000000, which roughly /
-coresponds to a 50x coverage given a genome size of 6Mbp. To switch /
-downsampling off, specify --size 0. Note that this option is switch off /
-when mixture analysis is requested.
-
---phylogeny Use this flag if you would like a whole genome phylogeny or a /
-combined and annotated variant file. Note that this may take a long time if /
-you have a large number of isolates. Default=off/false
-
-ARDaP requires at least a reference genome and the name of the associated /
-database Currently there are databases available for: Pseudomonas aeruginosa /
---database Pseudomonas_aeruginosa_pao1 Burkholderia pseudomallei /
---database Burkholderia_pseudomallei_k96243
-
-For example:
-ARDaP.sh --database Pseudomonas_aeruginosa_pao1
-"""
-exit 0
-}
 
 /*  Index Section
  *  Create a bunch of indices for ARDaP
@@ -89,7 +71,7 @@ exit 0
 
 fastq = Channel
     .fromFilePairs("${params.fastq}", flat: true)
-		.ifEmpty { exit 1, "Input read files could not be found." }
+	.ifEmpty { exit 1, "Input read files could not be found." }
 
 resistance_database_file = file(params.resistance_db)
 reference_file = file(params.reference)
