@@ -1,4 +1,4 @@
-{% set version = "1.5.a1" %}
+{% set version = "1.5.a2" %}
 
 package:
   name: ardap
@@ -22,6 +22,7 @@ requirements:
       - mosdepth
       - samtools=1.9
       - picard
+      - gatk4
       - sqlite
       - snpEff=4.3.1t
       - nextflow
@@ -40,6 +41,7 @@ requirements:
       - mosdepth
       - samtools=1.9
       - picard
+      - gatk4
       - sqlite
       - snpEff=4.3.1t
       - nextflow
