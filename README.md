@@ -56,7 +56,7 @@ ARDaP can be called from the command line through Nextflow (https://www.nextflow
 
 For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
 
-`nextflow run dsarov/ardap -qs 300 -profile pbs --mixture`
+`nextflow run dsarov/ardap -qs 300 -profile pbs --mixture true`
 
 ## Resource Managers
 
@@ -82,11 +82,11 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 ## Parameters
    
 Optional Parameter: \
-  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=off/false
+  `--mixture`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
   
   `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
   
-  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=off/false
+  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=false
   
   ARDaP requires at least a reference genome and the name of the associated database
   Currently there are databases available for:
