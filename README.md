@@ -36,50 +36,39 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 
 ## Installation
 
-**Github**
+ARDaP is available on our development channel and its dependencies can be installed with:
 
-1) Download the latest installation with git clone
+`conda install -c esteinig -c bioconda -c r ardap`
 
-```
-git clone https://github.com/dsarov/ARDaP.git
-```
+The pipeline itself is run with Nextflow from a local cache of the repository:
 
-2) Install the dependencies \
-Option 1 - Use conda to install all dependencies. \
-Users are encouraged to use this option as there are fewer chances of failure and downstream errors
+`nextflow run dsarov/ardap`
 
-```
+The local cache can be updated with
 
-conda config --add channels bioconda && conda config --add channels r
-conda create -n ARDaP bwa bedtools seqtk pindel trimmomatic mosdepth samtools=1.9 picard sqlite snpEff=4.3.1t nextflow R r-knitr r-ape r-dplyr r-tinytex bioconductor-ggtree
-```
-ARDaP also requires paup (http://phylosolutions.com/paup-test/), which is included in the distribution as a CentOS/Redhat binary. If the distributed binary does not work on your system or has expired, please download a new binary from the above link and include in your system's PATH.
-
-The above conda command won't fully install the GATK due to licensing restrictions. To install GATK, go to https://software.broadinstitute.org/gatk/download/ and download the latest (>4.3.1) version. Once you've downloaded to your sytem 
-
-3) Once your conda environment is installed, modify the conda variable in the nextflow.config file to point to this directory.
+`nextflow pull dsarov/ardap`
 
 ## Usage
-To control the data pipeline, ARDaP is implemented in nextflow
-More information about nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
+
+To control the data pipeline, ARDaP is implemented in Nextflow. More information about Nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
 
 ARDaP can be called from the command line through Nextflow (https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
 
 For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
 
-`nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf -resume -qs 300 -profile pbs --mixture`
+`nextflow run dsarov/ardap -qs 300 -profile pbs --mixture`
 
 ## Resource Managers
 
 ARDaP is written in the nextflow language and as such has support for most resource management systems.
 
 List of schedulers and default template profiles in `nextflow.config`
-If you need any more information about how to set your resource manager (e.g. memory, queue, acoount settings) see https://www.nextflow.io/docs/latest/executor.html
+
+If you need any more information about how to set your resource manager (e.g. memory, queue, account settings) see https://www.nextflow.io/docs/latest/executor.html
 
 ## ARDaP Workflow
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
-
 
 - Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
 
@@ -105,7 +94,7 @@ Optional Parameter: \
   <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243`
   
   For example: \
-  `nextflow run ~/bin/ARDaP_v1.5_dev/ardap.nf --database Pseudomonas_aeruginosa_pao1`
+  `nextflow run dsarov/ardap --database Pseudomonas_aeruginosa_pao1`
 
 
 ## Important Information
