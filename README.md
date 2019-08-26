@@ -110,7 +110,7 @@ Reads not in this format will be ignored.
 
 ### ARDaP requires a reference file in FASTA format
 
-By default, all reads in ARDaP format (i.e. strain_1_sequence.fastq.gz) in the present working directory are processed. Sequence files are aligned against the reference using BWA. Alignments are subsequently filtered and converted using SAMtools and Picard Tools. SNPs and indels are identified with GATK and coverage assessed with BEDtools. 
+By default, all reads in Illumina format (i.e. strain_1.fastq.gz) in the present working directory are processed. Sequence files are aligned against the reference using BWA. Alignments are subsequently filtered and converted using SAMtools and Picard Tools. SNPs and indels are identified with GATK and coverage assessed with BEDtools. 
 
 ### Database-creation
 
