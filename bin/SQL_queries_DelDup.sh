@@ -103,13 +103,13 @@ echo -e "Creating upregulation statements\n"
 STATEMENT_UPREGULATION
 
 echo "Running duplication detection queries"
-for (( i=1; i<"$UPREG_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_upregulation_report[$i]}" >> ${seq}.AbR_output_del_dep.txt; done
+for (( i=1; i<"$UPREG_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_upregulation_report[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
 echo "done"
 echo "Running loss of coverage queries"
-for (( i=1; i<"$LOSS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_report[$i]}" >> ${seq}.AbR_output_del_dep.txt; done
+for (( i=1; i<"$LOSS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_report[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
 echo "done"
 echo "Running detection of functional loss queries"
-for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_func[$i]}" >> ${seq}.AbR_output_del_dep.txt; done
+for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_func[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
 echo "done"
 
 #if [ ! -s ${seq}.AbR_output_del_dep.txt ]; then
