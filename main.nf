@@ -219,7 +219,7 @@ process Deduplicate {
 }
 /*
 =======================================================================
-              Part 2E: Downsample reads to increase speed
+              Part 2E: Calculate coverage stats
 =======================================================================
 */
 process ReferenceCoverage {
@@ -679,7 +679,7 @@ process CoverageCARD {
     set id, file("${id}.card.bedcov") into card_queries_ch
 
     """
-    bedtools coverage -abam ${card_bam} -b ${card_coverage_bed} > ${id}.card.bedcov
+    bedtools coverage -a ${card_coverage_bed} -b ${card_bam} > ${id}.card.bedcov
     """
 
 }
