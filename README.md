@@ -68,7 +68,7 @@ For example, to run Nextflow with a maximum job queue size of 300 and the defaul
 
 ARDaP is written in the nextflow language and as such has support for most resource management systems.
 
-List of schedulers and default template profiles in `nextflow.config`
+List of schedulers and default template profiles in `nextflow.config` and can be selected when the pipeline is initiated with the `--executor` flag. For example, if you want to run ARDaP on a system with PBS, simply set `--executor pbs` when initialising ARDaP.
 
 If you need any more information about how to set your resource manager (e.g. memory, queue, account settings) see https://www.nextflow.io/docs/latest/executor.html
 
