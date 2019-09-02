@@ -48,6 +48,12 @@ The local cache can be updated with
 
 `nextflow pull dsarov/ardap`
 
+If you want to make changes to the default `nextflow.config` file
+clone the workflow into a local directory and change parameters
+in `nextflow.config`:
+
+    `nextflow clone dsarov/ardap install_dir/`
+
 ## Usage
 
 To control the data pipeline, ARDaP is implemented in Nextflow. More information about Nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
