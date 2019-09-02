@@ -52,7 +52,7 @@ If you want to make changes to the default `nextflow.config` file
 clone the workflow into a local directory and change parameters
 in `nextflow.config`:
 
-    `nextflow clone dsarov/ardap install_dir/`
+`nextflow clone dsarov/ardap install_dir/`
 
 ## Usage
 
