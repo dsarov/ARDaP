@@ -1,4 +1,4 @@
-{% set version = "1.5.a3" %}
+{% set version = "1.5.a4" %}
 
 package:
   name: ardap
