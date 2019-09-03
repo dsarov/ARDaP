@@ -36,7 +36,7 @@ Optional Parameters:
                  (default: false)
 
     --size       ARDaP can optionally down-sample your read data to
-                 run through the pipeline quicker. (default: 6000000)
+                 run through the pipeline quicker. (default: 1000000)
 
     --phylogeny  Please set to 'true' if you would like a whole genome
                  phylogeny (FastTree2) and merged annotation files.
@@ -212,7 +212,7 @@ process Deduplicate {
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (averageCoverage, variantCalling, mixturePindel)
 
     """
-    gatk MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
+    gatk MarkDuplicates -nt $task.cpus -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
     --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT
     samtools index ${id}.dedup.bam
     """
@@ -263,12 +263,12 @@ if (params.mixtures) {
     output:
     set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
     set id, file("${id}.raw.gvcf")
-	file("${id}.raw.gvcf") into gvcf_files
+	  file("${id}.raw.gvcf") into gvcf_files
     //val true into gvcf_complete_ch
 
     """
-    gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
-    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
+    gatk HaplotypeCaller -nt $task.cpus -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
+    gatk HaplotypeCaller -nt $task.cpus -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
     """
   }
 
@@ -290,7 +290,7 @@ if (params.mixtures) {
     // Not sure if I overlooked something, but no FAIL here
 
     """
-    gatk VariantFiltration -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V $variants \
+    gatk VariantFiltration -nt $task.cpus -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V $variants \
     -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
     -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
     -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
@@ -433,10 +433,10 @@ if (params.mixtures) {
       // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
       """
-      gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
-      gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
-      gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
-      gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${dedup_bam} -O ${id}.raw.gvcf
+      gatk HaplotypeCaller -nt $task.cpus -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
+      gatk SelectVariants -nt $task.cpus -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
+      gatk SelectVariants -nt $task.cpus -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
+      gatk HaplotypeCaller -nt $task.cpus -R ${reference} -ERC GVCF --I ${dedup_bam} -O ${id}.raw.gvcf
       """
     }
 
