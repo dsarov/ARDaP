@@ -38,7 +38,7 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 
 ARDaP is available on our development channel and its dependencies can be installed with:
 
-`conda install -c esteinig -c bioconda -c r ardap`
+`conda install -c dsarov -c bioconda -c r ardap`
 
 The pipeline itself is run with Nextflow from a local cache of the repository:
 
