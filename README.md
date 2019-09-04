@@ -18,7 +18,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [ARDaP Workflow](#spandx-workflow)
 - [Usage](#usage)
 - [Parameters](#parameters)
-- [Important Information](#important-information)
+- [Examples](#examples)
 - [Custom database creation](#Database-creation)
 - [Citation](#citation)
 
@@ -54,6 +54,8 @@ in `nextflow.config`:
 
 `nextflow clone dsarov/ardap install_dir/`
 
+Or navigate to the conda install path of ARDaP and change the `nextflow.config` in that location.
+
 ## Usage
 
 To control the data pipeline, ARDaP is implemented in Nextflow. More information about Nextflow can be found here --> https://www.nextflow.io/docs/latest/getstarted.html
@@ -62,15 +64,17 @@ ARDaP can be called from the command line through Nextflow (https://www.nextflow
 
 For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
 
-`nextflow run dsarov/ardap -qs 300 -profile pbs --mixture true`
+`nextflow run dsarov/ardap -qs 300 --executor pbs --mixture true`
 
 ## Resource Managers
 
 ARDaP is written in the nextflow language and as such has support for most resource management systems.
 
-List of schedulers and default template profiles in `nextflow.config` and can be selected when the pipeline is initiated with the `--executor` flag. For example, if you want to run ARDaP on a system with PBS, simply set `--executor pbs` when initialising ARDaP.
+List of schedulers and default template profiles in `nextflow.config` and can be selected when the pipeline is initiated with the `--executor` flag. For example, if you want to run ARDaP on a system with PBS, simply set `--executor pbs` when initialising ARDaP. Most popular resource managers are supported (e.g. sge, slurm) with the default configuration running on the local system.
 
 If you need any more information about how to set your resource manager (e.g. memory, queue, account settings) see https://www.nextflow.io/docs/latest/executor.html
+
+If you would like to just submit jobs to the resource manager queue without monitoring, then use of the screen or nohup command will allow you to run the pipeline process in the background and won't kill the pipline if the shell is terminated. Examples of nohup are included below.
 
 ## ARDaP Workflow
 
@@ -88,9 +92,9 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 ## Parameters
    
 Optional Parameter: \
-  `--mixture`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
+  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
   
-  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=6000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
   
   `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=false
   
@@ -103,7 +107,7 @@ Optional Parameter: \
   `nextflow run dsarov/ardap --database Pseudomonas_aeruginosa_pao1`
 
 
-## Important Information
+## Examples
 
 ### File names
 ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
@@ -113,10 +117,6 @@ STRAIN_1.fastq.gz (first pair)
 STRAIN_2.fastq.gz (second pair)
 ```
 Reads not in this format will be ignored. 
-
-### ARDaP requires a reference file in FASTA format
-
-By default, all reads in Illumina format (i.e. strain_1.fastq.gz) in the present working directory are processed. Sequence files are aligned against the reference using BWA. Alignments are subsequently filtered and converted using SAMtools and Picard Tools. SNPs and indels are identified with GATK and coverage assessed with BEDtools. 
 
 ### Database-creation
 
