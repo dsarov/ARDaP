@@ -32,6 +32,7 @@ requirements:
       - r-dplyr
       - r-tinytex
       - bioconductor-ggtree
+      - fasttree
   run:
       - trimmomatic
       - bwa
@@ -51,6 +52,7 @@ requirements:
       - r-dplyr
       - r-tinytex
       - bioconductor-ggtree
+      - fasttree
 
 test:
   commands:
