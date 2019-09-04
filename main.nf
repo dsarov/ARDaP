@@ -427,7 +427,7 @@ if (params.mixtures) {
       output:
       set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
       set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
-      file("${id}.raw.gvcf")
+      file("${id}.raw.gvcf") into gvcf_files
       val true into gvcf_complete_ch
 
       // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
