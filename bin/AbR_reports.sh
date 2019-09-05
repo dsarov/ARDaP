@@ -87,6 +87,9 @@ while read f; do
 	fi
 done < <(grep -E "Second-line|First-line|second-line|first-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
 
+
+#Screening for tertiary antibiotics
+#These antibiotics are not included in the reports but are flagged in the .txt outputs
 while read f; do
 	grep -w "$f"s AbR_output.txt > "$f"s.output
 	grep -w "$f"s ${seq}.CARD_primary_output.txt >> "$f"s.output
@@ -97,17 +100,17 @@ while read f; do
 		length=$(wc -l "$f"s.output | awk '{print $1}' )
 		if [[ "$length" -gt 1 ]]; then
 			echo "found multiple mechanisms for $f sensitivity"
-			sed -i "${i}s/.*/&,Sensitive,Multiple mechanisms identified/" drug.table.txt
+			cat "$f"s.output >> drug.table.tertiary.txt
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f sensitivity" 
 			mech=$(awk -F "|" '{ print $2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
-			sed -i "${i}s/.*/&,Sensitive,${mech}/" drug.table.txt
+			cat "$f"s.output >> drug.table.tertiary.txt
 			i=$((i+1))
 		fi
 	else
 		echo "no mechanism identified for $f"
-		sed -i "${i}s/.*/&,Resistant,No sensitivity detected/" drug.table.txt
+		sed -i "${i}s/.*/&,Resistant,No sensitivity detected/" drug.table.tertiary.txt
 		i=$((i+1))
 	fi
 done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print $3 }')

@@ -87,13 +87,16 @@ STATEMENT_SNPS
 for (( i=1; i<"$SNP_COUNT"; i++ )); do 
 	sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee output.temp >> ${seq}.AbR_output_snp_indel_mix.txt
 		#copy the mixture information that was just found to the output
-		echo "Format out command here"
-		depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $7 }' )
-		mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $6 }' | awk -F"," '{ print $2 }' )
-		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
-		mixture_percent="$mixture_percent"%
-		sed -i '$ d' AbR_output.txt
-		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_snp_indel_mix.txt
+		if [ -s output.temp ]; then
+			echo "Format out command here"
+			depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $7 }' )
+			mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $6 }' | awk -F"," '{ print $2 }' )
+			mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
+			mixture_percent="$mixture_percent"%
+			sed -i '$ d' AbR_output.txt
+			echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_snp_indel_mix.txt
+			rm output.temp
+		fi
 done
 
 #if [ ! -s ${seq}.AbR_output_snp_indel_mix.txt ]; then

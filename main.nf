@@ -853,7 +853,7 @@ else {
 process R_report {
   label "report"
   tag { "$id" }
-  publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
+  publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
 
   input:
   set id, file("${id}.AbR_output.final.txt") from r_report_ch
