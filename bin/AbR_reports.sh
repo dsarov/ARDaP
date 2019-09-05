@@ -3,27 +3,23 @@
 seq=$1
 RESISTANCE_DB=$2
 
-if [ ! -s patientMetaData.csv ]; then #test for initial file provided by user if none then create dummy file
-	echo "Couldn't find patient metadata, creating default template"
-	echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > patientMetaData.csv
-	date=$(date +"%F")
-	echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData.csv
+echo -e "Importing isolate data"
+#echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > patientMetaData.csv
+date=$(date +"%F")
+echo -e "Looking for specific strain in the metadata file"
+grep -w "$seq" patientMetaData.csv
+status=$?
+if [ $status == 0 ]; then
+    echo "Found strain information"
+	head -n1 patientMetaData.csv >> patientMetaData_"$seq".csv
+	grep -w "$seq" patientMetaData.csv >> patientMetaData_"$seq".csv
 else
-	echo -e "Found patientMetaData.csv"
-	echo -e "Importing isolate data"
-	echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > patientMetaData.csv
-	date=$(date +"%F")
-	echo -e "Looking for specific strain in the metadata file"
-	grep -w "$seq" patientMetaData.csv
-	status=$?
-    if [ $status == 0 ]; then
-      echo "Found strain information"
-	  grep -w "$seq" patientMetaData.csv >> patientMetaData.csv
-	else
-      echo "Couldn't find strain data, reverting to default"
-      echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData.csv	  
-    fi  
-fi
+    echo "Couldn't find strain specific data in file, reverting to default"
+	head -n1 patientMetaData.csv >> patientMetaData_"$seq".csv
+    echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData_"$seq".csv	  
+fi  
+
+mv patientMetaData_"$seq".csv patientMetaData.csv
 
 Report_structure () {
 
