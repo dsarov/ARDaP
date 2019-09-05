@@ -43,14 +43,13 @@ echo -e "\n#nexus\nbegin data;\ndimensions ntax=$ntaxa nchar=$nchar;\nformat sym
 # Creates the SNP matrix for FastTree2
 ###########################################################################
 
-#awk 'BEGIN {FS=" "; OFS=""}{for (i=2;i<=NF;i++){arr[NR,i]=$i; if(big <= NF) big=NF;}}END {for(i=2;i<=big;i++){for(j=1;j<=NR;j++){printf("%s%s",arr[j,i],(j==NR?"":OFS));} print "";}}' t3 > t4
-#paste merge.012.indv.ref t4 > t5
-#x=`cat t3 | wc -l` #nchar
-#y=`cat merge.012.indv.ref | wc -l` #ntaxa
-#taxa_and_grid=`cat t5`
-#echo -e "$ntaxa $nchar\n$taxa_and_grid" > Ortho_SNP_matrix_FastTree2.nex
-
-	
+awk 'BEGIN {FS=" "; OFS=""}{for (i=1;i<=NF;i++){arr[NR,i]=$i; if(big <= NF) big=NF;}}END {for(i=1;i<=big;i++){for(j=1;j<=NR;j++){printf("%s%s",arr[j,i],(j==NR?"":OFS));} print "";}}' grid.nucleotide > grid.nucleotide.fasttree
+head -n1 out.vcf.table | cut -f3,6- | sed 's/.GT//g' > taxa.tmp
+awk 'BEGIN {FS=" "; OFS=""}{for (i=1;i<=NF;i++){arr[NR,i]=$i; if(big <= NF) big=NF;}}END {for(i=1;i<=big;i++){for(j=1;j<=NR;j++){printf("%s%s",arr[j,i],(j==NR?"":OFS));} print "";}}' taxa.tmp > taxa.fasttree
+sed -i 's/^/>/' taxa.fasttree
+paste -d '\n' taxa.fasttree grid.nucleotide.fasttree >Ortho_SNP_matrix_FastTree2.nex
+fasttree -log ML_log.txt -nt Ortho_SNP_matrix_FastTree2.nex > ML_phylogeny.tre
+fasttree -log MP_log.txt -noml -nt Ortho_SNP_matrix_FastTree2.nex > MP_phylogeny.tre
 
 ##run paup to create tree
 
@@ -101,10 +100,6 @@ awk ' { for (i=6; i<=NF; i++) {
        }; 
        {print $0} ' out.vcf.table.all.tmp > out.vcf.table.all
 
-	
-
-	
-	#SnpEff version control. Versions post 4.1 use a slightly different format for variants
 	
 snpEff eff -no-downstream -no-intergenic -ud 100 -formatEff -v -dataDir ${baseDir}/resources/snpeff ${variant_genome_path} out.vcf > out.annotated.vcf
 	
