@@ -64,7 +64,7 @@ ARDaP can be called from the command line through Nextflow (https://www.nextflow
 
 For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
 
-`nextflow run dsarov/ardap -qs 300 --executor pbs --mixture true`
+`nextflow run dsarov/ardap -qs 300 --executor pbs --mixture`
 
 ## Resource Managers
 
