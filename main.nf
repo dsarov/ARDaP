@@ -31,10 +31,6 @@ Optional Parameters:
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
 
-    --gwas       Optionally perform genome-wide association study on
-                 the set of isolates included in the pipeline run.
-                 (default: false)
-
     --size       ARDaP can optionally down-sample your read data to
                  run through the pipeline quicker. (default: 6000000)
 
@@ -212,7 +208,7 @@ process Deduplicate {
     set id, file(bam_alignment), file(bam_index) from dup
 
     output:
-    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (averageCoverage, variantCalling, mixturePindel)
+    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (averageCoverage, variantCalling, mixturePindel, variantcallingGVCF_ch)
 
     """
     gatk MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
@@ -255,7 +251,7 @@ if (params.mixtures) {
 
     label "spandx_gatk"
     tag { "$id" }
-    publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
+
 
     input:
     file reference from reference_file
@@ -265,13 +261,12 @@ if (params.mixtures) {
 
     output:
     set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
-    set id, file("${id}.raw.gvcf")
-	file("${id}.raw.gvcf") into gvcf_files
+    //set id, file("${id}.raw.gvcf")
+	 // file("${id}.raw.gvcf") into gvcf_files
     //val true into gvcf_complete_ch
 
     """
     gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
-    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
     """
   }
 
@@ -414,12 +409,13 @@ if (params.mixtures) {
 } else {
 
     // Not a mixture
+    //To do split GVCF calling when phylogeny isn't called
 
     process VariantCalling {
 
       label "spandx_gatk"
       tag { "$id" }
-      publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
+      //publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
 
       input:
       file reference from reference_file
@@ -430,8 +426,8 @@ if (params.mixtures) {
       output:
       set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
       set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
-      file("${id}.raw.gvcf") into gvcf_files
-      val true into gvcf_complete_ch
+      //file("${id}.raw.gvcf") into gvcf_files
+  //    val true into gvcf_complete_ch
 
       // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
@@ -439,7 +435,6 @@ if (params.mixtures) {
       gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
-      gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${dedup_bam} -O ${id}.raw.gvcf
       """
     }
 
@@ -887,6 +882,29 @@ process R_report {
 
 if (params.phylogeny) {
 
+  process VariantCallingGVCF {
+
+    label "spandx_gatk"
+    tag { "$id" }
+    publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
+
+    input:
+    file reference from reference_file
+    file reference_fai from ref_fai_ch1
+    file reference_dict from ref_dict_ch1
+    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantcallingGVCF_ch
+
+    output:
+    //set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
+    set id, file("${id}.raw.gvcf")
+	  file("${id}.raw.gvcf") into gvcf_files
+    //val true into gvcf_complete_ch
+
+    """
+    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
+    """
+  }
+
   process Master_vcf {
     label "master_vcf"
     tag { "id" }
@@ -915,7 +933,7 @@ if (params.phylogeny) {
   }
   process snp_matrix {
     label "snp_matrix"
-    publishDir "./Outputs/Phylogeny", mode: 'copy', overwrite: false
+    publishDir "./Outputs/Phylogeny_and_annotation", mode: 'copy', overwrite: false
 
     //TO DO add additional publishDir to have annotated outputs in correct location
 
@@ -924,7 +942,8 @@ if (params.phylogeny) {
 
     output:
     file("Ortho_SNP_matrix.nex")
-    file("MP_phylogeny.tre") //need to count taxa to tell this to not be expected if ntaxa is < 4
+    file("MP_phylogeny.tre")
+    file("ML_phylogeny.tre") //need to count taxa to tell this to not be expected if ntaxa is < 4
     file("All_SNPs_indels_annotated.txt")
 
     script:
@@ -939,8 +958,7 @@ workflow.onComplete {
 	println ( workflow.success ? "\nDone! Result files are in --> ./Outputs\n \
   Antibiotic resistance reports are in --> ./Outputs/AbR_reports\n \
   If further analysis is required, bam alignments are in --> ./Outputs/bams\n \
-  Phylogenetic tree and annotated merged variants are in --> ./Outputs/phylogeny\n \
+  Phylogenetic tree and annotated merged variants are in --> ./Outputs/Phylogeny_and_annotation\n \
   Individual variant files are in --> ./Outputs/Variants/VCFs\n" \
   : "Oops .. something went wrong" )
 }
-//TO DO finish completion message
