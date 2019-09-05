@@ -763,6 +763,7 @@ process CARDqueries {
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch
     set id, file("${id}.AbR_output_del_dup_mix.txt") from abr_report_del_dup_mix_ch
     set id, file("${id}.AbR_output_snp_indel_mix.txt") from abr_report_snp_indel_mix_ch
+    file("patientMetaData.csv") from patient_meta_file
     file resistance_db from resistance_database_file
 
     output:
