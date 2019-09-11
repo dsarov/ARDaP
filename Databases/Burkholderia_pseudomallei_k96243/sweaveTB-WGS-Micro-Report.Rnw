@@ -25,7 +25,7 @@
 \usepackage{multirow}
 \usepackage[skins]{tcolorbox}
 \usepackage{fontspec}
-  \setmainfont{Lato}
+ % \setmainfont{Lato}
 
 %--------- NEW COMMANDS
 \newcolumntype{U}{>{\collectcell\MakeUppercase}l<{\endcollectcell}}
