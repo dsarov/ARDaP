@@ -266,7 +266,7 @@ if (params.mixtures) {
     //val true into gvcf_complete_ch
 
     """
-    gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
+    gatk HaplotypeCaller -nt $task.cpus -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
     """
   }
 
@@ -432,7 +432,7 @@ if (params.mixtures) {
       // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
       """
-      gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
+      gatk HaplotypeCaller -nt $task.cpus -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
       """
@@ -902,7 +902,7 @@ if (params.phylogeny) {
     //val true into gvcf_complete_ch
 
     """
-    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
+    gatk HaplotypeCaller -nt $task.cpus -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
     """
   }
 
