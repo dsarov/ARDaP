@@ -60,7 +60,7 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 # Long version for those unfamiliar with environments or just want all the steps for recommended installation
 
-1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you don't have this software installed then go to ([the miniconda install page] (https://docs.conda.io/en/latest/miniconda.html)) and follow the instructions for your OS.
+1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you don't have this software installed then go to ([the miniconda install page] https://docs.conda.io/en/latest/miniconda.html)) and follow the instructions for your OS.
 
 ## Usage
 
