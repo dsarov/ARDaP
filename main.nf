@@ -71,6 +71,9 @@ fastq = Channel
 
 resistance_database_file = file(params.resistance_db)
 reference_file = file(params.reference)
+if( !reference_file.exists() ) {
+  exit 1, "The reference file does no exist: ${params.reference}"
+}
 card_db_file = file(params.card_db)
 patient_meta_file = file(params.patientMetaData)
 if( !patient_meta_file.exists() ) {
