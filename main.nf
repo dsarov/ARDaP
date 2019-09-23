@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDAP
- *  Version             1.5.a5
+ *  Version             1.5.a6
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDAP
-                             v1.5.a5
+                             v1.5.a6
 ================================================================================
 
 Input Parameter:
