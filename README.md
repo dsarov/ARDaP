@@ -36,7 +36,7 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 
 ## Installation
 
-# Short version for those that just want to get started and understand how environments in conda work
+### Short version for those that just want to get started and understand how environments in conda work
 
 ARDaP is available on our development channel and its dependencies can be installed with:
 
@@ -58,13 +58,13 @@ in `nextflow.config`:
 
 Or navigate to the conda install path of ARDaP and change the `nextflow.config` in that location.
 
-# Long version for those unfamiliar with environments or just want all the steps for recommended installation
+### Long version for those unfamiliar with environments or just want all the steps for recommended installation
 
 1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you do have conda installed then it's a good idea to update conda so you have the latest version `conda update conda`. If you don't have this software installed then go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After the install, make sure your install is up-to-date `conda update conda`.
 
 2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c r ardap`. Follow the instructions and the software should fully install with all dependencies.
 
-3) To run ARDaP, activate the ardap environment with conda `conda activate ardap` and then follow the usage instructions.
+3) To run ARDaP, `nextflow run dsarov/ardap`.
 
 ## Usage
 
