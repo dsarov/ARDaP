@@ -15,7 +15,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [Introduction](#introduction)
 - [Installation](#Installation)
 - [Resource Managers](#resource-managers)
-- [ARDaP Workflow](#spandx-workflow)
+- [ARDaP Workflow](#ARDaP-workflow)
 - [Usage](#usage)
 - [Parameters](#parameters)
 - [Examples](#examples)
@@ -104,7 +104,13 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 Optional Parameter: \
   `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
   
-  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly cooresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  Example:
+  `$ nextflow run dsarov/ardap --mixtures`
+  
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly coresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  
+  Example:
+  `$ nextflow run dsarov/ardap --size 0 --mixtures'
   
   `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=false
   
