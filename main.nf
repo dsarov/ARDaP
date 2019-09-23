@@ -19,25 +19,37 @@ Input Parameter:
 
     --fastq      Input PE read file wildcard (default: *_{1,2}.fastq.gz)
 
+                Currently this is set to ${params.fastq}
+
 Optional Parameters:
 
     --database   Species specific database for resistance determination
                  (default: Burkholderia_pseudomallei_k96243)
 
+                 Currently you are using ${params.database}
+
     --ref        Reference genome for alignment. Must match genome used
                  in --database (default: k96243.fasta)
+
+                 Currently you are using ${params.ref}
 
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
 
-    --size       ARDaP can optionally down-sample your read data to
-                 run through the pipeline quicker. (default: 6000000)
+                 Currently mixtures is set to ${params.mixtures}
 
-    --phylogeny  Please set to 'true' if you would like a whole genome
+    --size       ARDaP can optionally down-sample your read data to
+                 run through the pipeline quicker. (default: 1000000)
+
+                 Currently you are using ${params.size}
+
+    --phylogeny  Please include if you would like a whole genome
                  phylogeny (FastTree2) and merged annotation files.
                  Note that this may take some time if you have a large
                  number of isolates (default: false)
+
+                 Currently phylogeny is set to ${params.phylogeny}
 
 If you want to make changes to the default `nextflow.config` file
 clone the workflow into a local directory and change parameters
@@ -64,21 +76,36 @@ Update to the local cache of this workflow:
 
 
 // Don't forget to assign CPU for tasks to optimize!
+// Setting of relational variables
+
+database="${params.database}"
+ref="${params.ref}"
+params.reference="${baseDir}/Databases/${database}/${ref}"
+params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
+params.card_db="${baseDir}/Databases/${database}/${database}_CARD.db"
+params.snpeff="${params.database}"
 
 fastq = Channel
-    .fromFilePairs("${params.fastq}", flat: true)
+  .fromFilePairs("${params.fastq}", flat: true)
 	.ifEmpty { exit 1, "Input read files could not be found." }
 
 resistance_database_file = file(params.resistance_db)
+if( !resistance_database_file.exists() ) {
+  exit 1, "The resistance database file file does no exist: ${params.resistance_db}"
+}
+
 reference_file = file(params.reference)
 if( !reference_file.exists() ) {
   exit 1, "The reference file does no exist: ${params.reference}"
 }
+
 card_db_file = file(params.card_db)
+
 patient_meta_file = file(params.patientMetaData)
 if( !patient_meta_file.exists() ) {
   exit 1, "The specified patient metadata file does not exist: ${params.patientMetaData}"
 }
+
 sweave_report_file = file(params.sweaveReport)
 r_report_logo_file = file(params.logo)
 
@@ -269,7 +296,7 @@ if (params.mixtures) {
     //val true into gvcf_complete_ch
 
     """
-    gatk HaplotypeCaller -nt $task.cpus -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
+    gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
     """
   }
 
@@ -435,7 +462,7 @@ if (params.mixtures) {
       // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
       """
-      gatk HaplotypeCaller -nt $task.cpus -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
+      gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
       """
@@ -905,7 +932,7 @@ if (params.phylogeny) {
     //val true into gvcf_complete_ch
 
     """
-    gatk HaplotypeCaller -nt $task.cpus -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
+    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
     """
   }
 
