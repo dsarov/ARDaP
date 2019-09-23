@@ -72,9 +72,9 @@ To control the data pipeline, ARDaP is implemented in Nextflow. More information
 
 ARDaP can be called from the command line through [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
 
-For example, to run Nextflow with a maximum job queue size of 300 and the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can simply run:
+For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can run:
 
-`nextflow run dsarov/ardap -qs 300 --executor pbs --mixture`
+`nextflow run dsarov/ardap --executor pbs --mixtures`
 
 ## Resource Managers
 
