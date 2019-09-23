@@ -105,34 +105,49 @@ Optional Parameter: \
   `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
   
   Example:
+  
   `$ nextflow run dsarov/ardap --mixtures`
   
   `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly coresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
   
   Example:
-  `$ nextflow run dsarov/ardap --size 0 --mixtures'
+  
+  `$ nextflow run dsarov/ardap --size 0 --mixtures`
   
   `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=false
   
-  ARDaP requires at least a reference genome and the name of the associated database
+  Example:
+  
+  `$ nextflow run dsarov/ardap --phylogeny`
+  
+  `--database` Use this flag to specify an ARDaP database that contains species specific resistance information. Note that you will also need to specify the correct reference file with `--ref`.
+  
   Currently there are databases available for:
-  <i>Pseudomonas aeruginosa</i> `--database Pseudomonas_aeruginosa_pao1`
-  <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243`
+  <i>Pseudomonas aeruginosa</i> `--database Pseudomonas_aeruginosa_pao1 --ref Pa_PAO1`
+  <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243 --ref k96243` 
   
   For example: \
-  `nextflow run dsarov/ardap --database Pseudomonas_aeruginosa_pao1`
+  `nextflow run dsarov/ardap --database Pseudomonas_aeruginosa_pao1 --ref Pa_PAO1`
 
+If you don't want to constantly use the flags for different databases, all of these settings can be changed in the nextflow.config file if the default parameters aren't suitable.
 
-## Examples
-
-### File names
-ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
+`--fastq` ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
 
 ```
 STRAIN_1.fastq.gz (first pair) 
 STRAIN_2.fastq.gz (second pair)
 ```
-Reads not in this format will be ignored. 
+Reads not in this format will be ignored unless you change the `--fastq` flag to match the read naming on your system.
+
+Example:
+
+If your reads are in the following format
+
+```
+STRAIN_1_sequence.fq.gz (first pair) 
+STRAIN_2_sequence.fq.gz (second pair)
+```
+`nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"
 
 ### Database-creation
 
