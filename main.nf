@@ -19,37 +19,37 @@ Input Parameter:
 
     --fastq      Input PE read file wildcard (default: *_{1,2}.fastq.gz)
 
-                Currently this is set to ${params.fastq}
+                Currently this is set to $params.fastq
 
 Optional Parameters:
 
     --database   Species specific database for resistance determination
                  (default: Burkholderia_pseudomallei_k96243)
 
-                 Currently you are using ${params.database}
+                 Currently you are using $params.database
 
     --ref        Reference genome for alignment. Must match genome used
                  in --database (default: k96243.fasta)
 
-                 Currently you are using ${params.ref}
+                 Currently you are using $params.ref
 
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
 
-                 Currently mixtures is set to ${params.mixtures}
+                 Currently mixtures is set to $params.mixtures
 
     --size       ARDaP can optionally down-sample your read data to
                  run through the pipeline quicker. (default: 1000000)
 
-                 Currently you are using ${params.size}
+                 Currently you are using $params.size
 
     --phylogeny  Please include if you would like a whole genome
                  phylogeny (FastTree2) and merged annotation files.
                  Note that this may take some time if you have a large
                  number of isolates (default: false)
 
-                 Currently phylogeny is set to ${params.phylogeny}
+                 Currently phylogeny is set to $params.phylogeny
 
 If you want to make changes to the default `nextflow.config` file
 clone the workflow into a local directory and change parameters
@@ -78,8 +78,8 @@ Update to the local cache of this workflow:
 // Don't forget to assign CPU for tasks to optimize!
 // Setting of relational variables
 
-database="${params.database}"
-ref="${params.ref}"
+database=params.database
+ref=params.ref
 params.reference="${baseDir}/Databases/${database}/${ref}"
 params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
 params.card_db="${baseDir}/Databases/${database}/${database}_CARD.db"
