@@ -64,7 +64,9 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c r ardap`. Follow the instructions and the software should fully install with all dependencies.
 
-3) To run ARDaP, `nextflow run dsarov/ardap`.
+3) Activate the ardap environment that was installed by conda, `conda activate ardap`
+
+4) To run ARDaP, `nextflow run dsarov/ardap`.
 
 ## Usage
 
