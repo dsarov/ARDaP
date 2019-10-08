@@ -50,6 +50,8 @@ while read line; do
   fi
 done < "$seq"_98p.genes
 
+touch ${seq}.CARD_primary_output.txt
+
 if [ -s CARD_no_ignore.txt ]; then
 CARD_PRIMARY () {
 COUNTER=1
