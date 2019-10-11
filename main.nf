@@ -631,7 +631,6 @@ if (params.mixtures) {
     """
   }
 
-  shell:
   process VariantSummariesSQL {
 
     label "spandx_default"
