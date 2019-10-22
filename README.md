@@ -40,7 +40,7 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 
 ARDaP is available on our development channel and its dependencies can be installed with:
 
-`conda install -c dsarov -c bioconda -c r ardap`
+`conda install -c dsarov -c bioconda -c r -c conda-forge ardap`
 
 The pipeline itself is run with Nextflow from a local cache of the repository:
 
@@ -62,7 +62,7 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you do have conda installed then it's a good idea to update conda so you have the latest version `conda update conda`. If you don't have this software installed then go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After the install, make sure your install is up-to-date `conda update conda`.
 
-2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c r ardap`. Follow the instructions and the software should fully install with all dependencies.
+2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c r  -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
 
 3) ARDaP requires Tex (specifically XeLaTeX) for compilation of the reports. If you don't have this compiler in your PATH or Tex installed on your system, you can follow the instructions here for installation (https://nbconvert.readthedocs.io/en/latest/install.html). On centOS you should be able to run `sudo yum install texlive-xetex` or on Ubuntu `sudo apt-get install texlive-xetex`. Once installed check that `xelatex` is in your PATH i.e. `which xelatex`. If this is still not in your PATH you can edit the nextflow.config file to manually point to the xelatex compiler by editing the line `env.PATH="$PATH:/usr/local/texlive/2017/bin/x86_64-linux/"` 
 
@@ -153,7 +153,7 @@ If your reads are in the following format
 STRAIN_1_sequence.fq.gz (first pair) 
 STRAIN_2_sequence.fq.gz (second pair)
 ```
-`nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"
+`nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"`
 
 ### Database-creation
 
