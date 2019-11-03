@@ -164,7 +164,7 @@ TO BE ADDED
 
 Q: My pipeline crashed. Where do I go to figure out what happened?
 
-A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being process and where the log files are kept for that step.
+A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being processed and where the log files are kept for that step.
 
 ### Bugs!!
 Please send bug reports to derek.sarovich@gmail.com or log them in the github issues tab
