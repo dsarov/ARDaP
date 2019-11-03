@@ -20,7 +20,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [Parameters](#parameters)
 - [Examples](#examples)
 - [Custom database creation](#Database-creation)
-- [Troubleshooting] (#troubleshooting)
+- [Troubleshooting] (#Troubleshooting)
 - [Citation](#citation)
 
 
