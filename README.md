@@ -174,7 +174,7 @@ The first tab of the SQLite database allows the user to create the â€˜Structureâ
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/Structure%20tab%20explained.png)
 
-**Figure 1:**  Structure antibitoics table in SQLite database
+**Figure 1:**  Structure antibiotics table in SQLite database
 
 **2.	Data**
 
