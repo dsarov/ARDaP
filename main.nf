@@ -88,16 +88,34 @@ params.sweaveReport="${baseDir}/Databases/${database}/sweaveTB-WGS-Micro-Report.
 
 fastq = Channel
   .fromFilePairs("${params.fastq}", flat: true)
-	.ifEmpty { exit 1, "Input read files could not be found." }
+	.ifEmpty { exit 1, """ Input read files could not be found.
+Have you included the read files in the current directory and do they have the correct naming?
+With the parameters specified, ARDaP is looking for reads named ${params.fastq}.
+To fix this error either rename your reads to match this formatting or specify the desired format
+when initializing ARDaP e.g. --fastq *_{1,2}_sequence.fastq.gz"""
+}
+
+assemblies = Channel
+  .fromFile("${params.assemblies}", flat: true)
+  .ifEmpty {"No assembled genomes will be processed"
+}
 
 resistance_database_file = file(params.resistance_db)
 if( !resistance_database_file.exists() ) {
   exit 1, "The resistance database file file does no exist: ${params.resistance_db}"
 }
 
+
+
 reference_file = file(params.reference)
 if( !reference_file.exists() ) {
-  exit 1, "The reference file does no exist: ${params.reference}"
+  exit 1, """
+ARDaP can't find the reference file.
+It is currently looking for this file --> ${params.reference}
+Please check that this reference exists here --> ${baseDir}/Databases/${database}/${ref}
+If this file doesn't exist either ARDaP is not configured to run with this reference/species
+or there was an error during the installation process and ARDaP needs to be re-installed
+"""
 }
 
 card_db_file = file(params.card_db)
@@ -149,6 +167,28 @@ Part 2: read processing, reference alignment and variant identification
    Part 2A: Trim reads with light quality filter and remove adapters
 =======================================================================
 */
+process Read_synthesis {
+    label "art"
+    tag {"$id"}
+
+    input:
+    file(assembly.fasta) from assemblies
+
+    output:
+    set id, file("${assembly}_1_cov.fq.gz"), file("${assembly}_2_cov.fq.gz") into (alignment, alignmentCARD)
+
+    """
+    art_illumina -i assembly.fasta -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o assembly_out
+    mv assembly_out1.fq assembly_1_cov.fq
+    mv assembly_out1.fq assembly_1_cov.fq
+    gzip assembly_1_cov.fq
+    gzip assembly_2_cov.fq
+
+    """
+}
+
+
+
 process Trimmomatic {
 
     label "spandx_default"
