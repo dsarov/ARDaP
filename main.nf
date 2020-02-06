@@ -2,8 +2,8 @@
 
 /*
  *
- *  Pipeline            ARDAP
- *  Version             1.5.a6
+ *  Pipeline            ARDaP
+ *  Version             1.6
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -11,8 +11,8 @@
 
 log.info """
 ===============================================================================
-                           NF-ARDAP
-                             v1.5.a6
+                           NF-ARDaP
+                             v1.6
 ================================================================================
 
 Input Parameter:
@@ -96,8 +96,11 @@ when initializing ARDaP e.g. --fastq *_{1,2}_sequence.fastq.gz"""
 }
 
 assemblies = Channel
-  .fromFile("${params.assemblies}", flat: true)
-  .ifEmpty {"No assembled genomes will be processed"
+  .fromPath("${params.assemblies}", checkIfExists: true)
+  .ifEmpty {"No assembled genomes will be processed"}
+  .map { file ->
+    def id = file.name.toString().tokenize('_').get(0)
+    return tuple(id, file)
 }
 
 resistance_database_file = file(params.resistance_db)
@@ -169,20 +172,20 @@ Part 2: read processing, reference alignment and variant identification
 */
 process Read_synthesis {
     label "art"
-    tag {"$id"}
+    tag {"$assembly.baseName"}
 
     input:
-    file(assembly.fasta) from assemblies
+    set id, file(assembly) from assemblies
 
     output:
-    set id, file("${assembly}_1_cov.fq.gz"), file("${assembly}_2_cov.fq.gz") into (alignment, alignmentCARD)
+    set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly, alignmentCARD_assembly)
 
     """
-    art_illumina -i assembly.fasta -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o assembly_out
-    mv assembly_out1.fq assembly_1_cov.fq
-    mv assembly_out1.fq assembly_1_cov.fq
-    gzip assembly_1_cov.fq
-    gzip assembly_2_cov.fq
+    art_illumina -i ${assembly} -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o ${assembly.baseName}_out
+    mv ${assembly.baseName}_out1.fq ${assembly.baseName}_1_cov.fq
+    mv ${assembly.baseName}_out2.fq ${assembly.baseName}_2_cov.fq
+    gzip ${assembly.baseName}_1_cov.fq
+    gzip ${assembly.baseName}_2_cov.fq
 
     """
 }
@@ -250,7 +253,7 @@ process ReferenceAlignment {
 
     input:
     file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment // Reads
+    set id, file(forward), file(reverse) from alignment.mix(alignment_assembly) // Reads
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
@@ -719,7 +722,7 @@ process AlignmentCARD {
 
     input:
     file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    set id, file(forward), file(reverse) from alignmentCARD
+    set id, file(forward), file(reverse) from alignmentCARD.mix(alignmentCARD_assembly)
 
     output:
     set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch

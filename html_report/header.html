@@ -1,0 +1,45 @@
+<html lang="en">
+<div style="text-align: center;">
+     <img src="{{ logo }}" style="max-width: 10rem;" alt="Logo">
+</div>
+     <br><br>
+
+     <h2 style="text-align:center;">{{ title }}</h2>
+
+     <hr><br>
+
+     <p  style="text-align:justify">{{ description }}</p>
+
+    <br><br>
+    <div class="row">
+        <div class="col-2">
+            <p  style="text-align:left;font-weight: bold;">Organism</p>
+            <p  style="text-align:left;font-weight: bold">Lineage</p>
+            <p  style="text-align:left;font-weight: bold">Country</p>
+            <p  style="text-align:left;font-weight: bold">Outbreak</p>
+            <p  style="text-align:left;font-weight: bold">Notes</p>
+        </div>
+        <div class="col-4">
+            <p  style="text-align:left">Staphylococcus aureus</p>
+            <p  style="text-align:left">ST59 - East Asia clone</p>
+            <p  style="text-align:left">US, Taiwan, Australia, UK</p>
+            <p  style="text-align:left">Global</p>
+            <p  style="text-align:justify">
+                Sequence data was downloaded from the European Nucleotide Archive using Pathfinder
+                and the --submitted flag to match the sequence file identifiers to metadata from the publication. </p>
+        </div>
+        <div class="col">
+            <div id="worldmap" style="max-width:300px;max-height:300px"></div>
+        </div>
+    </div>
+
+    {% if publication %}
+    <p style="text-align:left">
+        <br><br>
+        <a href="#pub">For more details, see the publication by Ward and colleagues (2016)</a>
+    </p>
+    {%  endif %}
+
+<br><br>
+
+</html>
