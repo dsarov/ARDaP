@@ -27,11 +27,6 @@ requirements:
       - sqlite
       - snpEff=4.3.1t
       - nextflow
-      - R
-      - r-knitr
-      - r-ape
-      - r-dplyr
-      - r-tinytex
       - bioconductor-ggtree
       - fasttree
   run:
@@ -47,11 +42,6 @@ requirements:
       - sqlite
       - snpEff=4.3.1t
       - nextflow
-      - R
-      - r-knitr
-      - r-ape
-      - r-dplyr
-      - r-tinytex
       - bioconductor-ggtree
       - fasttree
 

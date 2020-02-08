@@ -770,8 +770,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_CARD.sh
-    SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
+    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
     """
 }
 
@@ -800,8 +799,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_SNP_indel_mix.sh
-    SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
+    bash SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
     """
   }
 
@@ -821,8 +819,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_DelDupMix.sh
-    SQL_queries_DelDupMix.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDupMix.sh ${id} ${resistance_db}
     """
   }
 
@@ -846,8 +843,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/AbR_reports.sh
-    AbR_reports.sh ${id} ${resistance_db}
+    bash AbR_reports.sh ${id} ${resistance_db}
     """
   }
 }
@@ -869,8 +865,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_SNP_indel.sh
-    SQL_queries_SNP_indel.sh ${id} ${resistance_db}
+    bash SQL_queries_SNP_indel.sh ${id} ${resistance_db}
     """
 
   }
@@ -891,8 +886,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_DelDup.sh
-    SQL_queries_DelDup.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDup.sh ${id} ${resistance_db}
     """
   }
 
@@ -917,8 +911,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/AbR_reports.sh
-    AbR_reports.sh ${id} ${resistance_db}
+    bash AbR_reports.sh ${id} ${resistance_db}
     """
   }
 }
@@ -930,19 +923,18 @@ process R_report {
 
   input:
   set id, file("${id}.AbR_output.final.txt") from r_report_ch
-  file("ARDaP_logo.png") from r_report_logo_file
+  //file("ARDaP_logo.png") from r_report_logo_file
   file("patientMetaData.csv") from r_report_metadata_ch
   file("patientDrugSusceptibilityData.csv") from r_report_drug_data_ch
-  file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_file
+  //file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_file
 
   output:
-  set id, file("${id}_strain.pdf")
+  set id, file("${id}_report.html")
   set id, file("${id}.AbR_output.final.txt")
 
   script:
   """
-  chmod +x ${baseDir}/bin/Report.R
-  Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
+  bash Report_html.sh
   """
 }
 
@@ -995,8 +987,7 @@ if (params.phylogeny) {
 
     script:
     """
-    chmod +x ${baseDir}/bin/Master_vcf.sh
-    Master_vcf.sh ${reference.baseName}
+    bash Master_vcf.sh ${reference.baseName}
     gatk VariantFiltration -R ${reference} -O out.filtered.vcf -V out.vcf \
     --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
     -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
@@ -1022,8 +1013,7 @@ if (params.phylogeny) {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SNP_matrix.sh
-    SNP_matrix.sh $params.snpeff ${baseDir}
+    bash SNP_matrix.sh $params.snpeff ${baseDir}
     """
   }
 }
