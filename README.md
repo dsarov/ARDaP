@@ -41,7 +41,7 @@ in a multiple ways but predominately through chromosomal mutations, including ge
 
 ARDaP is available on our development channel and its dependencies can be installed with:
 
-`conda install -c dsarov -c bioconda -c r -c conda-forge ardap`
+`conda install -c dsarov -c bioconda -c conda-forge ardap`
 
 The pipeline itself is run with Nextflow from a local cache of the repository:
 
@@ -63,15 +63,13 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you do have conda installed then it's a good idea to update conda so you have the latest version `conda update conda`. If you don't have this software installed then go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After the install, make sure your install is up-to-date `conda update conda`.
 
-2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c r  -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
+2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
 
-3) ARDaP requires Tex (specifically XeLaTeX) for compilation of the reports. If you don't have this compiler in your PATH or Tex installed on your system, you can follow the instructions here for installation (https://nbconvert.readthedocs.io/en/latest/install.html). On centOS you should be able to run `sudo yum install texlive-xetex` or on Ubuntu `sudo apt-get install texlive-xetex`. Once installed check that `xelatex` is in your PATH i.e. `which xelatex`. If this is still not in your PATH you can edit the nextflow.config file to manually point to the xelatex compiler by editing the line `env.PATH="$PATH:/usr/local/texlive/2017/bin/x86_64-linux/"` 
+3) Activate the ardap environment that was installed by conda, `conda activate ardap`
 
+4) To run ARDaP, `nextflow run dsarov/ardap`.
 
-
-4) Activate the ardap environment that was installed by conda, `conda activate ardap`
-
-5) To run ARDaP, `nextflow run dsarov/ardap`.
+5) If you are running this pipeline on a HPC/submission system (e.g. PBS) then using the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
 
 ## Usage
 
@@ -97,8 +95,8 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
+- ART 
 - Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
-
 - SAMTools (ref)
 - Picard (ref)
 - Genome Analysis Toolkit (GATK) (ref)
