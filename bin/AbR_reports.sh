@@ -40,13 +40,15 @@ Report_structure
 cat ${seq}.*.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
+#sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
+#TO DO -  replace with awk pattern matching is case users want to add custom drug classes
 
 i=1
 while read f; do 
-	grep -w "$f" AbR_output.txt > "$f".output
-	grep -w "$f"i AbR_output.txt > "$f"i.output
-	grep -w "$f" ${seq}.CARD_primary_output.txt >> "$f".output
-	grep -w "$f"i ${seq}.CARD_primary_output.txt >> "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f' AbR_output.txt > "$f".output
+	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f' ${seq}.CARD_primary_output.txt >> "$f".output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f" "$f".output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -87,10 +89,37 @@ while read f; do
 	fi
 done < <(grep -E "Second-line|First-line|second-line|first-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
 
+while read f; do
+	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
+	awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}.CARD_primary_output.txt >> "$f"s.output
+	grep -w "$f"s "$f"s.output &> /dev/null
+	status=$?
+	if [[ "$status" -eq 0 ]]; then
+		echo "found mechanism for $f sensitivity"
+		length=$(wc -l "$f"s.output | awk '{print $1}' )
+		if [[ "$length" -gt 1 ]]; then
+			echo "found multiple mechanisms for $f sensitivity"
+			#cat "$f"s.output >> drug.table.tertiary.txt
+			sed -i "${i}s/.*/&,Sensitive,Multiple mechanisms/" drug.table.txt
+			i=$((i+1))
+		else
+			echo "found single mechanism for $f sensitivity" 
+			mech=$(awk -F "|" '{ print $2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3)
+			sed -i "${i}s/.*/&,Sensitive,${mech}/" drug.table.txt
+			#cat "$f"s.output >> drug.table.tertiary.txt
+			i=$((i+1))
+		fi
+	else
+		echo "no mechanism identified for $f sensitivity"
+		sed -i "${i}s/.*/&,Resistant,No sensitivity detected/" drug.table.txt
+		i=$((i+1))
+	fi
+done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ print $3 }')
+
 #Looking for resistance
 while read f; do
-	grep -w "$f"r AbR_output.txt > "$f"r.output
-	grep -w "$f"r ${seq}.CARD_primary_output.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f ' AbR_output.txt > "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f ' ${seq}.CARD_primary_output.txt >> "$f"r.output
 	grep -w "$f"r "$f"r.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -115,35 +144,9 @@ while read f; do
 	fi
 done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print $3 }')
 
-#Screening for tertiary antibiotics
-#These antibiotics are not included in the reports but are flagged in the .txt outputs. Looks for both sensitivity and resistance
+#Screening for intrinsic resistance. This class is reported resistant by default
 
-while read f; do
-	grep -w "$f"s AbR_output.txt > "$f"s.output
-	grep -w "$f"s ${seq}.CARD_primary_output.txt >> "$f"s.output
-	grep -w "$f"s "$f"s.output &> /dev/null
-	status=$?
-	if [[ "$status" -eq 0 ]]; then
-		echo "found mechanism for $f sensitivity"
-		length=$(wc -l "$f"s.output | awk '{print $1}' )
-		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple mechanisms for $f sensitivity"
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			sed -i "${i}s/.*/&,Sensitive,Multiple mechanisms/" drug.table.txt
-			i=$((i+1))
-		else
-			echo "found single mechanism for $f sensitivity" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
-			sed -i "${i}s/.*/&,Sensitive,${mech}/" drug.table.txt
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			i=$((i+1))
-		fi
-	else
-		echo "no mechanism identified for $f sensitivity"
-		sed -i "${i}s/.*/&,Resistant,No sensitivity detected/" drug.table.txt.test
-		i=$((i+1))
-	fi
-done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ print $3 }')
+
 
 # create patientDrugSusceptibilityData.csv
 # ID refers to individual strains
