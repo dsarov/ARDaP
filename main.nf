@@ -2,8 +2,8 @@
 
 /*
  *
- *  Pipeline            ARDAP
- *  Version             1.5.a6
+ *  Pipeline            ARDaP
+ *  Version             1.6
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -11,8 +11,8 @@
 
 log.info """
 ===============================================================================
-                           NF-ARDAP
-                             v1.5.a6
+                           NF-ARDaP
+                             v1.6
 ================================================================================
 
 Input Parameter:
@@ -88,16 +88,37 @@ params.sweaveReport="${baseDir}/Databases/${database}/sweaveTB-WGS-Micro-Report.
 
 fastq = Channel
   .fromFilePairs("${params.fastq}", flat: true)
-	.ifEmpty { exit 1, "Input read files could not be found." }
+	.ifEmpty { exit 1, """ Input read files could not be found.
+Have you included the read files in the current directory and do they have the correct naming?
+With the parameters specified, ARDaP is looking for reads named ${params.fastq}.
+To fix this error either rename your reads to match this formatting or specify the desired format
+when initializing ARDaP e.g. --fastq *_{1,2}_sequence.fastq.gz"""
+}
+
+assemblies = Channel
+  .fromPath("${params.assemblies}", checkIfExists: true)
+  .ifEmpty {"No assembled genomes will be processed"}
+  .map { file ->
+    def id = file.name.toString().tokenize('_').get(0)
+    return tuple(id, file)
+}
 
 resistance_database_file = file(params.resistance_db)
 if( !resistance_database_file.exists() ) {
   exit 1, "The resistance database file file does no exist: ${params.resistance_db}"
 }
 
+
+
 reference_file = file(params.reference)
 if( !reference_file.exists() ) {
-  exit 1, "The reference file does no exist: ${params.reference}"
+  exit 1, """
+ARDaP can't find the reference file.
+It is currently looking for this file --> ${params.reference}
+Please check that this reference exists here --> ${baseDir}/Databases/${database}/${ref}
+If this file doesn't exist either ARDaP is not configured to run with this reference/species
+or there was an error during the installation process and ARDaP needs to be re-installed
+"""
 }
 
 card_db_file = file(params.card_db)
@@ -149,6 +170,28 @@ Part 2: read processing, reference alignment and variant identification
    Part 2A: Trim reads with light quality filter and remove adapters
 =======================================================================
 */
+process Read_synthesis {
+    label "art"
+    tag {"$assembly.baseName"}
+
+    input:
+    set id, file(assembly) from assemblies
+
+    output:
+    set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly, alignmentCARD_assembly)
+
+    """
+    art_illumina -i ${assembly} -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o ${assembly.baseName}_out
+    mv ${assembly.baseName}_out1.fq ${assembly.baseName}_1_cov.fq
+    mv ${assembly.baseName}_out2.fq ${assembly.baseName}_2_cov.fq
+    gzip ${assembly.baseName}_1_cov.fq
+    gzip ${assembly.baseName}_2_cov.fq
+
+    """
+}
+
+
+
 process Trimmomatic {
 
     label "spandx_default"
@@ -210,7 +253,7 @@ process ReferenceAlignment {
 
     input:
     file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment // Reads
+    set id, file(forward), file(reverse) from alignment.mix(alignment_assembly) // Reads
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
@@ -679,7 +722,7 @@ process AlignmentCARD {
 
     input:
     file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    set id, file(forward), file(reverse) from alignmentCARD
+    set id, file(forward), file(reverse) from alignmentCARD.mix(alignmentCARD_assembly)
 
     output:
     set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch
@@ -727,8 +770,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_CARD.sh
-    SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
+    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
     """
 }
 
@@ -757,8 +799,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_SNP_indel_mix.sh
-    SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
+    bash SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
     """
   }
 
@@ -778,8 +819,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_DelDupMix.sh
-    SQL_queries_DelDupMix.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDupMix.sh ${id} ${resistance_db}
     """
   }
 
@@ -803,8 +843,7 @@ process CARDqueries {
 
     script:
     """
-    chmod +x ${baseDir}/bin/AbR_reports.sh
-    AbR_reports.sh ${id} ${resistance_db}
+    bash AbR_reports.sh ${id} ${resistance_db}
     """
   }
 }
@@ -826,8 +865,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_SNP_indel.sh
-    SQL_queries_SNP_indel.sh ${id} ${resistance_db}
+    bash SQL_queries_SNP_indel.sh ${id} ${resistance_db}
     """
 
   }
@@ -848,8 +886,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SQL_queries_DelDup.sh
-    SQL_queries_DelDup.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDup.sh ${id} ${resistance_db}
     """
   }
 
@@ -874,8 +911,7 @@ else {
 
     script:
     """
-    chmod +x ${baseDir}/bin/AbR_reports.sh
-    AbR_reports.sh ${id} ${resistance_db}
+    bash AbR_reports.sh ${id} ${resistance_db}
     """
   }
 }
@@ -887,19 +923,18 @@ process R_report {
 
   input:
   set id, file("${id}.AbR_output.final.txt") from r_report_ch
-  file("ARDaP_logo.png") from r_report_logo_file
+  //file("ARDaP_logo.png") from r_report_logo_file
   file("patientMetaData.csv") from r_report_metadata_ch
   file("patientDrugSusceptibilityData.csv") from r_report_drug_data_ch
-  file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_file
+  //file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_file
 
   output:
-  set id, file("${id}_strain.pdf")
+  set id, file("${id}_report.html")
   set id, file("${id}.AbR_output.final.txt")
 
   script:
   """
-  chmod +x ${baseDir}/bin/Report.R
-  Report.R --no-save --no-restore --args SCRIPTPATH=${baseDir} strain=${id} output_path=./
+  bash Report_html.sh
   """
 }
 
@@ -952,8 +987,7 @@ if (params.phylogeny) {
 
     script:
     """
-    chmod +x ${baseDir}/bin/Master_vcf.sh
-    Master_vcf.sh ${reference.baseName}
+    bash Master_vcf.sh ${reference.baseName}
     gatk VariantFiltration -R ${reference} -O out.filtered.vcf -V out.vcf \
     --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
     -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
@@ -979,8 +1013,7 @@ if (params.phylogeny) {
 
     script:
     """
-    chmod +x ${baseDir}/bin/SNP_matrix.sh
-    SNP_matrix.sh $params.snpeff ${baseDir}
+    bash SNP_matrix.sh $params.snpeff ${baseDir}
     """
   }
 }

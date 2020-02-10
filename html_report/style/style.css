@@ -1,0 +1,38 @@
+
+html { scroll-behavior: smooth; }
+
+#app {
+  font-family: Consolas, monaco, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#dashboard {
+  font-family: Consolas, monaco, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 4rem;
+  color: #2c3e50;
+}
+
+.nopadding {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+  height: 60px;
+}
+
+
+#worldmap {
+    margin:0 auto;
+}
+#worldmap svg {
+    background:white;
+    border-radius: 150px;
+    box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+.land {fill: rgba(77,77,77,.94);}
