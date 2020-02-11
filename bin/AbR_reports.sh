@@ -201,6 +201,8 @@ cp drug.table.txt patientDrugSusceptibilityData.csv
 
 if [ -s AbR_output.final.txt ]; then
 	cp AbR_output.final.txt "$seq".AbR_output.final.txt
+else	
+	echo "No antibiotic resistance identified in $seq" >> "$seq".AbR_output.final.txt
 fi
 
 exit 0
