@@ -87,7 +87,7 @@ while read f; do
 			i=$((i+1))
 		fi
 	fi
-done < <(grep -E "Second-line|First-line|second-line|first-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
+done < <(grep -E "First-line|first-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
 
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
@@ -116,6 +116,51 @@ while read f; do
 	fi
 done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ print $3 }')
 
+while read f; do 
+	awk -F"|" -v f="$f" '$4~ f' AbR_output.txt > "$f".output
+	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f' ${seq}.CARD_primary_output.txt >> "$f".output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
+	grep -w "$f" "$f".output &> /dev/null #looks for full resistance
+	status=$?
+	if [[ "$status" -eq 0 ]]; then
+		echo "found mechanism for $f resistance"
+		length=$(wc -l "$f".output | awk '{print $1}' )
+		if [[ "$length" -gt 1 ]]; then
+			echo "found multiple mechanisms for $f resistance"
+			sed -i "${i}s/.*/&,Resistant,Multiple mechanisms/" drug.table.txt
+			i=$((i+1))
+		else
+			echo "found single mechanism for $f resistance" 
+			mech=$(awk -F "|" '{ print $2,$3 }' "$f".output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+			sed -i "${i}s/.*/&,Resistant,${mech}/" drug.table.txt
+			i=$((i+1))
+		fi
+	else
+		echo "no mechanism identified for $f resistance, looking for intermediate resistance"
+		grep -w "${f}"i "$f"i.output &> /dev/null
+		status=$?
+		if [[ "$status" -eq 0 ]]; then
+			echo "found intermediate resistance mechanism for $f"
+			length=$(wc -l "$f"i.output | awk '{print $1}' )
+			if [[ "$length" -gt 1 ]]; then
+				echo "found multiple mechanisms for intermediate $f resistance"
+				sed -i "${i}s/.*/&,Intermediate,Multiple mechanisms/" drug.table.txt
+				i=$((i+1))
+			else
+				echo "found single mechanism for intermediate $f resistance" 
+				mech=$(awk -F "|" '{ print $2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+				sed -i "${i}s/.*/&,Intermediate,${mech}/" drug.table.txt
+				i=$((i+1))
+			fi
+		else
+			echo "no intermediate resistance found"
+			sed -i "${i}s/.*/&,Sensitive,No resistance detected/" drug.table.txt
+			i=$((i+1))
+		fi
+	fi
+done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
+
 #Looking for resistance
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f ' AbR_output.txt > "$f"r.output
@@ -143,10 +188,6 @@ while read f; do
 		i=$((i+1))
 	fi
 done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print $3 }')
-
-#Screening for intrinsic resistance. This class is reported resistant by default
-
-
 
 # create patientDrugSusceptibilityData.csv
 # ID refers to individual strains
