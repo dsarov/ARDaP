@@ -23,7 +23,7 @@ lineageName=$(awk -F"," '{ print $19 }' patientMetaData.csv |tail -n1)
 
 #Predicted to be resistant to?
 
-resistant_list=($(awk -F"," '$4 ~ /[Rr]esistant/ ' patientDrugSusceptibilityData.csv | awk -F"," '$2!~/[Ii]ntrinsic/'))
+resistant_list=($(awk -F"," '$4 ~ /[Rr]esistant/ ' patientDrugSusceptibilityData.csv | awk -F"," '$2!~/[Ii]ntrinsic/' | awk -F"," '{print $3}'))
 
 
 #no drug, some drug or all drug?
