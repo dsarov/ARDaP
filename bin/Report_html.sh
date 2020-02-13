@@ -34,8 +34,9 @@ if [ "$no_resist" -eq 0 ]; then #no drug resistance
   one_res="&#9744;"
   two_res="&#9744;"
   multi_res="&#9744;"
+  resistant_list="no clinically relevant antibiotics"
 fi
-if [ "$no_resist" -eq 1 ]; then #no drug resistance
+if [ "$no_resist" -eq 1 ]; then #resistant to one drug
   no_res="&#9744;"
   one_res="&#9745;"
   two_res="&#9744;"
@@ -58,20 +59,22 @@ fi
 declare -A f_line_table_more=()
 declare -A s_line_table_more=()
 
-noFirstLine=$(grep -wE "First-line|first-line" patientDrugSusceptibilityData.csv | wc -l)
-noSecondLine=$(grep -wE "Second-line|second-line" patientDrugSusceptibilityData.csv | wc -l)
-noTertiary=$(grep -wE "Tertiary|tertiary" patientDrugSusceptibilityData.csv | wc -l)
+noFirstLine=$(awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | wc -l)
+noSecondLine=$(awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | wc -l)
+noTertiary=$(awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | wc -l)
+noIntrinsic=$(awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | wc -l)
 
 #array the first-line drugs
-readarray -t f_line_drug < <( grep -wE "First-line|first-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
-readarray -t s_line_drug < <( grep -wE "Second-line|second-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
+readarray -t f_line_drug < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
+readarray -t s_line_drug < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
 
-#array firs and second line resistant and senstitive calls
-readarray -t f_line_resistance < <( grep -wE "First-line|first-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
-readarray -t s_line_resistance < <( grep -wE "Second-line|second-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
+#array first and second line resistant and senstitive calls
+readarray -t f_line_resistance < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
+readarray -t s_line_resistance < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
 
-readarray -t f_line_mech < <( grep -wE "First-line|first-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
-readarray -t s_line_mech < <(grep -wE "Second-line|second-line" patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+readarray -t f_line_mech < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+readarray -t s_line_mech < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+
 
 
 #first line
@@ -145,9 +148,9 @@ fi
 
 #Array tertiary drugs
 if [ "$noTertiary" -gt 0 ]; then
-  readarray -t t_line_drug < <( grep -wE "Tertiary|tertiary" patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
-  readarray -t t_line_resistance < <( grep -wE "Tertiary|tertiary" patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
-  readarray -t t_line_mech < <( grep -wE "Tertiary|tertiary" patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+  readarray -t t_line_drug < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
+  readarray -t t_line_resistance < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
+  readarray -t t_line_mech < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
 
 ####populate tertiary variable
 if [ "$noTertiary" -eq 1 ]; then
@@ -184,6 +187,46 @@ done
 fi
 fi
 
+#Array intrinsic drugs
+if [ "$noIntrinsic" -gt 0 ]; then
+  readarray -t i_line_drug < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
+  readarray -t i_line_resistance < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
+  readarray -t i_line_mech < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+
+####populate intrinsic variable
+if [ "$noIntrinsic" -eq 1 ]; then
+intrinsic_line_table=$(cat <<EOF
+<tr>
+<td rowspan="$noIntrinsic">Intrinsic </td>
+<td>${i_line_resistance[0]}</td>
+<td>${i_line_drug[0]}</td>
+<td>${i_line_mech[0]}</td>
+</tr>
+EOF
+)
+elif [ "$noIntrinsic" -gt 1 ]; then
+intrinsic_line_table=$(cat <<EOF
+<tr>
+<td rowspan="$noIntrinsic">Intrinsic</td>
+<td>${i_line_resistance[0]}</td>
+<td>${i_line_drug[0]}</td>
+<td>${i_line_mech[0]}</td>
+</tr>
+EOF
+)
+for (( i=1; i<"$noIntrinsic"; i++ )); do
+i_line_table_more[$i]=$(
+cat <<EOF
+<tr>
+<td>${i_line_resistance[$i]}</td>
+<td>${i_line_drug[$i]}</td>
+<td>${i_line_mech[$i]}</td>
+</tr>
+EOF
+)
+done
+fi
+fi
 
 cat <<_EOF_ > "$ID"_report.html
 
@@ -1421,7 +1464,7 @@ ${s_line_table_more[@]}
 </table>
 <br>
 
-<table class="minimalistBlack">
+<table class="drug_suscep">
 <thead>
 <tr>
 <th colspan="4">Extended/non-clinical drug susceptibility</th>
@@ -1439,13 +1482,27 @@ ${t_line_table_more[@]}
 </tbody>
 </table>
 <br>
+<table class="drug_suscep">
+<thead>
+<tr>
+<th colspan="4">Intrinsic resistance; not used for clinical purposes as wild-type strains are resistant to these drugs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Drug class</td>
+<td>Interpretation</td>
+<td>Drug</td>
+<td>Mechanism of sensitivity</td>
+</tr>
+$intrinsic_line_table
+${i_line_table_more[@]}
+</tbody>
+</table>
+<br>
 <TABLE cellpadding=0 cellspacing=0 class="t2">
 <TR>
 	<TD class="tr1 td56"><P class="p3 ft1">Page 1 of 1</P></TD>
 	<TD class="tr1 td57"><P class="p3 ft1">Patient ID: $ID | Date: $reportDate | Location: $Location</P></TD>
-
-
-
-
 
 _EOF_
