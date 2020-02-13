@@ -40,6 +40,11 @@ Report_structure
 cat ${seq}.*.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
+#Deduplicate any repition in the resistance list
+awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
+mv AbR_output.temp AbR_output.final.txt
+
+
 #sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
 #TO DO -  replace with awk pattern matching is case users want to add custom drug classes
 
@@ -191,8 +196,6 @@ done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print
 
 # create patientDrugSusceptibilityData.csv
 # ID refers to individual strains
-awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
-mv AbR_output.temp AbR_output.final.txt
 sed -i "s/^/$seq,/" drug.table.txt
 awk -v FS="," -v OFS="," '{print $1,$2,$3,$5,$6 }' drug.table.txt > drug.table.txt.tmp
 mv drug.table.txt.tmp drug.table.txt
