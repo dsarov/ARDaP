@@ -843,7 +843,7 @@ process CARDqueries {
 
     script:
     """
-    bash AbR_reports.sh ${id} ${resistance_db}
+    bash AbR_reports_mix.sh ${id} ${resistance_db}
     """
   }
 }

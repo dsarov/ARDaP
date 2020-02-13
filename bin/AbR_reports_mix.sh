@@ -191,7 +191,7 @@ done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print
 
 # create patientDrugSusceptibilityData.csv
 # ID refers to individual strains
-awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
+awk '!seen[$0]++' AbR_output.final.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.final.txt
 sed -i "s/^/$seq,/" drug.table.txt
 awk -v FS="," -v OFS="," '{print $1,$2,$3,$5,$6 }' drug.table.txt > drug.table.txt.tmp
