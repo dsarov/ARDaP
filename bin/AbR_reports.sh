@@ -44,6 +44,9 @@ cp drug.table.txt drug.table.txt.backup
 awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.final.txt
 
+#Deduplicate any repition in the resistance list
+awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
+mv AbR_output.temp AbR_output.txt
 
 #sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
 #TO DO -  replace with awk pattern matching is case users want to add custom drug classes
