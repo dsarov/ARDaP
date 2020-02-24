@@ -156,7 +156,7 @@ STRAIN_2_sequence.fq.gz (second pair)
 
 ## Inclusion of Assembled Genomes
 
-ARDaP can optionally include assembled genomes in the workflow. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the extension.fasta. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+ARDaP can optionally include assembled genomes in the workflow. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
 ### Database Creation
 
