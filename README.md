@@ -18,8 +18,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [ARDaP Workflow](#ARDaP-workflow)
 - [Usage](#usage)
 - [Parameters](#parameters)
-- [Inclusion of Assembled/Reference Genomes](#Inclusion-of-Assembled/Reference-Genomes)
-- [Examples](#examples)
+- [Inclusion of Assembled Genomes](#Inclusion-of-Assembled-Genomes)
 - [Custom database creation](#Database-creation)
 - [Troubleshooting](#Troubleshooting)
 - [Citation](#citation)
@@ -155,7 +154,7 @@ STRAIN_2_sequence.fq.gz (second pair)
 ```
 `nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"`
 
-## Inclusion of Assembled/Reference Genomes
+## Inclusion of Assembled Genomes
 
 ARDaP can optionally include assembled genomes in the workflow. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the extension.fasta. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
