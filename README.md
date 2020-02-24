@@ -18,7 +18,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [ARDaP Workflow](#ARDaP-workflow)
 - [Usage](#usage)
 - [Parameters](#parameters)
-- [Inclusion of Assembled/Reference Genomes](#Inclusion of Assembled/Reference Genomes)
+- [Inclusion of Assembled/Reference Genomes](#Inclusion-of-Assembled/Reference-Genomes)
 - [Examples](#examples)
 - [Custom database creation](#Database-creation)
 - [Troubleshooting](#Troubleshooting)
