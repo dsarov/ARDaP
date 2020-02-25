@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.6
+ *  Version             1.6.1
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,14 +12,14 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.6
+                             v1.6.1
 ================================================================================
 
 Input Parameter:
 
     --fastq      Input PE read file wildcard (default: *_{1,2}.fastq.gz)
 
-                Currently this is set to $params.fastq
+                 Currently this is set to $params.fastq
 
 Optional Parameters:
 
@@ -32,6 +32,13 @@ Optional Parameters:
                  in --database (default: k96243.fasta)
 
                  Currently you are using $params.ref
+
+    --assemblies Optionally include a directory of assembled genomes in the
+                 analysis. Set this parameter to 'true' if you wish to included
+                 assembled genomes and place all assembled genomes in a
+                 subdirectory called 'assemblies'. (default: false)
+
+                 Currently mictures is set to $params.assemblies
 
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
@@ -92,15 +99,18 @@ fastq = Channel
 Have you included the read files in the current directory and do they have the correct naming?
 With the parameters specified, ARDaP is looking for reads named ${params.fastq}.
 To fix this error either rename your reads to match this formatting or specify the desired format
-when initializing ARDaP e.g. --fastq *_{1,2}_sequence.fastq.gz"""
-}
+when initializing ARDaP e.g. --fastq "*_{1,2}_sequence.fastq.gz"
 
-assemblies = Channel
-  .fromPath("${params.assemblies}", checkIfExists: true)
-  .ifEmpty {"No assembled genomes will be processed"}
-  .map { file ->
-    def id = file.name.toString().tokenize('_').get(0)
-    return tuple(id, file)
+"""}
+
+if (params.assemblies) {
+  assembly_loc = Channel
+    .fromPath("${params.assembly_loc}", checkIfExists: true)
+    .ifEmpty {"No assembled genomes will be processed"}
+    .map { file ->
+      def id = file.name.toString().tokenize('_').get(0)
+      return tuple(id, file)
+    }
 }
 
 resistance_database_file = file(params.resistance_db)
@@ -159,23 +169,18 @@ process IndexReference {
 }
 
 /*
-=======================================================================
-Part 2: read processing, reference alignment and variant identification
-=======================================================================
-// Variant calling sub-workflow - basically SPANDx with a tonne of updates
-// Careful here, not sure if the output overwrites the symlinks
-// created by Nextflow (if input is .fq.gz) and would do weird stuff?
-
-=======================================================================
-   Part 2A: Trim reads with light quality filter and remove adapters
-=======================================================================
+======================================================================
+      Part 1B: create synthetic reads from reference files
+======================================================================
 */
-process Read_synthesis {
+
+if (params.assemblies) {
+  process Read_synthesis {
     label "art"
     tag {"$assembly.baseName"}
 
     input:
-    set id, file(assembly) from assemblies
+    set id, file(assembly) from assembly_loc
 
     output:
     set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly, alignmentCARD_assembly)
@@ -188,9 +193,25 @@ process Read_synthesis {
     gzip ${assembly.baseName}_2_cov.fq
 
     """
+  }
 }
 
+/*
+=======================================================================
+Part 2: read processing, reference alignment and variant identification
+=======================================================================
+// Variant calling sub-workflow - basically SPANDx with a tonne of updates
+// Careful here, not sure if the output overwrites the symlinks
+// created by Nextflow (if input is .fq.gz) and would do weird stuff?
 
+*/
+
+
+/*
+=======================================================================
+   Part 2A: Trim reads with light quality filter and remove adapters
+=======================================================================
+*/
 
 process Trimmomatic {
 
@@ -243,10 +264,11 @@ process Downsample {
 }
 /*
 =======================================================================
-               Part 2C: Align reads against the reference
+        Part 2C: Align reads against the reference with assemblies
 =======================================================================
 */
-process ReferenceAlignment {
+if (params.assemblies) {
+  process ReferenceAlignment_assembly {
 
     label "spandx_alignment"
     tag {"$id"}
@@ -266,7 +288,37 @@ process ReferenceAlignment {
     samtools index ${id}.bam
     """
 
+  }
+
+} else {
+/*
+=======================================================================
+               Part 2C: Align reads against the reference
+=======================================================================
+*/
+  process ReferenceAlignment {
+
+    label "spandx_alignment"
+    tag {"$id"}
+
+    input:
+    file ref_index from ref_index_ch
+    set id, file(forward), file(reverse) from alignment // Reads
+
+    output:
+    set id, file("${id}.bam"), file("${id}.bam.bai") into dup
+
+    """
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
+    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
+    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
+    samtools index ${id}.bam
+    """
+
+  }
 }
+/*
 /*
 =======================================================================
                        Part 2D: De-duplicate bams
@@ -714,8 +766,8 @@ if (params.mixtures) {
 }
 
 // The CARD alignment and query steps are identical with or without mixtures
-
-process AlignmentCARD {
+if (params.assemblies) {
+  process AlignmentCARD_assembly {
 
     label "spandx_alignment"
     tag { "$id" }
@@ -736,6 +788,32 @@ process AlignmentCARD {
     samtools sort -@ 1 -o ${id}.card.bam bam_tmp
     samtools index ${id}.card.bam
     """
+  }
+
+} else {
+
+  process AlignmentCARD {
+
+    label "spandx_alignment"
+    tag { "$id" }
+
+    input:
+    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
+    set id, file(forward), file(reverse) from alignmentCARD
+
+    output:
+    set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch
+
+    """
+    bwa index ${card_ref}
+    samtools faidx ${card_ref}
+    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
+    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
+    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
+    samtools index ${id}.card.bam
+    """
+  }
 }
 
 process CoverageCARD {
