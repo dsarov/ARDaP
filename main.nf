@@ -38,7 +38,7 @@ Optional Parameters:
                  assembled genomes and place all assembled genomes in a
                  subdirectory called 'assemblies'. (default: false)
 
-                 Currently mictures is set to $params.assemblies
+                 Currently mixtures is set to $params.assemblies
 
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
