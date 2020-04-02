@@ -9,27 +9,6 @@ RESISTANCE_DB=$2
 #cutoff=$4
 
 
-cat << _EOF_ >  Variant_ignore_Q.txt  
-SELECT
-Variants_SNP_indel.Gene_name,
-Variants_SNP_indel.Variant_annotation
-FROM
-	Variants_SNP_indel
-WHERE
-	Variants_SNP_indel.Antibiotic_affected LIKE 'none';
-_EOF_
-  
-
-sqlite3 "$RESISTANCE_DB" < Variant_ignore_Q.txt >> Variant_ignore.txt;
-
-sed -i 's/|/ /g' Variant_ignore.txt 
-
-
-while read f; do 
-	grep -vw "$f" ${seq}.Function_lost_list.txt > ${seq}.Function_lost_list.txt.tmp
-	mv ${seq}.Function_lost_list.txt.tmp ${seq}.Function_lost_list.txt
-done < Variant_ignore.txt
-
 #subset the SNP data based on interesting genes
 SNP_DATA=$(
 cat << EOF 
@@ -93,7 +72,7 @@ for (( i=1; i<"$SNP_COUNT"; i++ )); do
 			mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.annotated.ALL.effects.subset | awk '{ print $6 }' | awk -F"," '{ print $2 }' )
 			mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
 			mixture_percent="$mixture_percent"%
-			sed -i '$ d' AbR_output.txt
+			sed -i '$ d' ${seq}.AbR_output_snp_indel_mix.txt
 			echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_snp_indel_mix.txt
 			rm output.temp
 		fi
