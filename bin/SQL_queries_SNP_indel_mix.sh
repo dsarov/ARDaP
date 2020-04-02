@@ -2,7 +2,7 @@
 
 
 seq=$1
-RESISTANCE_DB=$2 
+RESISTANCE_DB=$2
 #CARD_DB=$3
 
 ##GWAS cutoff value
@@ -64,7 +64,7 @@ STATEMENT_SNPS
 #echo "SNP_COUNT=$SNP_COUNT"
 
 for (( i=1; i<"$SNP_COUNT"; i++ )); do 
-	sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee output.temp >> ${seq}.AbR_output_snp_indel_mix.txt
+	sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" | tee -a output.temp ${seq}.AbR_output_snp_indel_mix.txt
 		#copy the mixture information that was just found to the output
 		if [ -s output.temp ]; then
 			echo "Format out command here"
