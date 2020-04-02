@@ -4,6 +4,30 @@
 seq=$1
 RESISTANCE_DB=$2 
 
+
+
+cat << _EOF_ >  Variant_ignore_Q.txt  
+SELECT
+Variants_SNP_indel.Gene_name,
+Variants_SNP_indel.Variant_annotation
+FROM
+	Variants_SNP_indel
+WHERE
+	Variants_SNP_indel.Antibiotic_affected LIKE 'none';
+_EOF_
+  
+
+sqlite3 "$RESISTANCE_DB" < Variant_ignore_Q.txt >> Variant_ignore.txt;
+
+sed -i 's/|/ /g' Variant_ignore.txt 
+
+
+while read f; do 
+	grep -vw "$f" ${seq}.Function_lost_list.txt > ${seq}.Function_lost_list.txt.tmp
+	mv ${seq}.Function_lost_list.txt.tmp ${seq}.Function_lost_list.txt
+done < Variant_ignore.txt
+
+
 declare -A SQL_loss_report_mix=()
 STATEMENT_GENE_LOSS_COV_MIX () {
 COUNTER=1
