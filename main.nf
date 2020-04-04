@@ -325,7 +325,7 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
     samtools sort -@ 1 -o ${id}.card.bam bam_tmp
     samtools index ${id}.card.bam
-    bedtools coverage -a ${card_coverage_bed} -b ${card_bam} > ${id}.card.bedcov
+    bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
     bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
     """
 
