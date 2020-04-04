@@ -183,7 +183,7 @@ if (params.assemblies) {
     set id, file(assembly) from assembly_loc
 
     output:
-    set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly, alignmentCARD_assembly)
+    set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly)
 
     """
     art_illumina -i ${assembly} -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o ${assembly.baseName}_out
@@ -303,10 +303,13 @@ if (params.assemblies) {
 
     input:
     file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment // Reads
+    set id, file(forward), file(reverse) from alignment
+    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
+  //  set id, file(forward), file(reverse) from alignmentCARD.mix(alignmentCARD_assembly) // Reads
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -314,6 +317,16 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
+
+    bwa index ${card_ref}
+    samtools faidx ${card_ref}
+    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
+    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
+    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
+    samtools index ${id}.card.bam
+    bedtools coverage -a ${card_coverage_bed} -b ${card_bam} > ${id}.card.bedcov
+    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
     """
 
   }
@@ -388,7 +401,7 @@ if (params.mixtures) {
     output:
     set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
     //set id, file("${id}.raw.gvcf")
-	 // file("${id}.raw.gvcf") into gvcf_files
+	  // file("${id}.raw.gvcf") into gvcf_files
     //val true into gvcf_complete_ch
 
     """
@@ -763,93 +776,6 @@ if (params.mixtures) {
     '''
 
   }
-}
-
-// The CARD alignment and query steps are identical with or without mixtures
-if (params.assemblies) {
-  process AlignmentCARD_assembly {
-
-    label "spandx_alignment"
-    tag { "$id" }
-
-    input:
-    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    set id, file(forward), file(reverse) from alignmentCARD.mix(alignmentCARD_assembly)
-
-    output:
-    set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch
-
-    """
-    bwa index ${card_ref}
-    samtools faidx ${card_ref}
-    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    samtools index ${id}.card.bam
-    """
-  }
-
-} else {
-
-  process AlignmentCARD {
-
-    label "spandx_alignment"
-    tag { "$id" }
-
-    input:
-    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    set id, file(forward), file(reverse) from alignmentCARD
-
-    output:
-    set id, file("${id}.card.bam"), file("${id}.card.bam.bai"), file("card.coverage.bed") into card_coverage_ch
-
-    """
-    bwa index ${card_ref}
-    samtools faidx ${card_ref}
-    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    samtools index ${id}.card.bam
-    """
-  }
-}
-
-process CoverageCARD {
-
-    label "spandx_default"
-    tag { "$id" }
-
-    input:
-    set id, file(card_bam), file(card_bam_bai), file(card_coverage_bed) from card_coverage_ch
-
-    output:
-    set id, file("${id}.card.bedcov") into card_queries_ch
-
-    """
-    bedtools coverage -a ${card_coverage_bed} -b ${card_bam} > ${id}.card.bedcov
-    """
-
-}
-
-process CARDqueries {
-
-    label "card_queries"
-    tag { "$id" }
-
-    input:
-    file card_db_ref from card_db_file
-    set id, file(card_bedcov) from card_queries_ch
-
-
-    output:
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch
-
-    script:
-    """
-    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
-    """
 }
 
 /*
