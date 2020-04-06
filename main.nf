@@ -354,7 +354,7 @@ process Deduplicate {
 
     label "spandx_default"
     tag { "$id" }
-    publishDir "./Outputs/bams", mode: 'copy', overwrite: false
+    publishDir "./Outputs/bams", mode: 'copy', pattern: "*.bam*", overwrite: false
 
     input:
     set id, file(bam_alignment), file(bam_index) from dup
@@ -433,83 +433,7 @@ if (params.mixtures) {
 
     """
   }
-/*
-  process VariantFilterMixture {
 
-    label "spandx_gatk"
-    tag { "$id" }
-    publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-    set id, file(variants), file(variants_index) from mixtureFilter
-
-    output:
-    set id, file("${id}.PASS.snps.indels.mixed.vcf") into filteredMixture
-
-    // Not sure if I overlooked something, but no FAIL here
-
-    """
-    gatk VariantFiltration -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V $variants \
-    -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
-    -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
-    -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
-
-    header=`grep -n "#CHROM" ${id}.snps.indels.filtered.mixed.vcf | cut -d':' -f 1`
-		head -n "\$header" ${id}.snps.indels.filtered.mixed.vcf > snp_head
-		cat ${id}.snps.indels.filtered.mixed.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.indels.mixed.vcf
-    """
-  }
-
-  process AnnotateMixture {
-
-    label "spandx_snpeff"
-    tag { "$id" }
-    publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
-
-    input:
-    set id, file("${id}.PASS.snps.indels.mixed.vcf") from filteredMixture
-
-    output:
-    set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
-
-    """
-    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
-    """
-  }
-
-  process PindelProcessing {
-
-    label "spandx_pindel"
-    tag { "$id" }
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    set id, file("${id}.dedup.bam"), file(alignment_index) from mixturePindel
-
-    output:
-    file("pindel.out_D.vcf") into mixtureDeletionSummary
-    file("pindel.out_TD.vcf") into mixtureDuplicationSummary
-
-    // Pindel + threads to run a bit faster
-    // In the original script, there is a pindel.out_INT, here: pindel.out_INT_final
-
-    """
-    echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
-    pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
-
-    rm -f pindel.out_CloseEndMapped pindel.out_INT_final
-
-    for f in pindel.out_*; do
-      pindel2vcf -r ${reference} -R ${reference.baseName} -d ARDaP -p \$f -v \${f}.vcf -e 5 -is 15 -as 50000
-      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
-    done
-    """
-  }
-*/
   process MixtureSummariesSQL {
 
     label "spandx_default"
@@ -581,6 +505,11 @@ if (params.mixtures) {
 
       label "spandx_gatk"
       tag { "$id" }
+      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: false
+      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: false
+      publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*annotated*.vcf", overwrite: false
+    //publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
+
       //publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
 
       input:
@@ -588,27 +517,122 @@ if (params.mixtures) {
       file reference_fai from ref_fai_ch1
       file reference_dict from ref_dict_ch1
       set id, file(dedup_bam), file(dedup_index) from variantCalling
+      set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
 
       output:
-      set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
-      set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
-      //file("${id}.raw.gvcf") into gvcf_files
-  //    val true into gvcf_complete_ch
+    //  set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
+  //    set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
+      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
+      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
+      set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
 
-      // v1.4 Line 261 not included yet: gatk HaplotypeCaller -R $reference -ERC GVCF --I $GATK_REALIGNED_BAM -O $GATK_RAW_VARIANTS
 
       """
       gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
+
+      gatk VariantFiltration -R ${reference} -O ${id}.filtered.snps.vcf -V $snps \
+      --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
+      -filter "MLEAF < $params.MLEAF_SNP" --filter-name "AFFilter" \
+      -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
+      -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
+      -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
+      -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
+
+      header=`grep -n "#CHROM" ${id}.filtered.snps.vcf | cut -d':' -f 1`
+      head -n "\$header" ${id}.filtered.snps.vcf > snp_head
+      cat ${id}.filtered.snps.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.vcf
+
+      gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V $snps \
+      --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
+      -filter "MLEAF < $params.MLEAF_SNP" --filter-name "FAIL" \
+      -filter "QD < $params.QD_SNP" --filter-name "FAIL1" \
+      -filter "MQ < $params.MQ_SNP" --filter-name "FAIL2" \
+      -filter "FS > $params.FS_SNP" --filter-name "FAIL3" \
+      -filter "QUAL < $params.QUAL_SNP" --filter-name "FAIL5"
+
+      header=`grep -n "#CHROM" ${id}.failed.snps.vcf | cut -d':' -f 1`
+      head -n "\$header" ${id}.failed.snps.vcf > snp_head
+      cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
+
+      gatk VariantFiltration -R $reference -O ${id}.filtered.indels.vcf -V $indels \
+      -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "AFFilter" \
+      -filter "QD < $params.QD_INDEL" --filter-name "QDFilter" \
+      -filter "FS > $params.FS_INDEL" --filter-name "FSFilter" \
+      -filter "QUAL < $params.QUAL_INDEL" --filter-name "QualFilter"
+
+      header=`grep -n "#CHROM" ${id}.filtered.indels.vcf | cut -d':' -f 1`
+      head -n "\$header" ${id}.filtered.indels.vcf > snp_head
+      cat ${id}.filtered.indels.vcf | grep PASS | cat snp_head - > ${id}.PASS.indels.vcf
+
+      gatk VariantFiltration -R  $reference -O ${id}.failed.indels.vcf -V $indels \
+      -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "FAIL" \
+      -filter "MQ < $params.MQ_INDEL" --filter-name "FAIL1" \
+      -filter "QD < $params.QD_INDEL" --filter-name "FAIL2" \
+      -filter "FS > $params.FS_INDEL" --filter-name "FAIL3" \
+      -filter "QUAL < $params.QUAL_INDEL" --filter-name "FAIL5"
+
+      header=`grep -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
+      head -n "\$header" ${id}.failed.indels.vcf > indel_head
+      cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
+
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $snp_pass > ${id}.PASS.snps.annotated.vcf
+
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $indel_pass > ${id}.PASS.indels.annotated.vcf
+
+      echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
+      zcat $perbase | awk '\$4 ~ /^0/ { print \$1,\$2,\$3,\$3-\$2 }' > del.summary.tmp
+      cat tmp.header del.summary.tmp > ${id}.deletion_summary.txt
+
+      covdep=\$(head -n 1 $depth)
+      DUP_CUTOFF=\$(echo "\$covdep*3" | bc)
+
+      zcat $perbase | awk -v DUP_CUTOFF="\$DUP_CUTOFF" '\$4 >= DUP_CUTOFF { print \$1,\$2,\$3,\$3-\$2 }' > dup.summary.tmp
+
+      i=\$(head -n1 dup.summary.tmp | awk '{ print \$2 }')
+      k=\$(tail -n1 dup.summary.tmp | awk '{ print \$3 }')
+      chr=\$(head -n1 dup.summary.tmp | awk '{ print \$1 }')
+
+      awk -v i="\$i" -v k="\$k" -v chr="\$chr" 'BEGIN {printf "chromosome " chr " start " i " "; j=i} {if (i==\$2 || i==\$2-1 || i==\$2-2 ) {
+      i=\$3;
+      }
+      else {
+        print "end "i " interval " i-j;
+        j=\$2;
+        i=\$3;
+        printf "chromosome " \$1 " start "j " ";
+      }} END {print "end "k " interval "k-j}' < dup.summary.tmp > dup.summary.tmp1
+
+      sed -i 's/chromosome\\|start \\|end \\|interval //g' dup.summary.tmp1
+      echo -e "Chromosome\\tStart\\tEnd\\tInterval" > dup.summary.tmp.header
+      cat dup.summary.tmp.header dup.summary.tmp1 > ${id}.duplication_summary.txt
+
+      awk '{
+        if (match($0,"ANN=")){print substr($0,RSTART)}
+        }' !{indels} > indel.effects.tmp
+
+      awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
+
+      awk '{
+        if (match($0,"ANN=")){print substr($0,RSTART)}
+        }' !{snps} > snp.effects.tmp
+      awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
+
+      echo 'Identifying high consequence mutations'
+
+      grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
+      grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
+
+      sed -i 's/p\\.//' !{id}.Function_lost_list.txt
       """
     }
-
+/*
   process FilterSNPs {
 
     label "spandx_gatk"
     tag { "$id" }
-    publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
+
 
     input:
     file reference from reference_file
@@ -620,29 +644,7 @@ if (params.mixtures) {
     set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
 
     """
-    gatk VariantFiltration -R ${reference} -O ${id}.filtered.snps.vcf -V $snps \
-    --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
-    -filter "MLEAF < $params.MLEAF_SNP" --filter-name "AFFilter" \
-    -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
-    -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
-    -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
-    -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
 
-    header=`grep -n "#CHROM" ${id}.filtered.snps.vcf | cut -d':' -f 1`
-		head -n "\$header" ${id}.filtered.snps.vcf > snp_head
-		cat ${id}.filtered.snps.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.vcf
-
-    gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V $snps \
-    --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
-    -filter "MLEAF < $params.MLEAF_SNP" --filter-name "FAIL" \
-    -filter "QD < $params.QD_SNP" --filter-name "FAIL1" \
-    -filter "MQ < $params.MQ_SNP" --filter-name "FAIL2" \
-    -filter "FS > $params.FS_SNP" --filter-name "FAIL3" \
-    -filter "QUAL < $params.QUAL_SNP" --filter-name "FAIL5"
-
-    header=`grep -n "#CHROM" ${id}.failed.snps.vcf | cut -d':' -f 1`
-		head -n "\$header" ${id}.failed.snps.vcf > snp_head
-		cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
     """
   }
 
@@ -650,7 +652,7 @@ if (params.mixtures) {
 
     label "spandx_gatk"
     tag { "$id" }
-    publishDir "./Outputs/Variants/VCFs", mode: 'copy', overwrite: false
+
 
     input:
     file reference from reference_file
@@ -662,26 +664,7 @@ if (params.mixtures) {
     set id, file("${id}.PASS.indels.vcf"), file("${id}.FAIL.indels.vcf") into filteredIndels
 
     """
-    gatk VariantFiltration -R $reference -O ${id}.filtered.indels.vcf -V $indels \
-    -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "AFFilter" \
-    -filter "QD < $params.QD_INDEL" --filter-name "QDFilter" \
-    -filter "FS > $params.FS_INDEL" --filter-name "FSFilter" \
-    -filter "QUAL < $params.QUAL_INDEL" --filter-name "QualFilter"
 
-    header=`grep -n "#CHROM" ${id}.filtered.indels.vcf | cut -d':' -f 1`
-		head -n "\$header" ${id}.filtered.indels.vcf > snp_head
-		cat ${id}.filtered.indels.vcf | grep PASS | cat snp_head - > ${id}.PASS.indels.vcf
-
-    gatk VariantFiltration -R  $reference -O ${id}.failed.indels.vcf -V $indels \
-    -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "FAIL" \
-    -filter "MQ < $params.MQ_INDEL" --filter-name "FAIL1" \
-    -filter "QD < $params.QD_INDEL" --filter-name "FAIL2" \
-    -filter "FS > $params.FS_INDEL" --filter-name "FAIL3" \
-    -filter "QUAL < $params.QUAL_INDEL" --filter-name "FAIL5"
-
-    header=`grep -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
-		head -n "\$header" ${id}.failed.indels.vcf > indel_head
-		cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
     """
   }
 
@@ -692,7 +675,7 @@ if (params.mixtures) {
 
     label "spandx_snpeff"
     tag { "$id" }
-    publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
+
 
     input:
     set id, file(snp_pass), file(snp_fail) from filteredSNPs
@@ -701,7 +684,7 @@ if (params.mixtures) {
     set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs
 
     """
-    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $snp_pass > ${id}.PASS.snps.annotated.vcf
+
     """
   }
 
@@ -711,7 +694,7 @@ if (params.mixtures) {
 
     label "spandx_snpeff"
     tag { "$id" }
-    publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
+
 
     input:
     set id, file(indel_pass), file(indel_fail) from filteredIndels
@@ -720,7 +703,7 @@ if (params.mixtures) {
     set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
 
     """
-    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $indel_pass > ${id}.PASS.indels.annotated.vcf
+
     """
   }
 
@@ -737,32 +720,7 @@ if (params.mixtures) {
     set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
 
     """
-		echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
-		zcat $perbase | awk '\$4 ~ /^0/ { print \$1,\$2,\$3,\$3-\$2 }' > del.summary.tmp
-		cat tmp.header del.summary.tmp > ${id}.deletion_summary.txt
 
-    covdep=\$(head -n 1 $depth)
-    DUP_CUTOFF=\$(echo "\$covdep*3" | bc)
-
-    zcat $perbase | awk -v DUP_CUTOFF="\$DUP_CUTOFF" '\$4 >= DUP_CUTOFF { print \$1,\$2,\$3,\$3-\$2 }' > dup.summary.tmp
-
-	  i=\$(head -n1 dup.summary.tmp | awk '{ print \$2 }')
-	  k=\$(tail -n1 dup.summary.tmp | awk '{ print \$3 }')
-	  chr=\$(head -n1 dup.summary.tmp | awk '{ print \$1 }')
-
-	  awk -v i="\$i" -v k="\$k" -v chr="\$chr" 'BEGIN {printf "chromosome " chr " start " i " "; j=i} {if (i==\$2 || i==\$2-1 || i==\$2-2 ) {
-		i=\$3;
-		}
-		else {
-		  print "end "i " interval " i-j;
-		  j=\$2;
-		  i=\$3;
-		  printf "chromosome " \$1 " start "j " ";
-		}} END {print "end "k " interval "k-j}' < dup.summary.tmp > dup.summary.tmp1
-
-	  sed -i 's/chromosome\\|start \\|end \\|interval //g' dup.summary.tmp1
-	  echo -e "Chromosome\\tStart\\tEnd\\tInterval" > dup.summary.tmp.header
-	  cat dup.summary.tmp.header dup.summary.tmp1 > ${id}.duplication_summary.txt
     """
   }
 
@@ -776,35 +734,17 @@ if (params.mixtures) {
     set id, file(snps) from annotatedSNPs
 
     output:
-    set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
-    set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
-    set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
+
 
     shell:
 
     '''
-    awk '{
-			if (match($0,"ANN=")){print substr($0,RSTART)}
-			}' !{indels} > indel.effects.tmp
 
-		awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
-
-		awk '{
-			if (match($0,"ANN=")){print substr($0,RSTART)}
-			}' !{snps} > snp.effects.tmp
-		awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
-
-		echo 'Identifying high consequence mutations'
-
-		grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
-		grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
-
-		sed -i 's/p\\.//' !{id}.Function_lost_list.txt
     '''
 
   }
 }
-
+*/
 /*
 ====================================================================
                               Part 3
@@ -829,7 +769,6 @@ if (params.mixtures) {
 
 
     output:
-  //  set id, file("${id}.AbR_output_snp_indel_mix.txt") into abr_report_snp_indel_mix_ch
     set id, file("${id}.AbR_output.final.txt") into r_report_ch
     file("patientMetaData.csv") into r_report_metadata_ch
     file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
@@ -841,51 +780,7 @@ if (params.mixtures) {
     bash AbR_reports_mix.sh ${id} ${resistance_db}
     """
   }
-/*
-  process SqlDeletionDuplicationMix {
 
-    label "genomic_queries"
-    tag { "$id" }
-
-    input:
-    set id, file("${id}.Function_lost_list.txt") from function_lost_ch2
-    set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
-    set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
-    file resistance_db from resistance_database_file
-
-    output:
-    set id, file("${id}.AbR_output_del_dup_mix.txt") into abr_report_del_dup_mix_ch
-
-    script:
-    """
-    bash SQL_queries_DelDupMix.sh ${id} ${resistance_db}
-    """
-  }
-
-  process AbrReportMix {
-
-    label "report"
-    tag { "$id" }
-    //publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
-
-    input:
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch
-    set id, file("${id}.AbR_output_del_dup_mix.txt") from abr_report_del_dup_mix_ch
-    set id, file("${id}.AbR_output_snp_indel_mix.txt") from abr_report_snp_indel_mix_ch
-    file("patientMetaData.csv") from patient_meta_file
-    file resistance_db from resistance_database_file
-
-    output:
-    set id, file("${id}.AbR_output.final.txt") into r_report_ch
-    file("patientMetaData.csv") into r_report_metadata_ch
-    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
-
-    script:
-    """
-    bash AbR_reports_mix.sh ${id} ${resistance_db}
-    """
-  }
-  */
 }
 else {
   process SqlSnpsIndels {
@@ -900,16 +795,20 @@ else {
     file resistance_db from resistance_database_file
 
     output:
-    set id, file("${id}.AbR_output_snp_indel.txt") into abr_report_snp_indel_ch
-    //Not sure if the out needs to be specific for each process or can be merged easily
+  //  set id, file("${id}.AbR_output_snp_indel.txt") into abr_report_snp_indel_ch
+    set id, file("${id}.AbR_output.final.txt") into r_report_ch
+    file("patientMetaData.csv") into r_report_metadata_ch
+    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
 
     script:
     """
     bash SQL_queries_SNP_indel.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDup.sh ${id} ${resistance_db}
+    bash AbR_reports.sh ${id} ${resistance_db}
     """
 
   }
-
+/*
   process SqlDeletionDuplication {
 
     label "genomic_queries"
@@ -926,7 +825,7 @@ else {
 
     script:
     """
-    bash SQL_queries_DelDup.sh ${id} ${resistance_db}
+
     """
   }
 
@@ -944,15 +843,14 @@ else {
     file resistance_db from resistance_database_file
 
     output:
-    set id, file("${id}.AbR_output.final.txt") into r_report_ch
-    file("patientMetaData.csv") into r_report_metadata_ch
-    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
+
     //set id, file("${id}.AbR_output.txt")
 
     script:
     """
-    bash AbR_reports.sh ${id} ${resistance_db}
+
     """
+    */
   }
 }
 
