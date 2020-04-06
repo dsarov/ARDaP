@@ -37,7 +37,7 @@ sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
 }
 
 Report_structure
-cat ${seq}.*.txt | tee AbR_output.txt AbR_output.final.txt
+cat ${seq}.AbR_output_snp_indel_mix.txt ${seq}.AbR_output_del_dup_mix.txt ${seq}.CARD_primary_output.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
 #sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
