@@ -246,7 +246,7 @@ process Downsample {
     set id, file(forward), file(reverse) from downsample
 
     output:
-    set id, file("${id}_1_cov.fq.gz"), file("${id}_2_cov.fq.gz") into (alignment, alignmentCARD)
+    set id, file("${id}_1_cov.fq.gz"), file("${id}_2_cov.fq.gz") into (alignment)
 
     script:
     if (params.size > 0) {
@@ -275,10 +275,13 @@ if (params.assemblies) {
 
     input:
     file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment.mix(alignment_assembly) // Reads
+    set id, file(forward), file(reverse) from alignment.mix(alignment_assembly)
+    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
+    file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_1
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -286,6 +289,16 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
+
+    bwa index ${card_ref}
+    samtools faidx ${card_ref}
+    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
+    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
+    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
+    samtools index ${id}.card.bam
+    bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
+    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
     """
 
   }
@@ -309,7 +322,7 @@ if (params.assemblies) {
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_1
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -345,40 +358,26 @@ process Deduplicate {
 
     input:
     set id, file(bam_alignment), file(bam_index) from dup
+    file refcov from refcov_ch
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_1
 
     output:
-    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (averageCoverage, variantCalling, mixturePindel, variantcallingGVCF_ch)
+    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (variantCalling, mixturePindel, variantcallingGVCF_ch)
+    set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into coverageData
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_2
 
     """
     gatk MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
     --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT
     samtools index ${id}.dedup.bam
-    """
-}
-/*
-=======================================================================
-              Part 2E: Calculate coverage stats
-=======================================================================
-*/
-process ReferenceCoverage {
 
-    label "spandx_default"
-    tag { "$id" }
-
-    input:
-    file refcov from refcov_ch
-    set id, file(dedup_bam), file(dedup_bam_bai) from averageCoverage
-
-    output:
-    set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into (coverageData)
-
-    """
-    mosdepth --by ${refcov} output ${dedup_bam}
+    mosdepth --by ${refcov} output ${id}.dedup.bam
     sum_depth=\$(zcat output.regions.bed.gz | awk '{print \$4}' | awk '{s+=\$1}END{print s}')
     total_chromosomes=\$(zcat output.regions.bed.gz | awk '{print \$4}' | wc -l)
     echo "\$sum_depth/\$total_chromosomes" | bc > ${id}.depth.txt
     """
 }
+
 /*
 =======================================================================
                         Part 2F: Variant identification
@@ -390,25 +389,50 @@ if (params.mixtures) {
 
     label "spandx_gatk"
     tag { "$id" }
-
+    publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*.ALL.annotated.mixture.vcf", overwrite: false
+    publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*.PASS.snps.indels.mixed.vcf", overwrite: false
 
     input:
     file reference from reference_file
     file reference_fai from ref_fai_ch1
     file reference_dict from ref_dict_ch1
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantCalling
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
 
     output:
-    set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
-    //set id, file("${id}.raw.gvcf")
-	  // file("${id}.raw.gvcf") into gvcf_files
-    //val true into gvcf_complete_ch
+    set id, file("${id}.PASS.snps.indels.mixed.vcf") into mixtureArdapProcessing
+    file("pindel.out_D.vcf") into mixtureDeletionSummary
+    file("pindel.out_TD.vcf") into mixtureDuplicationSummary
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+
 
     """
     gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
+    
+    gatk VariantFiltration -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V ${id}.raw.snps.indels.mixed.vcf \
+    -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
+    -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
+    -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
+
+    header=`grep -n "#CHROM" ${id}.snps.indels.filtered.mixed.vcf | cut -d':' -f 1`
+    head -n "\$header" ${id}.snps.indels.filtered.mixed.vcf > snp_head
+    cat ${id}.snps.indels.filtered.mixed.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.indels.mixed.vcf
+
+    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
+
+    echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
+    pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
+
+    rm -f pindel.out_CloseEndMapped pindel.out_INT_final
+
+    for f in pindel.out_*; do
+      pindel2vcf -r ${reference} -R ${reference.baseName} -d ARDaP -p \$f -v \${f}.vcf -e 5 -is 15 -as 50000
+      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
+    done
+
     """
   }
-
+/*
   process VariantFilterMixture {
 
     label "spandx_gatk"
@@ -484,7 +508,7 @@ if (params.mixtures) {
     done
     """
   }
-
+*/
   process MixtureSummariesSQL {
 
     label "spandx_default"
@@ -494,12 +518,14 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
 
     output:
     set id, file("${id}.annotated.ALL.effects") into variants_all_ch
     set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
     set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
+    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
 
     // check additional escapes in sed command
 
@@ -797,16 +823,23 @@ if (params.mixtures) {
     set id, file("${id}.annotated.ALL.effects") from variants_all_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
     file resistance_db from resistance_database_file
+    file("patientMetaData.csv") from patient_meta_file
+
 
     output:
-    set id, file("${id}.AbR_output_snp_indel_mix.txt") into abr_report_snp_indel_mix_ch
+  //  set id, file("${id}.AbR_output_snp_indel_mix.txt") into abr_report_snp_indel_mix_ch
+    set id, file("${id}.AbR_output.final.txt") into r_report_ch
+    file("patientMetaData.csv") into r_report_metadata_ch
+    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
 
     script:
     """
     bash SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
+    bash SQL_queries_DelDupMix.sh ${id} ${resistance_db}
+    bash AbR_reports_mix.sh ${id} ${resistance_db}
     """
   }
-
+/*
   process SqlDeletionDuplicationMix {
 
     label "genomic_queries"
@@ -850,6 +883,7 @@ if (params.mixtures) {
     bash AbR_reports_mix.sh ${id} ${resistance_db}
     """
   }
+  */
 }
 else {
   process SqlSnpsIndels {
@@ -927,10 +961,8 @@ process R_report {
 
   input:
   set id, file("${id}.AbR_output.final.txt") from r_report_ch
-  //file("ARDaP_logo.png") from r_report_logo_file
   file("patientMetaData.csv") from r_report_metadata_ch
   file("patientDrugSusceptibilityData.csv") from r_report_drug_data_ch
-  //file("sweaveTB-WGS-Micro-Report.Rnw") from sweave_report_file
 
   output:
   set id, file("${id}_report.html")
@@ -965,10 +997,8 @@ if (params.phylogeny) {
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantcallingGVCF_ch
 
     output:
-    //set id, file("${id}.raw.snps.indels.mixed.vcf"), file("${id}.raw.snps.indels.mixed.vcf.idx") into mixtureFilter
     set id, file("${id}.raw.gvcf")
 	  file("${id}.raw.gvcf") into gvcf_files
-    //val true into gvcf_complete_ch
 
     """
     gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
