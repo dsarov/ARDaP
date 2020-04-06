@@ -404,6 +404,7 @@ if (params.mixtures) {
     file("pindel.out_D.vcf") into mixtureDeletionSummary
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+    set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
 
 
     """
