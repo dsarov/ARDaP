@@ -400,7 +400,7 @@ if (params.mixtures) {
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
 
     output:
-    set id, file("${id}.PASS.snps.indels.mixed.vcf") into mixtureArdapProcessing
+    set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
     file("pindel.out_D.vcf") into mixtureDeletionSummary
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
@@ -408,7 +408,7 @@ if (params.mixtures) {
 
     """
     gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
-    
+
     gatk VariantFiltration -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V ${id}.raw.snps.indels.mixed.vcf \
     -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
     -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
