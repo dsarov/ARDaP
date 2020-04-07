@@ -606,25 +606,25 @@ if (params.mixtures) {
 
       sed -i 's/chromosome\\|start \\|end \\|interval //g' dup.summary.tmp1
       echo -e "Chromosome\\tStart\\tEnd\\tInterval" > dup.summary.tmp.header
-      cat dup.summary.tmp.header dup.summary.tmp1 > ${id}.duplication_summary.txt
+      cat dup.summary.tmp.header dup.summary.tmp1 > \${id}.duplication_summary.txt
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
         }' !{indels} > indel.effects.tmp
 
-      awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
+      awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> \${id}.annotated.indel.effects
 
       awk '{
-        if (match($0,"ANN=")){print substr($0,RSTART)}
+        if (match($0,"ANN=")){print substr(\$0,RSTART)}
         }' !{snps} > snp.effects.tmp
-      awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
+      awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > \${id}.annotated.snp.effects
 
       echo 'Identifying high consequence mutations'
 
-      grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
-      grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
+      grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
+      grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
 
-      sed -i 's/p\\.//' !{id}.Function_lost_list.txt
+      sed -i 's/p\\.//' \${id}.Function_lost_list.txt
       """
     }
 /*
