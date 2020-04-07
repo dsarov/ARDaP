@@ -522,18 +522,23 @@ if (params.mixtures) {
       output:
     //  set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
   //    set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
+      set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
       set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
       set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
       set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
+      set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs
+      set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
+      set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
+      set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
 
       shell:
 
       '''
       gatk HaplotypeCaller -R !{reference} --ploidy 1 --I !{dedup_bam} -O !{id}.raw.snps.indels.vcf
-      gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
-      gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
+      gatk SelectVariants -R !{reference} -V !{id}.raw.snps.indels.vcf -O !{id}.raw.snps.vcf -select-type SNP
+      gatk SelectVariants -R !{reference} -V !{id}.raw.snps.indels.vcf -O !{id}.raw.indels.vcf -select-type INDEL
 
-      gatk VariantFiltration -R ${reference} -O !{id}.filtered.snps.vcf -V $snps \
+      gatk VariantFiltration -R !{reference} -O !{id}.filtered.snps.vcf -V $snps \
       --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
       -filter "MLEAF < $params.MLEAF_SNP" --filter-name "AFFilter" \
       -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
@@ -541,11 +546,11 @@ if (params.mixtures) {
       -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
       -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
 
-      header=`grep -n "#CHROM" ${id}.filtered.snps.vcf | cut -d':' -f 1`
-      head -n "\$header" ${id}.filtered.snps.vcf > snp_head
-      cat ${id}.filtered.snps.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.vcf
+      header=`grep -n "#CHROM" !{id}.filtered.snps.vcf | cut -d':' -f 1`
+      head -n "$header" !{id}.filtered.snps.vcf > snp_head
+      cat !{id}.filtered.snps.vcf | grep PASS | cat snp_head - > !{id}.PASS.snps.vcf
 
-      gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V $snps \
+      gatk VariantFiltration -R !{reference} -O !{id}.failed.snps.vcf -V $snps \
       --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
       -filter "MLEAF < $params.MLEAF_SNP" --filter-name "FAIL" \
       -filter "QD < $params.QD_SNP" --filter-name "FAIL1" \
@@ -553,77 +558,77 @@ if (params.mixtures) {
       -filter "FS > $params.FS_SNP" --filter-name "FAIL3" \
       -filter "QUAL < $params.QUAL_SNP" --filter-name "FAIL5"
 
-      header=`grep -n "#CHROM" ${id}.failed.snps.vcf | cut -d':' -f 1`
-      head -n "\$header" ${id}.failed.snps.vcf > snp_head
-      cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
+      header=`grep -n "#CHROM" !{id}.failed.snps.vcf | cut -d':' -f 1`
+      head -n "$header" !{id}.failed.snps.vcf > snp_head
+      cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > !{id}.FAIL.snps.vcf
 
-      gatk VariantFiltration -R $reference -O ${id}.filtered.indels.vcf -V $indels \
+      gatk VariantFiltration -R !{reference} -O !{id}.filtered.indels.vcf -V $indels \
       -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "AFFilter" \
       -filter "QD < $params.QD_INDEL" --filter-name "QDFilter" \
       -filter "FS > $params.FS_INDEL" --filter-name "FSFilter" \
       -filter "QUAL < $params.QUAL_INDEL" --filter-name "QualFilter"
 
-      header=`grep -n "#CHROM" ${id}.filtered.indels.vcf | cut -d':' -f 1`
-      head -n "\$header" ${id}.filtered.indels.vcf > snp_head
-      cat ${id}.filtered.indels.vcf | grep PASS | cat snp_head - > ${id}.PASS.indels.vcf
+      header=`grep -n "#CHROM" !{id}.filtered.indels.vcf | cut -d':' -f 1`
+      head -n "$header" !{id}.filtered.indels.vcf > snp_head
+      cat !{id}.filtered.indels.vcf | grep PASS | cat snp_head - > !{id}.PASS.indels.vcf
 
-      gatk VariantFiltration -R  $reference -O ${id}.failed.indels.vcf -V $indels \
+      gatk VariantFiltration -R  !{reference} -O !{id}.failed.indels.vcf -V $indels \
       -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "FAIL" \
       -filter "MQ < $params.MQ_INDEL" --filter-name "FAIL1" \
       -filter "QD < $params.QD_INDEL" --filter-name "FAIL2" \
       -filter "FS > $params.FS_INDEL" --filter-name "FAIL3" \
       -filter "QUAL < $params.QUAL_INDEL" --filter-name "FAIL5"
 
-      header=`grep -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
-      head -n "\$header" ${id}.failed.indels.vcf > indel_head
-      cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
+      header=`grep -n "#CHROM" !{id}.failed.indels.vcf | cut -d':' -f 1`
+      head -n "$header" !{id}.failed.indels.vcf > indel_head
+      cat !{id}.filtered.indels.vcf | grep FAIL | cat indel_head - > !{id}.FAIL.indels.vcf
 
-      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $snp_pass > ${id}.PASS.snps.annotated.vcf
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff $snp_pass > !{id}.PASS.snps.annotated.vcf
 
-      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff $indel_pass > ${id}.PASS.indels.annotated.vcf
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff $indel_pass > !{id}.PASS.indels.annotated.vcf
 
       echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
-      zcat $perbase | awk '\$4 ~ /^0/ { print \$1,\$2,\$3,\$3-\$2 }' > del.summary.tmp
-      cat tmp.header del.summary.tmp > ${id}.deletion_summary.txt
+      zcat $perbase | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
+      cat tmp.header del.summary.tmp > !{id}.deletion_summary.txt
 
-      covdep=\$(head -n 1 $depth)
-      DUP_CUTOFF=\$(echo "\$covdep*3" | bc)
+      covdep=$(head -n 1 $depth)
+      DUP_CUTOFF=$(echo "$covdep*3" | bc)
 
-      zcat $perbase | awk -v DUP_CUTOFF="\$DUP_CUTOFF" '\$4 >= DUP_CUTOFF { print \$1,\$2,\$3,\$3-\$2 }' > dup.summary.tmp
+      zcat $perbase | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
 
-      i=\$(head -n1 dup.summary.tmp | awk '{ print \$2 }')
-      k=\$(tail -n1 dup.summary.tmp | awk '{ print \$3 }')
-      chr=\$(head -n1 dup.summary.tmp | awk '{ print \$1 }')
+      i=$(head -n1 dup.summary.tmp | awk '{ print $2 }')
+      k=$(tail -n1 dup.summary.tmp | awk '{ print $3 }')
+      chr=$(head -n1 dup.summary.tmp | awk '{ print $1 }')
 
-      awk -v i="\$i" -v k="\$k" -v chr="\$chr" 'BEGIN {printf "chromosome " chr " start " i " "; j=i} {if (i==\$2 || i==\$2-1 || i==\$2-2 ) {
-      i=\$3;
+      awk -v i="$i" -v k="$k" -v chr="$chr" 'BEGIN {printf "chromosome " chr " start " i " "; j=i} {if (i==$2 || i==$2-1 || i==$2-2 ) {
+      i=$3;
       }
       else {
         print "end "i " interval " i-j;
-        j=\$2;
-        i=\$3;
-        printf "chromosome " \$1 " start "j " ";
+        j=$2;
+        i=$3;
+        printf "chromosome " $1 " start "j " ";
       }} END {print "end "k " interval "k-j}' < dup.summary.tmp > dup.summary.tmp1
 
       sed -i 's/chromosome\\|start \\|end \\|interval //g' dup.summary.tmp1
       echo -e "Chromosome\\tStart\\tEnd\\tInterval" > dup.summary.tmp.header
-      cat dup.summary.tmp.header dup.summary.tmp1 > \${id}.duplication_summary.txt
+      cat dup.summary.tmp.header dup.summary.tmp1 > !{id}.duplication_summary.txt
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
         }' !{indels} > indel.effects.tmp
 
-      awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> \${id}.annotated.indel.effects
+      awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
 
       awk '{
-        if (match($0,"ANN=")){print substr(\$0,RSTART)}
+        if (match($0,"ANN=")){print substr($0,RSTART)}
         }' !{snps} > snp.effects.tmp
-      awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > \${id}.annotated.snp.effects
+      awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
 
       echo 'Identifying high consequence mutations'
 
-      grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
-      grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
+      grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
+      grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
 
       sed -i 's/p\\.//' !{id}.Function_lost_list.txt
       '''
