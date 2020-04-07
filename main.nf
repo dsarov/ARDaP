@@ -518,6 +518,7 @@ if (params.mixtures) {
       file reference_dict from ref_dict_ch1
       set id, file(dedup_bam), file(dedup_index) from variantCalling
       set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
+      set id, file(perbase), file(depth) from coverageData
 
       output:
     //  set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
@@ -588,13 +589,13 @@ if (params.mixtures) {
       snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} !{id}.PASS.indels.vcf > !{id}.PASS.indels.annotated.vcf
 
       echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
-      zcat $perbase | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
+      zcat !{perbase} | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
       cat tmp.header del.summary.tmp > !{id}.deletion_summary.txt
 
-      covdep=$(head -n 1 $depth)
+      covdep=$(head -n 1 !{depth})
       DUP_CUTOFF=$(echo "$covdep*3" | bc)
 
-      zcat $perbase | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
+      zcat !{perbase} | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
 
       i=$(head -n1 dup.summary.tmp | awk '{ print $2 }')
       k=$(tail -n1 dup.summary.tmp | awk '{ print $3 }')
