@@ -616,7 +616,7 @@ if (params.mixtures) {
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
-        }' !{indels} > indel.effects.tmp
+        }' $indels > indel.effects.tmp
 
       awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
 
