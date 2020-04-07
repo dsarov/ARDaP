@@ -551,7 +551,7 @@ if (params.mixtures) {
       cat !{id}.filtered.snps.vcf | grep PASS | cat snp_head - > !{id}.PASS.snps.vcf
 
       gatk VariantFiltration -R !{reference} -O !{id}.failed.snps.vcf -V !{id}.raw.snps.vcf \
-      --cluster-size !{params.CLUSTER_SNP} -window $params.CLUSTER_WINDOW_SNP \
+      --cluster-size !{params.CLUSTER_SNP} -window !{params.CLUSTER_WINDOW_SNP} \
       -filter "MLEAF < !{params.MLEAF_SNP}" --filter-name "FAIL" \
       -filter "QD < !{params.QD_SNP}" --filter-name "FAIL1" \
       -filter "MQ < !{params.MQ_SNP}" --filter-name "FAIL2" \
