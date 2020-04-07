@@ -526,13 +526,14 @@ if (params.mixtures) {
       set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
       set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
 
+      shell:
 
-      """
-      gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${dedup_bam} -O ${id}.raw.snps.indels.vcf
+      '''
+      gatk HaplotypeCaller -R !{reference} --ploidy 1 --I !{dedup_bam} -O !{id}.raw.snps.indels.vcf
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
 
-      gatk VariantFiltration -R ${reference} -O ${id}.filtered.snps.vcf -V $snps \
+      gatk VariantFiltration -R ${reference} -O !{id}.filtered.snps.vcf -V $snps \
       --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
       -filter "MLEAF < $params.MLEAF_SNP" --filter-name "AFFilter" \
       -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
@@ -624,9 +625,10 @@ if (params.mixtures) {
       grep 'HIGH' snp.effects.tmp  | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
       grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> \${id}.Function_lost_list.txt
 
-      sed -i 's/p\\.//' \${id}.Function_lost_list.txt
-      """
+      sed -i 's/p\\.//' !{id}.Function_lost_list.txt
+      '''
     }
+
 /*
   process FilterSNPs {
 
