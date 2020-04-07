@@ -538,54 +538,54 @@ if (params.mixtures) {
       gatk SelectVariants -R !{reference} -V !{id}.raw.snps.indels.vcf -O !{id}.raw.snps.vcf -select-type SNP
       gatk SelectVariants -R !{reference} -V !{id}.raw.snps.indels.vcf -O !{id}.raw.indels.vcf -select-type INDEL
 
-      gatk VariantFiltration -R !{reference} -O !{id}.filtered.snps.vcf -V $snps \
-      --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
-      -filter "MLEAF < $params.MLEAF_SNP" --filter-name "AFFilter" \
-      -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
-      -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
-      -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
-      -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
+      gatk VariantFiltration -R !{reference} -O !{id}.filtered.snps.vcf -V !{id}.raw.snps.vcf \
+      --cluster-size !{params.CLUSTER_SNP} -window !{params.CLUSTER_WINDOW_SNP} \
+      -filter "MLEAF < !{params.MLEAF_SNP}" --filter-name "AFFilter" \
+      -filter "QD < !{params.QD_SNP}" --filter-name "QDFilter" \
+      -filter "MQ < !{params.MQ_SNP}" --filter-name "MQFilter" \
+      -filter "FS > !{params.FS_SNP}" --filter-name "FSFilter" \
+      -filter "QUAL < !{params.QUAL_SNP}" --filter-name "StandardFilters"
 
       header=`grep -n "#CHROM" !{id}.filtered.snps.vcf | cut -d':' -f 1`
       head -n "$header" !{id}.filtered.snps.vcf > snp_head
       cat !{id}.filtered.snps.vcf | grep PASS | cat snp_head - > !{id}.PASS.snps.vcf
 
-      gatk VariantFiltration -R !{reference} -O !{id}.failed.snps.vcf -V $snps \
-      --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
-      -filter "MLEAF < $params.MLEAF_SNP" --filter-name "FAIL" \
-      -filter "QD < $params.QD_SNP" --filter-name "FAIL1" \
-      -filter "MQ < $params.MQ_SNP" --filter-name "FAIL2" \
-      -filter "FS > $params.FS_SNP" --filter-name "FAIL3" \
-      -filter "QUAL < $params.QUAL_SNP" --filter-name "FAIL5"
+      gatk VariantFiltration -R !{reference} -O !{id}.failed.snps.vcf -V !{id}.raw.snps.vcf \
+      --cluster-size !{params.CLUSTER_SNP} -window $params.CLUSTER_WINDOW_SNP \
+      -filter "MLEAF < !{params.MLEAF_SNP}" --filter-name "FAIL" \
+      -filter "QD < !{params.QD_SNP}" --filter-name "FAIL1" \
+      -filter "MQ < !{params.MQ_SNP}" --filter-name "FAIL2" \
+      -filter "FS > !{params.FS_SNP}" --filter-name "FAIL3" \
+      -filter "QUAL < !{params.QUAL_SNP}" --filter-name "FAIL5"
 
       header=`grep -n "#CHROM" !{id}.failed.snps.vcf | cut -d':' -f 1`
       head -n "$header" !{id}.failed.snps.vcf > snp_head
       cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > !{id}.FAIL.snps.vcf
 
-      gatk VariantFiltration -R !{reference} -O !{id}.filtered.indels.vcf -V $indels \
-      -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "AFFilter" \
-      -filter "QD < $params.QD_INDEL" --filter-name "QDFilter" \
-      -filter "FS > $params.FS_INDEL" --filter-name "FSFilter" \
-      -filter "QUAL < $params.QUAL_INDEL" --filter-name "QualFilter"
+      gatk VariantFiltration -R !{reference} -O !{id}.filtered.indels.vcf -V !{id}.raw.indels.vcf \
+      -filter "MLEAF < !{params.MLEAF_INDEL}" --filter-name "AFFilter" \
+      -filter "QD < !{params.QD_INDEL}" --filter-name "QDFilter" \
+      -filter "FS > !{params.FS_INDEL}" --filter-name "FSFilter" \
+      -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "QualFilter"
 
       header=`grep -n "#CHROM" !{id}.filtered.indels.vcf | cut -d':' -f 1`
       head -n "$header" !{id}.filtered.indels.vcf > snp_head
       cat !{id}.filtered.indels.vcf | grep PASS | cat snp_head - > !{id}.PASS.indels.vcf
 
-      gatk VariantFiltration -R  !{reference} -O !{id}.failed.indels.vcf -V $indels \
-      -filter "MLEAF < $params.MLEAF_INDEL" --filter-name "FAIL" \
-      -filter "MQ < $params.MQ_INDEL" --filter-name "FAIL1" \
-      -filter "QD < $params.QD_INDEL" --filter-name "FAIL2" \
-      -filter "FS > $params.FS_INDEL" --filter-name "FAIL3" \
-      -filter "QUAL < $params.QUAL_INDEL" --filter-name "FAIL5"
+      gatk VariantFiltration -R  !{reference} -O !{id}.failed.indels.vcf -V !{id}.raw.indels.vcf \
+      -filter "MLEAF < !{params.MLEAF_INDEL}" --filter-name "FAIL" \
+      -filter "MQ < !{params.MQ_INDEL}" --filter-name "FAIL1" \
+      -filter "QD < !{params.QD_INDEL}" --filter-name "FAIL2" \
+      -filter "FS > !{params.FS_INDEL}" --filter-name "FAIL3" \
+      -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "FAIL5"
 
       header=`grep -n "#CHROM" !{id}.failed.indels.vcf | cut -d':' -f 1`
       head -n "$header" !{id}.failed.indels.vcf > indel_head
       cat !{id}.filtered.indels.vcf | grep FAIL | cat indel_head - > !{id}.FAIL.indels.vcf
 
-      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff $snp_pass > !{id}.PASS.snps.annotated.vcf
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} !{id}.PASS.snps.vcf > !{id}.PASS.snps.annotated.vcf
 
-      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff $indel_pass > !{id}.PASS.indels.annotated.vcf
+      snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} !{id}.PASS.indels.vcf > !{id}.PASS.indels.annotated.vcf
 
       echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
       zcat $perbase | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
@@ -616,13 +616,13 @@ if (params.mixtures) {
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
-        }' $indels > indel.effects.tmp
+        }' !{id}.PASS.indels.annotated.vcf > indel.effects.tmp
 
       awk -F "|" '{ print $4,$10,$11,$15 }' indel.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> !{id}.annotated.indel.effects
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
-        }' $snps > snp.effects.tmp
+        }' !{id}.PASS.snps.annotated.vcf > snp.effects.tmp
       awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
 
       echo 'Identifying high consequence mutations'
