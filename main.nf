@@ -622,7 +622,7 @@ if (params.mixtures) {
 
       awk '{
         if (match($0,"ANN=")){print substr($0,RSTART)}
-        }' !{snps} > snp.effects.tmp
+        }' $snps > snp.effects.tmp
       awk -F "|" '{ print $4,$10,$11,$15 }' snp.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//' > !{id}.annotated.snp.effects
 
       echo 'Identifying high consequence mutations'
