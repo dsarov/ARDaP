@@ -37,7 +37,7 @@ sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
 }
 
 Report_structure
-cat ${seq}.*.txt | tee AbR_output.txt AbR_output.final.txt
+cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}.CARD_primary_output.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
 #Deduplicate any repition in the resistance list
