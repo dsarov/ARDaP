@@ -452,11 +452,6 @@ if (params.mixtures) {
     set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
 
-    // check additional escapes in sed command
-
-    // Use shell directive and single quotes to declare Netflow variables as !{var}
-    // prevents mucking around with escaping commands in AWK, \ need to be esacaped still
-
     shell:
 
     '''
@@ -508,9 +503,6 @@ if (params.mixtures) {
       publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: false
       publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: false
       publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*annotated*.vcf", overwrite: false
-    //publishDir "./Outputs/Variants/Annotated", mode: 'copy', overwrite: false
-
-      //publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
 
       input:
       file reference from reference_file
@@ -521,8 +513,6 @@ if (params.mixtures) {
       set id, file(perbase), file(depth) from coverageData
 
       output:
-    //  set id, file("${id}.raw.snps.vcf"), file("${id}.raw.snps.vcf.idx") into snpFilter
-  //    set id, file("${id}.raw.indels.vcf"), file("${id}.raw.indels.vcf.idx") into indelFilter
       set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
       set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
       set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
@@ -531,6 +521,7 @@ if (params.mixtures) {
       set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
       set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
       set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
+      set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
 
       shell:
 
@@ -636,124 +627,6 @@ if (params.mixtures) {
     }
 
 /*
-  process FilterSNPs {
-
-    label "spandx_gatk"
-    tag { "$id" }
-
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-    set id, file(snps), file(snps_idx) from snpFilter
-
-    output:
-    set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
-
-    """
-
-    """
-  }
-
-  process FilterIndels {
-
-    label "spandx_gatk"
-    tag { "$id" }
-
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-    set id, file(indels), file(indels_idx) from indelFilter
-
-    output:
-    set id, file("${id}.PASS.indels.vcf"), file("${id}.FAIL.indels.vcf") into filteredIndels
-
-    """
-
-    """
-  }
-
-
-  process AnnotateSNPs {
-
-    // Need to split and optimize with threads
-
-    label "spandx_snpeff"
-    tag { "$id" }
-
-
-    input:
-    set id, file(snp_pass), file(snp_fail) from filteredSNPs
-
-    output:
-    set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs
-
-    """
-
-    """
-  }
-
-  process AnnotateIndels {
-    // TO DO
-    // Need to split and optimize with threads
-
-    label "spandx_snpeff"
-    tag { "$id" }
-
-
-    input:
-    set id, file(indel_pass), file(indel_fail) from filteredIndels
-
-    output:
-    set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
-
-    """
-
-    """
-  }
-
-  process VariantSummaries {
-
-    label "spandx_default"
-    tag { "$id" }
-
-    input:
-    set id, file(perbase), file(depth) from coverageData
-
-    output:
-    set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
-    set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
-
-    """
-
-    """
-  }
-
-  process VariantSummariesSQL {
-
-    label "spandx_default"
-    tag { "$id" }
-
-    input:
-    set id, file(indels) from annotatedIndels
-    set id, file(snps) from annotatedSNPs
-
-    output:
-
-
-    shell:
-
-    '''
-
-    '''
-
-  }
-}
-*/
-/*
 ====================================================================
                               Part 3
   These processes will interrogate the SQL databases (except CARD)
@@ -800,6 +673,7 @@ else {
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
+    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
     file resistance_db from resistance_database_file
 
     output:
@@ -815,50 +689,7 @@ else {
     bash AbR_reports.sh ${id} ${resistance_db}
     """
 
-  }
-/*
-  process SqlDeletionDuplication {
-
-    label "genomic_queries"
-    tag { "$id" }
-
-    input:
-    set id, file("${id}.Function_lost_list.txt") from function_lost_ch2
-    set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
-    set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
-    file resistance_db from resistance_database_file
-
-    output:
-    set id, file("${id}.AbR_output_del_dup.txt") into abr_report_del_dup_ch
-
-    script:
-    """
-
-    """
-  }
-
-  process AbrReport {
-
-    label "report"
-    tag { "$id" }
-    //publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: false
-
-    input:
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch
-    set id, file("${id}.AbR_output_del_dup.txt") from abr_report_del_dup_ch
-    set id, file("${id}.AbR_output_snp_indel.txt") from abr_report_snp_indel_ch
-    file("patientMetaData.csv") from patient_meta_file
-    file resistance_db from resistance_database_file
-
-    output:
-
-    //set id, file("${id}.AbR_output.txt")
-
-    script:
-    """
-
-    """
-    */
+    }
   }
 }
 
