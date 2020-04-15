@@ -539,7 +539,8 @@ if (params.mixtures) {
       -filter "QUAL < !{params.QUAL_SNP}" --filter-name "StandardFilters"
 
       header=`grep -n "#CHROM" !{id}.filtered.snps.vcf | cut -d':' -f 1`
-      head -n "$header" !{id}.filtered.snps.vcf > snp_head
+      echo $header
+      head -n $header !{id}.filtered.snps.vcf > snp_head
       cat !{id}.filtered.snps.vcf | grep PASS | cat snp_head - > !{id}.PASS.snps.vcf
 
       gatk VariantFiltration -R !{reference} -O !{id}.failed.snps.vcf -V !{id}.raw.snps.vcf \
@@ -551,7 +552,7 @@ if (params.mixtures) {
       -filter "QUAL < !{params.QUAL_SNP}" --filter-name "FAIL5"
 
       header=`grep -n "#CHROM" !{id}.failed.snps.vcf | cut -d':' -f 1`
-      head -n "$header" !{id}.failed.snps.vcf > snp_head
+      head -n $header !{id}.failed.snps.vcf > snp_head
       cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > !{id}.FAIL.snps.vcf
 
       gatk VariantFiltration -R !{reference} -O !{id}.filtered.indels.vcf -V !{id}.raw.indels.vcf \
@@ -561,7 +562,7 @@ if (params.mixtures) {
       -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "QualFilter"
 
       header=`grep -n "#CHROM" !{id}.filtered.indels.vcf | cut -d':' -f 1`
-      head -n "$header" !{id}.filtered.indels.vcf > snp_head
+      head -n $header !{id}.filtered.indels.vcf > snp_head
       cat !{id}.filtered.indels.vcf | grep PASS | cat snp_head - > !{id}.PASS.indels.vcf
 
       gatk VariantFiltration -R  !{reference} -O !{id}.failed.indels.vcf -V !{id}.raw.indels.vcf \
@@ -572,7 +573,7 @@ if (params.mixtures) {
       -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "FAIL5"
 
       header=`grep -n "#CHROM" !{id}.failed.indels.vcf | cut -d':' -f 1`
-      head -n "$header" !{id}.failed.indels.vcf > indel_head
+      head -n $header !{id}.failed.indels.vcf > indel_head
       cat !{id}.filtered.indels.vcf | grep FAIL | cat indel_head - > !{id}.FAIL.indels.vcf
 
       snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} !{id}.PASS.snps.vcf > !{id}.PASS.snps.annotated.vcf
@@ -584,7 +585,9 @@ if (params.mixtures) {
       cat tmp.header del.summary.tmp > !{id}.deletion_summary.txt
 
       covdep=$(head -n 1 !{depth})
-      DUP_CUTOFF=$(echo "$covdep*3" | bc)
+      DUP_CUTOFF=$(echo $covdep*3 | bc)
+      echo $DUP_CUTOFF
+      echo "dup cutoff is $DUP_CUTOFF"
 
       zcat !{perbase} | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
 
