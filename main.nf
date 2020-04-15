@@ -538,8 +538,7 @@ if (params.mixtures) {
       -filter "FS > !{params.FS_SNP}" --filter-name "FSFilter" \
       -filter "QUAL < !{params.QUAL_SNP}" --filter-name "StandardFilters"
 
-      header=`grep -n "#CHROM" !{id}.filtered.snps.vcf | cut -d':' -f 1`
-      echo $header
+      header=`grep -a -n "#CHROM" !{id}.filtered.snps.vcf | cut -d':' -f 1`
       head -n $header !{id}.filtered.snps.vcf > snp_head
       cat !{id}.filtered.snps.vcf | grep PASS | cat snp_head - > !{id}.PASS.snps.vcf
 
@@ -551,7 +550,7 @@ if (params.mixtures) {
       -filter "FS > !{params.FS_SNP}" --filter-name "FAIL3" \
       -filter "QUAL < !{params.QUAL_SNP}" --filter-name "FAIL5"
 
-      header=`grep -n "#CHROM" !{id}.failed.snps.vcf | cut -d':' -f 1`
+      header=`grep -a -n "#CHROM" !{id}.failed.snps.vcf | cut -d':' -f 1`
       head -n $header !{id}.failed.snps.vcf > snp_head
       cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > !{id}.FAIL.snps.vcf
 
@@ -561,7 +560,7 @@ if (params.mixtures) {
       -filter "FS > !{params.FS_INDEL}" --filter-name "FSFilter" \
       -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "QualFilter"
 
-      header=`grep -n "#CHROM" !{id}.filtered.indels.vcf | cut -d':' -f 1`
+      header=`grep -a -n "#CHROM" !{id}.filtered.indels.vcf | cut -d':' -f 1`
       head -n $header !{id}.filtered.indels.vcf > snp_head
       cat !{id}.filtered.indels.vcf | grep PASS | cat snp_head - > !{id}.PASS.indels.vcf
 
@@ -572,7 +571,7 @@ if (params.mixtures) {
       -filter "FS > !{params.FS_INDEL}" --filter-name "FAIL3" \
       -filter "QUAL < !{params.QUAL_INDEL}" --filter-name "FAIL5"
 
-      header=`grep -n "#CHROM" !{id}.failed.indels.vcf | cut -d':' -f 1`
+      header=`grep -a -n "#CHROM" !{id}.failed.indels.vcf | cut -d':' -f 1`
       head -n $header !{id}.failed.indels.vcf > indel_head
       cat !{id}.filtered.indels.vcf | grep FAIL | cat indel_head - > !{id}.FAIL.indels.vcf
 
@@ -586,7 +585,6 @@ if (params.mixtures) {
 
       covdep=$(head -n 1 !{depth})
       DUP_CUTOFF=$(echo $covdep*3 | bc)
-      echo $DUP_CUTOFF
       echo "dup cutoff is $DUP_CUTOFF"
 
       zcat !{perbase} | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
