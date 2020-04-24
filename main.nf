@@ -626,7 +626,7 @@ if (params.mixtures) {
       sed -i 's/p\\.//' !{id}.Function_lost_list.txt
       '''
     }
-
+}
 /*
 ====================================================================
                               Part 3
@@ -664,9 +664,7 @@ if (params.mixtures) {
     bash AbR_reports_mix.sh ${id} ${resistance_db}
     """
   }
-
-}
-else {
+} else {
   process SqlSnpsIndels {
 
     label "genomic_queries"
@@ -694,10 +692,9 @@ else {
     bash SQL_queries_DelDup.sh ${id} ${resistance_db}
     bash AbR_reports.sh ${id} ${resistance_db}
     """
-
-    }
   }
 }
+
 
 process R_report {
   label "report"
