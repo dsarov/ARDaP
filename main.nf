@@ -118,8 +118,6 @@ if( !resistance_database_file.exists() ) {
   exit 1, "The resistance database file file does no exist: ${params.resistance_db}"
 }
 
-
-
 reference_file = file(params.reference)
 if( !reference_file.exists() ) {
   exit 1, """
@@ -492,7 +490,6 @@ if (params.mixtures) {
   }
 
 } else {
-
     // Not a mixture
     //To do split GVCF calling when phylogeny isn't called
 
@@ -681,7 +678,6 @@ if (params.mixtures) {
     file resistance_db from resistance_database_file
 
     output:
-  //  set id, file("${id}.AbR_output_snp_indel.txt") into abr_report_snp_indel_ch
     set id, file("${id}.AbR_output.final.txt") into r_report_ch
     file("patientMetaData.csv") into r_report_metadata_ch
     file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
@@ -694,7 +690,6 @@ if (params.mixtures) {
     """
   }
 }
-
 
 process R_report {
   label "report"
@@ -725,7 +720,6 @@ process R_report {
 */
 
 if (params.phylogeny) {
-
   process VariantCallingGVCF {
 
     label "spandx_gatk"
@@ -746,7 +740,6 @@ if (params.phylogeny) {
     gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
     """
   }
-
   process Master_vcf {
     label "master_vcf"
     tag { "id" }
@@ -770,7 +763,6 @@ if (params.phylogeny) {
     -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
     -filter "FS > $params.FS_SNP" --filter-name "HaplotypeScoreFilter"
     """
-
   }
   process snp_matrix {
     label "snp_matrix"
@@ -801,4 +793,5 @@ workflow.onComplete {
   Phylogenetic tree and annotated merged variants are in --> ./Outputs/Phylogeny_and_annotation\n \
   Individual variant files are in --> ./Outputs/Variants/VCFs\n" \
   : "Oops .. something went wrong" )
+}
 }
