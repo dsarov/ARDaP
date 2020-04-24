@@ -101,7 +101,7 @@ With the parameters specified, ARDaP is looking for reads named ${params.fastq}.
 To fix this error either rename your reads to match this formatting or specify the desired format
 when initializing ARDaP e.g. --fastq "*_{1,2}_sequence.fastq.gz"
 
-"""}
+"""
 
 if (params.assemblies) {
   assembly_loc = Channel
