@@ -675,6 +675,9 @@ else {
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
+    set id, file("${id}.deletion_summary.txt") from duplication_summary_ch
+    set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
+    file("patientMetaData.csv") from patient_meta_file
     file resistance_db from resistance_database_file
 
     output:
