@@ -102,6 +102,7 @@ To fix this error either rename your reads to match this formatting or specify t
 when initializing ARDaP e.g. --fastq "*_{1,2}_sequence.fastq.gz"
 
 """
+}
 
 if (params.assemblies) {
   assembly_loc = Channel
@@ -793,5 +794,4 @@ workflow.onComplete {
   Phylogenetic tree and annotated merged variants are in --> ./Outputs/Phylogeny_and_annotation\n \
   Individual variant files are in --> ./Outputs/Variants/VCFs\n" \
   : "Oops .. something went wrong" )
-}
 }
