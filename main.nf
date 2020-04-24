@@ -647,6 +647,8 @@ if (params.mixtures) {
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
     file resistance_db from resistance_database_file
     file("patientMetaData.csv") from patient_meta_file
+    set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
+    set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
 
 
