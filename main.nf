@@ -312,6 +312,7 @@ if (params.assemblies) {
 
     label "spandx_alignment"
     tag {"$id"}
+    publishDir "./Outputs/CARD", mode: 'copy', pattern: "*CARD_primary_output.txt", overwrite: false
 
     input:
     file ref_index from ref_index_ch
