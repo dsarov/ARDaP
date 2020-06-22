@@ -53,9 +53,9 @@ mv AbR_output.temp AbR_output.txt
 
 i=1
 while read f; do 
-	awk -F"|" -v f="$f" '$4~ f' AbR_output.txt > "$f".output
+	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f".output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f' ${seq}.CARD_primary_output.txt >> "$f".output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f".output
 	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f" "$f".output &> /dev/null #looks for full resistance
 	status=$?
@@ -125,9 +125,9 @@ while read f; do
 done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ print $3 }')
 
 while read f; do 
-	awk -F"|" -v f="$f" '$4~ f' AbR_output.txt > "$f".output
+	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f".output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f' ${seq}.CARD_primary_output.txt >> "$f".output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f".output
 	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f" "$f".output &> /dev/null #looks for full resistance
 	status=$?
@@ -171,8 +171,8 @@ done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{
 
 #Looking for resistance
 while read f; do
-	awk -F"|" -v f="$f" '$4~ f ' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f ' ${seq}.CARD_primary_output.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
 	grep -w "$f"r "$f"r.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
