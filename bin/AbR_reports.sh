@@ -63,8 +63,8 @@ while read f; do
 		echo "found mechanism for $f resistance"
 		length=$(wc -l "$f".output | awk '{print $1}' )
 		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple mechanisms for $f resistance"
-			sed -i "${i}s/.*/&,Resistant,Multiple mechanisms/" drug.table.txt
+			echo "found multiple determinants for $f resistance"
+			sed -i "${i}s/.*/&,Resistant,Multiple determinants/" drug.table.txt
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
@@ -80,8 +80,8 @@ while read f; do
 			echo "found intermediate resistance mechanism for $f"
 			length=$(wc -l "$f"i.output | awk '{print $1}' )
 			if [[ "$length" -gt 1 ]]; then
-				echo "found multiple mechanisms for intermediate $f resistance"
-				sed -i "${i}s/.*/&,Intermediate,Multiple mechanisms/" drug.table.txt
+				echo "found multiple determinants for intermediate $f resistance"
+				sed -i "${i}s/.*/&,Intermediate,Multiple determinants/" drug.table.txt
 				i=$((i+1))
 			else
 				echo "found single mechanism for intermediate $f resistance" 
@@ -106,9 +106,9 @@ while read f; do
 		echo "found mechanism for $f sensitivity"
 		length=$(wc -l "$f"s.output | awk '{print $1}' )
 		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple mechanisms for $f sensitivity"
+			echo "found multiple determinants for $f sensitivity"
 			#cat "$f"s.output >> drug.table.tertiary.txt
-			sed -i "${i}s/.*/&,Sensitive,Multiple mechanisms/" drug.table.txt
+			sed -i "${i}s/.*/&,Sensitive,Multiple determinants/" drug.table.txt
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f sensitivity" 
@@ -135,8 +135,8 @@ while read f; do
 		echo "found mechanism for $f resistance"
 		length=$(wc -l "$f".output | awk '{print $1}' )
 		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple mechanisms for $f resistance"
-			sed -i "${i}s/.*/&,Resistant,Multiple mechanisms/" drug.table.txt
+			echo "found multiple determinants for $f resistance"
+			sed -i "${i}s/.*/&,Resistant,Multiple determinants/" drug.table.txt
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
@@ -152,8 +152,8 @@ while read f; do
 			echo "found intermediate resistance mechanism for $f"
 			length=$(wc -l "$f"i.output | awk '{print $1}' )
 			if [[ "$length" -gt 1 ]]; then
-				echo "found multiple mechanisms for intermediate $f resistance"
-				sed -i "${i}s/.*/&,Intermediate,Multiple mechanisms/" drug.table.txt
+				echo "found multiple determinants for intermediate $f resistance"
+				sed -i "${i}s/.*/&,Intermediate,Multiple determinants/" drug.table.txt
 				i=$((i+1))
 			else
 				echo "found single mechanism for intermediate $f resistance" 
@@ -177,16 +177,16 @@ while read f; do
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
 		echo "found mechanism for $f resistance"
-		length=$(wc -l "$f"s.output | awk '{print $1}' )
+		length=$(wc -l "$f"r.output | awk '{print $1}' )
 		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple mechanisms for $f resistance"
+			echo "found multiple determinants for $f resistance"
 			#cat "$f"s.output >> drug.table.tertiary.txt
-			sed -i "${i}s/.*/&,Sensitive,No resistance detected/" drug.table.txt
+			sed -i "${i}s/.*/&,Resistant,Multiple determinants/" drug.table.txt
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
-			sed -i "${i}s/.*/&,Sensitive,No resistance detected/" drug.table.txt
+			mech=$(awk -F "|" '{ print $2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
+			sed -i "${i}s/.*/&,Resistant,${mech}/" drug.table.txt
 			#cat "$f"s.output >> drug.table.tertiary.txt
 			i=$((i+1))
 		fi
