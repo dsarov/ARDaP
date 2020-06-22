@@ -71,17 +71,6 @@ Update to the local cache of this workflow:
 ==================================================================
 ==================================================================
 """
-
-/*  Index Section
- *  Create a bunch of indices for ARDaP
- */
-
-// Define Parameters
-// $resistance_db $card_db $GWAS_cutoff
-
-// Not sure if CARD database is correctly parsed
-
-
 // Don't forget to assign CPU for tasks to optimize!
 // Setting of relational variables
 
@@ -344,7 +333,7 @@ if (params.assemblies) {
 
   }
 }
-/*
+
 /*
 =======================================================================
                        Part 2D: De-duplicate bams
