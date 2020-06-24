@@ -59,7 +59,7 @@ done < SNP_gene_list.txt
 cat << EOF
 SELECT 
 	Variants_SNP_indel.Gene_name,
-	Variants_SNP_indel.Gene_name,
+	Variants_SNP_indel.Locus_tag,
 	Variants_SNP_indel.Variant_annotation,
 	Variants_SNP_indel.Antibiotic_affected,
 	Variants_SNP_indel.Comments 
@@ -90,7 +90,7 @@ EOF
 cat << EOF
 SELECT
 	Variants_SNP_indel.Gene_name,
-	Variants_SNP_indel.Gene_name,
+	Variants_SNP_indel.Locus_tag,
 	Variants_SNP_indel.Variant_annotation,
 	Variants_SNP_indel.Antibiotic_affected,
 	Variants_SNP_indel.Comments
