@@ -228,6 +228,15 @@ done
 fi
 fi
 
+#Format Abr_report file for importation into html report
+cp ${sampID}.AbR_output.final.txt ${sampID}.AbR_output.final.txt.backup
+sed -i 's/>/\&gt;/' ${sampID}.AbR_output.final.txt.backup
+sed -i 's/>/\&lt;/' ${sampID}.AbR_output.final.txt.backup
+sed -i 's/^/<td WIDTH="100%">/' ${sampID}.AbR_output.final.txt.backup
+sed -i 's/$/<\/td>/' ${sampID}.AbR_output.final.txt.backup
+
+abr_report=$(cat ${sampID}.AbR_output.final.txt.backup)
+
 cat <<_EOF_ > "$ID"_report.html
 
 <style>
@@ -1450,10 +1459,10 @@ table.minimalistBlack tfoot td {
 </table></td>
 </tr>
 <tr>
-<td>Drug class</td>
-<td>Interpretation</td>
-<td>Drug</td>
-<td>Resistance determinant</td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Resistance determinant</td>
 </tr>
 $first_line_table
 ${f_line_table_more[@]}
@@ -1472,10 +1481,10 @@ ${s_line_table_more[@]}
 </thead>
 <tbody>
 <tr>
-<td>Drug class</td>
-<td>Interpretation</td>
-<td>Drug</td>
-<td>Resistance determinant</td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Resistance determinant</td>
 </tr>
 $tertiary_line_table
 ${t_line_table_more[@]}
@@ -1490,16 +1499,34 @@ ${t_line_table_more[@]}
 </thead>
 <tbody>
 <tr>
-<td>Drug class</td>
-<td>Interpretation</td>
-<td>Drug</td>
-<td>Mechanism of sensitivity</td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Mechanism of sensitivity</td>
 </tr>
 $intrinsic_line_table
 ${i_line_table_more[@]}
 </tbody>
 </table>
 <br>
+</tbody>
+</table>
+<br>
+
+<table class="detail_table">
+<thead>
+<tr>
+<th colspan="4">Details about the variants identified</th>
+</tr>
+</thead>
+<tbody>
+$abr_report
+</tbody>
+</table>
+
+
+
+
 <TABLE cellpadding=0 cellspacing=0 class="t2">
 <TR>
 	<TD class="tr1 td56"><P class="p3 ft1">Page 1 of 1</P></TD>
