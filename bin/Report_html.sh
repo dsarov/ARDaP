@@ -229,13 +229,22 @@ fi
 fi
 
 #Format Abr_report file for importation into html report
-cp ${sampID}.AbR_output.final.txt ${sampID}.AbR_output.final.txt.backup
-sed -i 's/>/\&gt;/' ${sampID}.AbR_output.final.txt.backup
-sed -i 's/>/\&lt;/' ${sampID}.AbR_output.final.txt.backup
-sed -i 's/^/<td WIDTH="100%">/' ${sampID}.AbR_output.final.txt.backup
-sed -i 's/$/<\/td>/' ${sampID}.AbR_output.final.txt.backup
 
-abr_report=$(cat ${sampID}.AbR_output.final.txt.backup)
+awk -F"|" '$4 ~ /[Nn]one/ ' ${sampID}.AbR_output.final.txt > natural_variation.txt
+awk -F"|" '$4 !~ /[Nn]one/ ' ${sampID}.AbR_output.final.txt > resistance_determinants.txt
+
+sed -i 's/>/\&gt;/' resistance_determinants.txt
+sed -i 's/>/\&lt;/' resistance_determinants.txt
+sed -i 's/^/<td WIDTH="100%">/' resistance_determinants.txt
+sed -i 's/$/<\/td>/' resistance_determinants.txt
+
+sed -i 's/>/\&gt;/' natural_variation.txt
+sed -i 's/>/\&lt;/' natural_variation.txt
+sed -i 's/^/<td WIDTH="100%">/' natural_variation.txt
+sed -i 's/$/<\/td>/' natural_variation.txt
+
+abr_report=$(cat resistance_determinants.txt)
+natural_variation=$(cat natural_variation.txt)
 
 cat <<_EOF_ > "$ID"_report.html
 
@@ -1494,7 +1503,7 @@ ${t_line_table_more[@]}
 <table class="drug_suscep">
 <thead>
 <tr>
-<th colspan="4">Intrinsic resistance; not used for clinical purposes as wild-type strains are resistant to these drugs</th>
+<th colspan="4">Intrinsic drug resistance/unusual drug susceptibility</th>
 </tr>
 </thead>
 <tbody>
@@ -1516,7 +1525,7 @@ ${i_line_table_more[@]}
 <table class="detail_table">
 <thead>
 <tr>
-<th colspan="4">Details about the variants identified</th>
+<th colspan="4">Antimicrobial determinant details</th>
 </tr>
 </thead>
 <tbody>
@@ -1524,9 +1533,19 @@ $abr_report
 </tbody>
 </table>
 
-
-
-
+</tbody>
+</table>
+<br>
+<table class="detail_table">
+<thead>
+<tr>
+<th colspan="4">Natural variation that does not confer antimicrobial resistance</th>
+</tr>
+</thead>
+<tbody>
+$natural_variation
+</tbody>
+</table>
 <TABLE cellpadding=0 cellspacing=0 class="t2">
 <TR>
 	<TD class="tr1 td56"><P class="p3 ft1">Page 1 of 1</P></TD>
