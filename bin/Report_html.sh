@@ -64,6 +64,11 @@ noSecondLine=$(awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.
 noTertiary=$(awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | wc -l)
 noIntrinsic=$(awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | wc -l)
 
+
+#Format of patientDrugSusceptibilityData.csv is as follows
+# Col 1 "ID" # Col 2 "Class" # Col 3 "Drug" # Col 4 "Status" # Col 5 "Details" 
+
+
 #array the first-line drugs
 readarray -t f_line_drug < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
 readarray -t s_line_drug < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
@@ -237,15 +242,15 @@ sed -i 's/>/\&gt;/' resistance_determinants.txt
 sed -i 's/</\&lt;/' resistance_determinants.txt
 sed -i 's/≥/\&#8925;/' resistance_determinants.txt
 sed -i 's/µ/\&#181;/' resistance_determinants.txt
-sed -i 's/^/<td WIDTH="100%">/' resistance_determinants.txt
-sed -i 's/$/<\/td>/' resistance_determinants.txt
+sed -i 's/^/<tr><td WIDTH="100%">/' resistance_determinants.txt
+sed -i 's/$/<\/td><\/tr>/' resistance_determinants.txt
 
 sed -i 's/>/\&gt;/' natural_variation.txt
 sed -i 's/</\&lt;/' natural_variation.txt
 sed -i 's/≥/\&#8925;/' natural_variation.txt
 sed -i 's/µ/\&#181;/' natural_variation.txt
-sed -i 's/^/<td WIDTH="100%">/' natural_variation.txt
-sed -i 's/$/<\/td>/' natural_variation.txt
+sed -i 's/^/<tr><td WIDTH="100%">/' natural_variation.txt
+sed -i 's/$/<\/td><\/tr>/' natural_variation.txt
 
 abr_report=$(cat resistance_determinants.txt)
 natural_variation=$(cat natural_variation.txt)
@@ -1550,6 +1555,9 @@ $abr_report
 $natural_variation
 </tbody>
 </table>
+
+<br>
+
 <TABLE cellpadding=0 cellspacing=0 class="t2">
 <TR>
 	<TD class="tr1 td56"><P class="p3 ft1">Page 1 of 1</P></TD>

@@ -68,7 +68,7 @@ while read f; do
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f".output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f".output) #Prints gene name (column 2 from SQL query) and mutation (col 3
 			sed -i "${i}s/.*/&,Resistant,${mech}/" drug.table.txt
 			i=$((i+1))
 		fi
@@ -85,7 +85,7 @@ while read f; do
 				i=$((i+1))
 			else
 				echo "found single mechanism for intermediate $f resistance" 
-				mech=$(awk -F "|" '{ print $2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+				mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
 				sed -i "${i}s/.*/&,Intermediate,${mech}/" drug.table.txt
 				i=$((i+1))
 			fi
@@ -112,7 +112,7 @@ while read f; do
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f sensitivity" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3)
+			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3)
 			sed -i "${i}s/.*/&,Sensitive,${mech}/" drug.table.txt
 			#cat "$f"s.output >> drug.table.tertiary.txt
 			i=$((i+1))
@@ -140,7 +140,7 @@ while read f; do
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f".output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f".output) #Prints gene name (column 2 from SQL query) and mutation (col 3
 			sed -i "${i}s/.*/&,Resistant,${mech}/" drug.table.txt
 			i=$((i+1))
 		fi
@@ -157,7 +157,7 @@ while read f; do
 				i=$((i+1))
 			else
 				echo "found single mechanism for intermediate $f resistance" 
-				mech=$(awk -F "|" '{ print $2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
+				mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
 				sed -i "${i}s/.*/&,Intermediate,${mech}/" drug.table.txt
 				i=$((i+1))
 			fi
@@ -185,7 +185,7 @@ while read f; do
 			i=$((i+1))
 		else
 			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
+			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
 			sed -i "${i}s/.*/&,Resistant,${mech}/" drug.table.txt
 			#cat "$f"s.output >> drug.table.tertiary.txt
 			i=$((i+1))
