@@ -236,12 +236,14 @@ awk -F"|" '$4 !~ /[Nn]one/ ' ${sampID}.AbR_output.final.txt > resistance_determi
 sed -i 's/>/\&gt;/' resistance_determinants.txt
 sed -i 's/</\&lt;/' resistance_determinants.txt
 sed -i 's/≥/\&#8925;/' resistance_determinants.txt
+sed -i 's/µ/\&#181;/' resistance_determinants.txt
 sed -i 's/^/<td WIDTH="100%">/' resistance_determinants.txt
 sed -i 's/$/<\/td>/' resistance_determinants.txt
 
 sed -i 's/>/\&gt;/' natural_variation.txt
 sed -i 's/</\&lt;/' natural_variation.txt
 sed -i 's/≥/\&#8925;/' natural_variation.txt
+sed -i 's/µ/\&#181;/' natural_variation.txt
 sed -i 's/^/<td WIDTH="100%">/' natural_variation.txt
 sed -i 's/$/<\/td>/' natural_variation.txt
 
