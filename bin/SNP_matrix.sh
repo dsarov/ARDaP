@@ -29,7 +29,7 @@ sed -i 's#A/A\|A|A#A#g' out.vcf.table.snps.clean
 sed -i 's#G/G\|G|G#G#g' out.vcf.table.snps.clean
 sed -i 's#C/C\|C|C#C#g' out.vcf.table.snps.clean
 sed -i 's#T/T\|T|T#T#g' out.vcf.table.snps.clean
-grep -v '|' out.vcf.table.snps.clean | grep -v '/' > vcf.table.tmp #remove mixed genotypes
+grep -v "|" out.vcf.table.snps.clean | grep -v "/" > vcf.table.tmp #remove mixed genotypes
 mv vcf.table.tmp out.vcf.table.snps.clean
 taxa=$(head -n1 out.vcf.table | cut -f3,6- | sed 's/.GT//g')
 ntaxa=$(awk '{print NF-4; exit }' out.vcf.table)
