@@ -238,19 +238,22 @@ fi
 awk -F"|" '$4 ~ /[Nn]one/ ' ${sampID}.AbR_output.final.txt > natural_variation.txt
 awk -F"|" '$4 !~ /[Nn]one/ ' ${sampID}.AbR_output.final.txt > resistance_determinants.txt
 
-sed -i 's/>/\&gt;/' resistance_determinants.txt
-sed -i 's/</\&lt;/' resistance_determinants.txt
-sed -i 's/≥/\&#8925;/' resistance_determinants.txt
-sed -i 's/µ/\&#181;/' resistance_determinants.txt
-sed -i 's/^/<tr><td WIDTH="100%">/' resistance_determinants.txt
-sed -i 's/$/<\/td><\/tr>/' resistance_determinants.txt
+sed -i 's/>/\&gt;/g' resistance_determinants.txt
+sed -i 's/</\&lt;/g' resistance_determinants.txt
+sed -i 's/≥/\&#8925;/g' resistance_determinants.txt
+sed -i 's/µ/\&#181;/g' resistance_determinants.txt
+sed -i 's/≤/\&#8804;/g' resistance_determinants.txt
+sed -i 's/^/<tr><td WIDTH="100%">/g' resistance_determinants.txt
+sed -i 's/$/<\/td><\/tr>/g' resistance_determinants.txt
 
-sed -i 's/>/\&gt;/' natural_variation.txt
-sed -i 's/</\&lt;/' natural_variation.txt
-sed -i 's/≥/\&#8925;/' natural_variation.txt
-sed -i 's/µ/\&#181;/' natural_variation.txt
-sed -i 's/^/<tr><td WIDTH="100%">/' natural_variation.txt
-sed -i 's/$/<\/td><\/tr>/' natural_variation.txt
+
+sed -i 's/>/\&gt;/g' natural_variation.txt
+sed -i 's/</\&lt;/g' natural_variation.txt
+sed -i 's/≥/\&#8925;/g' natural_variation.txt
+sed -i 's/µ/\&#181;/g' natural_variation.txt
+sed -i 's/≤/\&#8804;/g' natural_variation.txt
+sed -i 's/^/<tr><td WIDTH="100%">/g' natural_variation.txt
+sed -i 's/$/<\/td><\/tr>/g' natural_variation.txt
 
 abr_report=$(cat resistance_determinants.txt)
 natural_variation=$(cat natural_variation.txt)
