@@ -48,15 +48,14 @@ mv AbR_output.temp AbR_output.final.txt
 awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.txt
 
-#sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
 #TO DO -  replace with awk pattern matching is case users want to add custom drug classes
 
 i=1
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
+	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
+	#awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -99,7 +98,7 @@ done < <(grep -E "First-line|first-line" drug.table.txt.backup | awk -F "," '{ p
 
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
-	awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}.CARD_primary_output.txt >> "$f"s.output
+	#awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}.CARD_primary_output.txt >> "$f"s.output
 	grep -w "$f"s "$f"s.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -127,8 +126,8 @@ done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ pri
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
+	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
+	#awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -172,7 +171,7 @@ done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{
 #Looking for resistance
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
+	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
 	grep -w "$f"r "$f"r.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then

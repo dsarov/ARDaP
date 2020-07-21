@@ -12,8 +12,6 @@ awk '{ if ( $7 < 0.98 && $7 > 0.94 ) print $0 }' "$seq".card.bedcov > "$seq"_95p
 
 #for each line in the bedcov files, lookup the aro database and report 2nd and third term
 
-#TODO CARD database needs to be relational here?
-
 awk -F "|" ' { print $5 } ' "$seq"_98p.bedcov | while read f; do grep -w "$f" "$baseDir"/Databases/CARD/aro.csv >> "$seq"_98p.genes; done
  
 awk -F "|" ' { print $5 } ' "$seq"_95p_to_98p.bedcov | while read f; do grep -w "$f" "$baseDir"/Databases/CARD/aro.csv >> "$seq"_95p_to_98p.genes; done
@@ -63,8 +61,8 @@ cat << _EOF_ >  CARD_Primary_$COUNTER
 SELECT
     CARD_Primary.ARO_ID,
 	CARD_Primary.GeneName,
-	CARD_Primary.Antibiotic_affected,
 	CARD_Primary.GenusSpecies,
+	CARD_Primary.Antibiotic_affected,
 	CARD_Primary.Description
 FROM
     CARD_Primary
