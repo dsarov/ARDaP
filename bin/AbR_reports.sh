@@ -197,6 +197,16 @@ while read f; do
 	fi
 done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print $3 }')
 
+#Looking for speciation and QC
+echo "Looking for speciation markers"
+awk -F"|" -v f="speciation" 'BEGIN{IGNORECASE=1} $4~ f' AbR_output.txt > speciation.output
+grep -iw "speciation" speciation.output &> /dev/null
+status=$?
+if [[ "$status" -eq 0 ]]; then
+	echo "Species specific marker is missing. Likely quality control issue"
+	echo "Interpret AMR profile with caution"
+fi	
+
 # create patientDrugSusceptibilityData.csv
 # ID refers to individual strains
 sed -i "s/^/$seq,/" drug.table.txt

@@ -258,6 +258,12 @@ sed -i 's/$/<\/td><\/tr>/g' natural_variation.txt
 abr_report=$(cat resistance_determinants.txt)
 natural_variation=$(cat natural_variation.txt)
 
+#Format for speciation report
+awk -F"|" -v f="speciation" 'BEGIN{IGNORECASE=1} $4~ f' ${sampID}.AbR_output.final.txt > speciation.txt
+sed -i 's/^/<tr><td WIDTH="100%">/g' speciation.txt
+sed -i 's/$/<\/td><\/tr>/g' speciation.txt
+speciation=$(cat speciation.txt)
+
 cat <<_EOF_ > "$ID"_report.html
 
 <style>
@@ -1556,6 +1562,22 @@ $abr_report
 </thead>
 <tbody>
 $natural_variation
+</tbody>
+</table>
+
+<br>
+
+</tbody>
+</table>
+<br>
+<table class="detail_table">
+<thead>
+<tr>
+<th colspan="4">Speciation and quality control reporting</th>
+</tr>
+</thead>
+<tbody>
+$speciation
 </tbody>
 </table>
 
