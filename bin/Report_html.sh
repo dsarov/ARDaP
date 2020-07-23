@@ -1,5 +1,9 @@
 #!/bin/bash
 
+speciestmp=$1
+
+species=${speciestmp/_/ }
+
 #grab the variables from the patientmetadata.csv
 ID=$(awk -F"," '{ print $1 }' patientMetaData.csv |tail -n1)
 Barcode=$(awk -F"," '{ print $2 }' patientMetaData.csv |tail -n1)
@@ -23,7 +27,13 @@ lineageName=$(awk -F"," '{ print $19 }' patientMetaData.csv |tail -n1)
 
 #Predicted to be resistant to?
 
-resistant_list=($(awk -F"," '$4 ~ /[Rr]esistant/ ' patientDrugSusceptibilityData.csv | awk -F"," '$2!~/[Ii]ntrinsic/' | awk -F"," '{print $3}'))
+res_list=($(awk -F"," '$4 ~ /[Rr]esistant/ ' patientDrugSusceptibilityData.csv | awk -F"," '$2!~/[Ii]ntrinsic/' | awk -F"," '{print $3}'))
+
+resistant_list=${res_list[@]/%/,}
+#echo to file and then change last comma to .
+echo ${resistant_list[@]} > list_tmp
+sed -i 's/,$/./' list_tmp
+resistant_drugs=$(cat list_tmp)
 
 
 #no drug, some drug or all drug?
@@ -1322,7 +1332,7 @@ WQTYSJpFnvtlAkyACTAB6QmwkZT+EfEAmQATYAJMwCwCbCTNIs/9MgEmwASYgPQE
 2EhK/4h4gEyACTABJmAWATaSZpHnfpkAE2ACTEB6AmwkpX9EPEAmwASYABMwiwAb
 SbPIc79MgAkwASYgPYH/BwFb6F4ZRX86AAAAAElFTkSuQmCC" style="float:right;width:225px;height:180px;">
 
-<P style="font-size:30px">BURKHOLDERIA PSEUDOMALLEI</P>
+<P style="font-size:30px">${species^^}</P>
 <P style="font-size:30px">GENOME SEQUENCING REPORT</P>
 <P style="font-size:20px">NOT FOR DIAGNOSTIC USE</P>
 
@@ -1382,10 +1392,10 @@ SbPIc79MgAkwASYgPYH/BwFb6F4ZRX86AAAAAElFTkSuQmCC" style="float:right;width:225px
 </thead>
 <tbody>
 <tr>
-<td>The specimen was positive for <em>Burkholderia pseudomallei</em></td>
+<td>The specimen was positive for <em>${species}</em></td>
 </tr>
 <tr>
-<td>It is predicted to be resistant to ${resistant_list[@]}.</td>
+<td>It is predicted to be resistant to ${resistant_drugs}.</td>
 </tr>
 </tbody>
 </table>

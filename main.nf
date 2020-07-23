@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.6.2
+ *  Version             1.7
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -23,15 +23,10 @@ Input Parameter:
 
 Optional Parameters:
 
-    --database   Species specific database for resistance determination
-                 (default: Burkholderia_pseudomallei_k96243)
+    --species    Species specific database for resistance determination
+                 (default: Burkholderia_pseudomallei)
 
-                 Currently you are using $params.database
-
-    --ref        Reference genome for alignment. Must match genome used
-                 in --database (default: k96243.fasta)
-
-                 Currently you are using $params.ref
+                 Currently you are using $params.species
 
     --assemblies Optionally include a directory of assembled genomes in the
                  analysis. Set this parameter to 'true' if you wish to included
@@ -71,16 +66,30 @@ Update to the local cache of this workflow:
 ==================================================================
 ==================================================================
 """
-// Don't forget to assign CPU for tasks to optimize!
-// Setting of relational variables
+//find ref and species specific databases
 
-database=params.database
-ref=params.ref
+species=params.species
+database_config_file="${baseDir}/Databases/Database.config"
+ref_proc1="grep -w ${species} ${database_config_file}".execute()
+ref_proc2="cut -f3".execute()
+ref_proc1 | ref_proc2
+ref_proc2.waitFor()
+reftmp="${ref_proc2.text}"
+ref=reftmp.trim()
+
+database_proc1="grep -w ${species} ${database_config_file}".execute()
+database_proc2="cut -f2".execute()
+database_proc1 | database_proc2
+database_proc2.waitFor()
+databasetmp="${database_proc2.text}"
+database=databasetmp.trim()
+//println "${database}"
+//println "${ref}"
+
 params.reference="${baseDir}/Databases/${database}/${ref}"
 params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
 params.card_db="${baseDir}/Databases/${database}/${database}_CARD.db"
 params.snpeff="${params.database}"
-params.sweaveReport="${baseDir}/Databases/${database}/sweaveTB-WGS-Micro-Report.Rnw"
 
 fastq = Channel
   .fromFilePairs("${params.fastq}", flat: true)
@@ -125,9 +134,6 @@ patient_meta_file = file(params.patientMetaData)
 if( !patient_meta_file.exists() ) {
   exit 1, "The specified patient metadata file does not exist: ${params.patientMetaData}"
 }
-
-sweave_report_file = file(params.sweaveReport)
-r_report_logo_file = file(params.logo)
 
 /*
 ======================================================================
@@ -189,11 +195,8 @@ if (params.assemblies) {
 Part 2: read processing, reference alignment and variant identification
 =======================================================================
 // Variant calling sub-workflow - basically SPANDx with a tonne of updates
-// Careful here, not sure if the output overwrites the symlinks
-// created by Nextflow (if input is .fq.gz) and would do weird stuff?
 
 */
-
 
 /*
 =======================================================================
@@ -698,7 +701,7 @@ process R_report {
 
   script:
   """
-  bash Report_html.sh
+  bash Report_html.sh ${species}
   """
 }
 
@@ -759,15 +762,13 @@ if (params.phylogeny) {
     label "snp_matrix"
     publishDir "./Outputs/Phylogeny_and_annotation", mode: 'copy', overwrite: false
 
-    //TO DO add additional publishDir to have annotated outputs in correct location
-
     input:
     set file(filtered_vcf), file(out_vcf) from snp_matrix_ch
 
     output:
     file("Ortho_SNP_matrix.nex")
     file("MP_phylogeny.tre")
-    file("ML_phylogeny.tre") //need to count taxa to tell this to not be expected if ntaxa is < 4
+    file("ML_phylogeny.tre")
     file("All_SNPs_indels_annotated.txt")
 
     script:
