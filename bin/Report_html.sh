@@ -29,9 +29,9 @@ lineageName=$(awk -F"," '{ print $19 }' patientMetaData.csv |tail -n1)
 
 res_list=($(awk -F"," '$4 ~ /[Rr]esistant/ ' patientDrugSusceptibilityData.csv | awk -F"," '$2!~/[Ii]ntrinsic/' | awk -F"," '{print $3}'))
 
-resistant_list=${res_list[@]/%/,}
+resistant_list="${res_list[@]/%/,}"
 #echo to file and then change last comma to .
-echo ${resistant_list[@]} > list_tmp
+echo "${resistant_list[@]}" > list_tmp
 sed -i 's/,$/./' list_tmp
 resistant_drugs=$(cat list_tmp)
 
