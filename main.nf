@@ -15,13 +15,11 @@ log.info """
                              v1.7
 ================================================================================
 
-Input Parameter:
+Optional Parameters:
 
     --fastq      Input PE read file wildcard (default: *_{1,2}.fastq.gz)
 
                  Currently this is set to $params.fastq
-
-Optional Parameters:
 
     --species    Species specific database for resistance determination
                  (default: Burkholderia_pseudomallei)
@@ -52,6 +50,15 @@ Optional Parameters:
                  number of isolates (default: false)
 
                  Currently phylogeny is set to $params.phylogeny
+
+    --executor   Change this flag for running in a HPC scheduler environment.
+                 Default behavior is to run without a scheduler but a
+                 wide range of schedulers are supported with nextflow.
+                 Some of the supported schedulers include sge, pbs, pbspro,
+                 slurm, lsf, moab, nqsii. For a full list please visit the
+                 nextflow documentation
+
+                 Currently executor is set to $params.executor
 
 If you want to make changes to the default `nextflow.config` file
 clone the workflow into a local directory and change parameters
@@ -89,7 +96,7 @@ database=databasetmp.trim()
 params.reference="${baseDir}/Databases/${database}/${ref}"
 params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
 params.card_db="${baseDir}/Databases/${database}/${database}_CARD.db"
-params.snpeff="${params.database}"
+params.snpeff="${database}"
 
 fastq = Channel
   .fromFilePairs("${params.fastq}", flat: true)
@@ -114,7 +121,7 @@ if (params.assemblies) {
 
 resistance_database_file = file(params.resistance_db)
 if( !resistance_database_file.exists() ) {
-  exit 1, "The resistance database file file does no exist: ${params.resistance_db}"
+  exit 1, "The resistance database file does no exist: ${params.resistance_db}"
 }
 
 reference_file = file(params.reference)

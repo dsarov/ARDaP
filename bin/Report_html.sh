@@ -1395,7 +1395,7 @@ SbPIc79MgAkwASYgPYH/BwFb6F4ZRX86AAAAAElFTkSuQmCC" style="float:right;width:225px
 <td>The specimen was positive for <em>${species}</em></td>
 </tr>
 <tr>
-<td>It is predicted to be resistant to ${resistant_drugs}.</td>
+<td>It is predicted to be resistant to ${resistant_drugs}</td>
 </tr>
 </tbody>
 </table>
