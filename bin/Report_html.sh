@@ -37,14 +37,14 @@ resistant_drugs=$(cat list_tmp)
 
 
 #no drug, some drug or all drug?
-no_resist="${#resistant_list[@]}"
+no_resist="${#resistant_drugs[@]}"
 
 if [ "$no_resist" -eq 0 ]; then #no drug resistance
   no_res="&#9745;"
   one_res="&#9744;"
   two_res="&#9744;"
   multi_res="&#9744;"
-  resistant_list="no clinically relevant antibiotics"
+  resistant_drugs="no clinically relevant antibiotics"
 fi
 if [ "$no_resist" -eq 1 ]; then #resistant to one drug
   no_res="&#9744;"
