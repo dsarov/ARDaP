@@ -37,7 +37,9 @@ resistant_drugs=$(cat list_tmp)
 
 
 #no drug, some drug or all drug?
-no_resist="${#resistant_drugs[@]}"
+no_resist="${#res_list[@]}"
+echo "${no_resist[@]}"
+echo "$resistant_drugs"
 
 if [ "$no_resist" -eq 0 ]; then #no drug resistance
   no_res="&#9745;"
