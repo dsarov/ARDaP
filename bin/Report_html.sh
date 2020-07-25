@@ -1394,7 +1394,7 @@ SbPIc79MgAkwASYgPYH/BwFb6F4ZRX86AAAAAElFTkSuQmCC" style="float:right;width:225px
 </thead>
 <tbody>
 <tr>
-<td>The specimen was positive for <em>${species}</em></td>
+<td>The specimen was interogated with the <em>${species}</em> database</td>
 </tr>
 <tr>
 <td>It is predicted to be resistant to ${resistant_drugs}</td>
