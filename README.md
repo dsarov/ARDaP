@@ -95,14 +95,19 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- ART 
+- ART ([doi: 10.1093/bioinformatics/btr708](https://academic.oup.com/bioinformatics/article/28/4/593/213322))
+- Trimmomatic ([doi: 10.1093/bioinformatics/btu170](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096))
+- Seqtk (https://github.com/lh3/seqtk)
 - Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
-- SAMTools (ref)
-- Picard (ref)
-- Genome Analysis Toolkit (GATK) (ref)
-- BEDTools (ref)
-- SNPEff (ref)
-- VCFtools (ref)
+- SAMTools ([doi: 10.1093/bioinformatics/btp352ref](https://academic.oup.com/bioinformatics/article/25/16/2078/204688))
+- Picard (https://broadinstitute.github.io/picard/)
+- Genome Analysis Toolkit (GATK) ([doi: 10.1101/gr.107524.110.](https://genome.cshlp.org/content/20/9/1297))
+- BEDTools ([doi: 10.1093/bioinformatics/btq033](https://academic.oup.com/bioinformatics/article/26/6/841/244688))
+- Pindel ([doi: 10.1093/bioinformatics/btp394](https://academic.oup.com/bioinformatics/article/25/21/2865/2112044))
+- Mosdepth ([doi: 10.1093/bioinformatics/btx699](https://academic.oup.com/bioinformatics/article/34/5/867/4583630))
+- SNPEff ([doi 10.4161/fly.19695](https://www.tandfonline.com/doi/full/10.4161/fly.19695))
+- CARD ([doi: 10.1093/nar/gkz935](https://academic.oup.com/nar/article/48/D1/D517/5608993))
+- SQLite (https://sqlite.org/index.html)
 
 ## Parameters
    
