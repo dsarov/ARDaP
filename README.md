@@ -81,6 +81,10 @@ For example, to run Nextflow with the default cluster job submission template pr
 
 `nextflow run dsarov/ardap --executor pbs --mixtures`
 
+### Error handling strategy
+
+The nextflow pipeline language allows different error strategies to be applied to make sure your pipeline runs as seamlessly as possible. ARDaP will attempt to re-run any failed jobs four times before giving up. Frequent crashes may represent a bug and should be reported but an occasional crash may happen and should be mostly mitigated by the "retry" error strategy. 
+
 ## Resource Managers
 
 ARDaP is written in the nextflow language and as such has support for most resource management systems.
