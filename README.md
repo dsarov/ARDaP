@@ -162,34 +162,34 @@ ARDaP can optionally include assembled genomes in the workflow using the `--asse
 
 ### Database Creation
 
-ARDaP's creators have thus far developed and validated a custom database of AMR variants for *Burkholderia pseudomallei*, and the construction of a *Pseudomonas aeruginosa*-specific AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any bacterial species of interest. To add additional species requires a database of all known AMR determinants acquired from a) horizontal gene gain (through incorporation and improved annotation of the CARD database) and b) chromosomal mutations such as single nucleotide polymorphisms (SNPs), insertion-deletions (indels) and copy-number variations (CNVs). This task first requires a thorough review of the literature, followed by manual cataloguing and verification of individual resistance determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant. Development of such detailed databases can be laborious and time consuming, and certainly require regular updates as new AMR variants are published in the literature, but this activity is essential for truly comprehensive AMR detection. 
+When creating your own custom database, please use the (['database templates'] (https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template)) to ensure ARDaP compatibility.
 
-The species-specific databases are incorporated into ARDaP using SQLite. The ARDaP software looks for information in specific tables of the  database, and the structure and names of columns in these tables must not be modified when creating the custom database; if they are, ARDaP will be unable to properly detect and annotate the AMR information in a given strain. 
+ARDaP's creators have, to date, developed and validated a custom AMR database for *Burkholderia pseudomallei*, and a *Pseudomonas aeruginosa* AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any microbial species of interest. Adding species requires populating a database of all known AMR determinants acquired from: a) chromosomal mutations (SNPs, indels, CNVs, and gene loss); and b) horizontal gene gain (through incorporation and improved annotation of the CARD database). To develop a truly comprehensive AMR database is a nontrivial and ongoing effort; however, doing so is essential for enhancing the value of tools like ARDaP for AMR determinant identification from microbial genomes. It is recommended that a thorough literature review first be carried out, followed by manual cataloguing and verification of individual AMR determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant.
 
-The following sections outline, with an example, what components of the database they can customise to tailor the database for their bacterial species of interest. The ARDaP tables include: 
+The species-specific databases are incorporated into ARDaP using SQLite. ARDaP looks for information in specific tables of your SQLite database, and the structure and names of columns in these tables must not be modified when creating the custom database; if they are, ARDaP will be unable to properly detect and annotate the AMR information in a given strain. 
+
+The following sections outline, with an example, what components of the database can be customised to tailor the database for any microbial species of interest. The ARDaP tables include: 
 -	**A table specifying the clinically-relevant antibiotics for the bacterial species of interest.** Required columns include: Antibiotic, abbreviation, drug class, drug family
--	**A Coverage table** (differences in genome coverage for conferring AMR). Required columns include:Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments
--	**A table for the genome-wide association study (GWAS) used in the predictive component of ARDaP.** Note that incorporation of this table requires a large amount of genomes, with accompanying AMR phenotypic data from sensitive and resistant strains from the bacterial species of interest. Depending on the target pathogen, this table may not be workable, for example, too few genomes were available for a GWAS to be undertaken in the *B. pseudomallei* module of ARDaP, but there are enough public genomes with accompanying resistance profiles for GWAS to be tested in the *P. aeruginosa* module. Required columns include: GWAS ID, genomic coordinate, reference base, mutation type, specific ‘antibiotic’ resistant p-value and specific ‘antibiotic’ intermediate resistance p-value (note: these resistant and intermediate p-values need to be included for every individual antibiotic)
--	**A table of mutational variants including SNPs and indels for conferring AMR**. Required columns include: Gene name, variant annotation, alternative variant annotation, antibiotic affected, known combination, comments 
+-	**A Coverage table** (for identifying CNVs or gene loss that confer AMR). Required columns include:Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments.  
+-	**A table for the genome-wide association study (GWAS) used in the predictive component of ARDaP.** Note that incorporation of this table requires a large amount of genomes, with accompanying AMR phenotypic data from sensitive and resistant strains from the microbial species of interest. Depending on the target microbe, this table may not be workable; for example, too few genomes are currently available for a GWAS to be undertaken in the *B. pseudomallei* module of ARDaP. In contrast, there are sufficient public genomes with accompanying AMR profiles in the *P. aeruginosa* module for a GWAS approach to be used. Required columns include: GWAS ID, genomic coordinate, reference base, mutation type, specific ‘antibiotic’ resistant p-value and specific ‘antibiotic’ intermediate resistance p-value (note: these resistant and intermediate p-values need to be included for every individual antibiotic)
+-	**A table of mutational variants (i.e SNPs and indels) for conferring AMR**. Required columns include: Gene name, variant annotation, alternative variant annotation, antibiotic affected, known combination, comments
 
-** 1.	Structure of a table in SQLite** 
+NB. A complete, closed archetypal reference genome should be used where possible, and this genome must be present in the SnpEff database. Run the following command to identify the available SnpEff databases for your microbe of interest: e.g. `conda activate ardap && snpEff databases | grep 'Burkholderia_pseudomallei'`
 
-The first tab of the SQLite database allows the user to create the ‘Structure’ of the table, adding columns and information, in this example about the clinically-relevant antibiotics for the bacterial species of interest (Figure 1). This example includes a column string of the antibiotic name (primary key), the antibiotic abbreviation, drug class and drug family that the antibiotic belongs to. Ensure to commit changes when new additions are made. 
+** 1.	Populating the SQLite AMR database** 
 
-![](https://raw.githubusercontent.com/demadden/ARDaP/master/Structure%20tab%20explained.png)
+Important: DO NOT alter any information in the 'Structure' tab; otherwise ARDaP will not work!
 
-**Figure 1:**  Structure antibiotics table in SQLite database
+**A.	Data**
 
-**2.	Data**
-
-In the next ‘Data’ tab (Figure 2), the creator then adds new rows, in this example a list of all of the clinically-relevant antibiotics (specific to the bacterial species of interest) to populate the columns created previously in the ‘Structure’ tab (Figure 1). The abbreviations are what links ARDaP (and the final AMR reports) with the specific antibiotics and their information about drug class and family. In other words, ARDaP will only report AMR determinants to antibiotics/abbreviations added to this ‘Data’ tab. Ensure to commit changes when new additions are made. 
+The ‘Data’ tab (Figure 1) enables the database creator to add new rows listing all antimicrobials relevant to the microbial species of interest, along with information about antimicrobial drug class and family. The abbreviations in this 'Data' table link to the final AMR reports generated by ARDaP. In other words, ARDaP will only report AMR determinants when the antimicrobial abbreviations have been added to this ‘Data’ tab. Please use (['standardised antimicrobial abbreviations'] (https://aac.asm.org/content/abbreviations-and-conventions)). Please ensure you commit changes when new additions are made by clicking on the green checkbox in SQLite. 
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/Antibiotic%20tab%20explained.png)
-**Figure 2:** Data tab of antibitoics table in SQLite database
+**Figure 1:** 'Data' tab of antibitoics table in SQLite database
 
-**3.	Variants table (SNPs and indels for conferring AMR)**
+**B.	Variants table (SNPs and indels for conferring AMR)**
 
-As an additional example, Figure 3 describes the structure and data of the AMR variants (SNPs and indels) table. The column names have been specified in the structure tab, and now the user can populate the data tab with the AMR variants. This includes the gene name where the resistance variant is occurring, the annotation of the variant (and alternative variant annotation - if applicable), and the antibiotic/s that are affected by this variant. For example, in Figure 3, in row three there is a frameshift mutation occurring in the *ampD* AMR gene at the position of the serine (ser) amino acid which confers resistance to the cephalosporin antibiotic ceftazidime (CAZ). In this table there is also a column titled ‘known combination’, this is applicable for AMR variants that require multiple mutations to confer resistance.  
+As an additional example, Figure 3 describes the structure and data of the AMR variants (i.e. SNPs and indels) table. The column names have been specified in the 'Structure' tab, and now the user can populate the 'Data' tab with the AMR variants. This includes the AMR gene name, AMR variant annotation (and alternative variant annotation - if applicable), and the antibiotic/s affected by this variant. For example, in row 3 of Figure 3, a frameshift mutation is present in the *ampD* AMR gene at the position of the serine (ser) amino acid which confers AMR towards the cephalosporin antibiotic, ceftazidime (CAZ). Within this table is also a ‘known combination’ column, which should be populated in instances where two or more stepwise mutations are required to confer AMR.  
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/SNPs%20indels%20database%20explained.png)
 **Figure 3:** Data tab of variants table in SQLite database
@@ -203,6 +203,5 @@ Q: My pipeline crashed. Where do I go to figure out what happened?
 A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being processed and where the log files are kept for that step.
 
 ### Bugs!!
-Please send bug reports to derek.sarovich@gmail.com or log them in the github issues tab
+Please send bug reports to derek.sarovich@gmail.com or log them in the github 'issues' tab
 =======
-Please send bug reports to derek.sarovich@gmail.com.
