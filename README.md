@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/BioRxiv-prep-green.svg)
 
 
-ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia) with database construction, code testing and feature design by Danielle Madden ([@dmadden9](https://twitter.com/demadden9)), Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia) and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)).
+ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia), with database construction, code testing and feature design by Danielle Madden ([@dmadden9](https://twitter.com/demadden9)), Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia) and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)).
 
 
 ## Contents
@@ -26,20 +26,15 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 
 ## Introduction
 
-ARDaP (Antimicrobial Resistance Detection and Prediction) is a genomics pipeline 
-for the comprehensive identification of antibiotic resistance markers from whole-genome
-sequencing data. The impetus behind the creation of ARDaP was our frustration 
-with current methodology not being able to detect antimicrobial resistance when confered by "complex" mechanisms.
-Our two species of interest, <i>Burkholderia pseudomallei</i> and <i>Pseudomonas aeruginosa*</i>, develop antimicrobial resistance
-in a multiple ways but predominately through chromosomal mutations, including gene loss, copy number variation, single nucleotide polymorphisms and indels. ARDaP will first identify all genetic variation in a sample and then interrogate this information against a user created database of resistance mechanisms. The software will then summarise the identified mechanisms and produce a simple report for the user.
+ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is a pipeline designed to identify genetic variants (i.e. single-nucleotide polymorphisms [SNPs], insertions/deletions [indels], copy-number variants [CNVs], and gene loss) associated with antimicrobial resistance (AMR) from microbial (meta)genomes or (meta)transcriptomes. The impetus behind developing ARDaP was our frustration with current methodology being unable to detect AMR conferred by "complex" chromosomal alterations. Our two species of interest, *Burkholderia pseudomallei* and *Pseudomonas aeruginosa*\*, can develop AMR in a multiple ways, predominantly through chromosomal gene loss, CNVs, SNPs, and indels; and in *B. pseudomallei*, gene gain plays no role in conferring AMR, rendering many existing AMR tools entirely ineffective. ARDaP first identifies all genetic variation in a microbial sequence data (either .fasta assemblies or Illumina paired-end data; other data types currently not supported), and then interrogates this information against a user-created database of AMR determinants. The software will then summarise the identified AMR determinants and produce an easy-to-interpret summary report.
 
-*<i>P. aeruginosa</i> module is still under development
+\**P. aeruginosa* module still under development
 
 ## Installation
 
-### Short version for those that just want to get started and understand how environments in conda work
+### Short version for those that just want to get started and understand how conda environments work
 
-ARDaP is available on our development channel and its dependencies can be installed with:
+ARDaP is available on our development channel, and its dependencies can be installed with:
 
 `conda install -c dsarov -c bioconda -c conda-forge ardap`
 
@@ -47,94 +42,101 @@ The pipeline itself is run with Nextflow from a local cache of the repository:
 
 `nextflow run dsarov/ardap`
 
-The local cache can be updated with
+The local cache can be updated with:
 
 `nextflow pull dsarov/ardap`
 
-If you want to make changes to the default `nextflow.config` file
-clone the workflow into a local directory and change parameters
-in `nextflow.config`:
+If you want to make changes to the default `nextflow.config` file, clone the workflow into a local directory and change parameters in `nextflow.config`:
 
 `nextflow clone dsarov/ardap install_dir/`
 
 Or navigate to the conda install path of ARDaP and change the `nextflow.config` in that location.
 
-### Long version for those unfamiliar with environments or just want all the steps for recommended installation
+### Long version for those unfamiliar with environments or who just want all the steps for recommended installation
 
-1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you do have conda installed then it's a good idea to update conda so you have the latest version `conda update conda`. If you don't have this software installed then go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After the install, make sure your install is up-to-date `conda update conda`.
+1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you  have conda installed,  it's a good idea to update conda so you have the latest version: `conda update conda`. If you don't have this software installed,  go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After conda install, make sure your install is up-to-date: `conda update conda`.
 
-2) Create a new environment with conda called "ardap" and install the software with `conda create --name ardap -c dsarov -c bioconda -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
+2) Create a new environment with conda called "ardap" and install the ARDaP software with `conda create --name ardap -c dsarov -c bioconda -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
 
-3) Activate the ardap environment that was installed by conda, `conda activate ardap`
+3) Activate the ARDaP environment that was installed by conda: `conda activate ardap`
 
-4) To run ARDaP, `nextflow run dsarov/ardap`.
+4) To run ARDaP: `nextflow run dsarov/ardap`
 
-5) If you are running this pipeline on a HPC/submission system (e.g. PBS) then using the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
+5) If you're running ARDaP on a HPC/submission system (e.g. PBS), the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
 
 ## Usage
 
-To control the data pipeline, ARDaP is implemented in Nextflow. More information about Nextflow can be found [here](https://www.nextflow.io/docs/latest/getstarted.html)
+ARDaP is implemented in Nextflow. More information about Nextflow can be found [here](https://www.nextflow.io/docs/latest/getstarted.html)
 
 ARDaP can be called from the command line through [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
 
-For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP` we can run:
+For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP`, we can run:
 
 `nextflow run dsarov/ardap --executor pbs --mixtures`
 
+### Error-handling strategy
+
+The nextflow pipeline language allows different error strategies to be applied to make sure your pipeline runs as seamlessly as possible. ARDaP will attempt to re-run any failed jobs four times before giving up. Frequent crashes may represent a bug and should be reported, but an occasional crash may happen and should be mostly mitigated by the "retry" error strategy. 
+
 ## Resource Managers
 
-ARDaP is written in the nextflow language and as such has support for most resource management systems.
+ARDaP is written in the Nextflow language, and as such, has support for most resource management systems.
 
-List of schedulers and default template profiles in `nextflow.config` and can be selected when the pipeline is initiated with the `--executor` flag. For example, if you want to run ARDaP on a system with PBS, simply set `--executor pbs` when initialising ARDaP. Most popular resource managers are supported (e.g. sge, slurm) with the default configuration running on the local system.
+The list of schedulers and default template profiles is in `nextflow.config` and can be selected when the pipeline is initiated with the `--executor` flag. For example, if you want to run ARDaP on a system with PBS, simply set `--executor pbs` when initialising ARDaP. Most popular resource managers are supported (e.g. sge, slurm). The default configuration is to run on the local system without a scheduler.
 
-If you need any more information about how to set your resource manager (e.g. memory, queue, account settings) see https://www.nextflow.io/docs/latest/executor.html
+If you require more information about how to set your resource manager (e.g. memory, queue, account settings), please see https://www.nextflow.io/docs/latest/executor.html
 
-If you would like to just submit jobs to the resource manager queue without monitoring, then use of the screen or nohup command will allow you to run the pipeline process in the background and won't kill the pipline if the shell is terminated. Examples of nohup are included below.
+If you would like to just submit jobs to the resource manager queue without monitoring, then use of the `screen` or `nohup` commands will allow you to run the pipeline process in the background, and won't kill the pipeline if the shell is terminated. Examples of `nohup` are included below.
 
 ## ARDaP Workflow
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- ART 
+- ART ([doi: 10.1093/bioinformatics/btr708](https://academic.oup.com/bioinformatics/article/28/4/593/213322))
+- Trimmomatic ([doi: 10.1093/bioinformatics/btu170](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096))
+- Seqtk (https://github.com/lh3/seqtk)
 - Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
-- SAMTools (ref)
-- Picard (ref)
-- Genome Analysis Toolkit (GATK) (ref)
-- BEDTools (ref)
-- SNPEff (ref)
-- VCFtools (ref)
+- SAMTools ([doi: 10.1093/bioinformatics/btp352ref](https://academic.oup.com/bioinformatics/article/25/16/2078/204688))
+- Picard (https://broadinstitute.github.io/picard/)
+- Genome Analysis Toolkit (GATK) ([doi: 10.1101/gr.107524.110.](https://genome.cshlp.org/content/20/9/1297))
+- BEDTools ([doi: 10.1093/bioinformatics/btq033](https://academic.oup.com/bioinformatics/article/26/6/841/244688))
+- Pindel ([doi: 10.1093/bioinformatics/btp394](https://academic.oup.com/bioinformatics/article/25/21/2865/2112044))
+- Mosdepth ([doi: 10.1093/bioinformatics/btx699](https://academic.oup.com/bioinformatics/article/34/5/867/4583630))
+- SNPEff ([doi 10.4161/fly.19695](https://www.tandfonline.com/doi/full/10.4161/fly.19695))
+- CARD ([doi: 10.1093/nar/gkz935](https://academic.oup.com/nar/article/48/D1/D517/5608993))
+- SQLite (https://sqlite.org/index.html)
 
 ## Parameters
    
 Optional Parameter: \
-  `--mixtures`   Optionally perform within species mixtures analysis or metagenomic analysis for species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or metagenomic data. Default=false
+  `--mixtures`   Optionally perform within-species mixture analysis (e.g. from metagenomic/metatranscriptomic data) for a particular species of interest. Run ARDaP with the --mixtures flag for analysis with multiple strains and/or meta-omic data. Default=false
   
   Example:
   
   `$ nextflow run dsarov/ardap --mixtures`
   
-  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly coresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline more quickly (integer value expected). Default=1000000, which corresponds to ~50x coverage for a 6Mbp genome. To switch down-sampling off, specify --size 0. When mixture analysis is requested, this option should be switched to 0 for the most sensitive ARM determinant detection.
   
   Example:
   
   `$ nextflow run dsarov/ardap --size 0 --mixtures`
   
-  `--phylogeny` Use this flag if you would like a whole genome phylogeny or a combined and annotated variant file. Note that this may take a long time if you have a large number of isolates. Default=false
+  `--phylogeny` Use this flag if you would like a whole-genome phylogeny, or an annotated variant matrix file. Note that this may take a long time if you have a large number of isolates. Default=false
   
   Example:
   
   `$ nextflow run dsarov/ardap --phylogeny`
   
-  `--species` Use this flag to specify an ARDaP database that contains species specific resistance information.
+  `--species` Use this flag to specify an ARDaP database that contains species-specific AMR determinant information.
   
-  Currently there are databases available for:
+  Currently there are ARDaP databases available for:
   <i>Pseudomonas aeruginosa</i> `--species Pseudomonas_aeruginosa`
   <i>Burkholderia pseudomallei</i> `--species Burkholderia_pseudomallei` 
   
   For example: \
   `nextflow run dsarov/ardap --species Pseudomonas_aeruginosa`
 
-If you don't want to constantly use the flags for different species, all of these settings can be changed in the nextflow.config file if the default parameters aren't suitable.
+If you don't want to constantly use the flags for different species, this setting can be changed in the `nextflow.config` file.
 
 `--fastq` ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
 
@@ -156,11 +158,11 @@ STRAIN_2_sequence.fq.gz (second pair)
 
 ## Inclusion of Assembled Genomes
 
-ARDaP can optionally include assembled genomes in the workflowusing the `--assemblies` flag. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
 ### Database Creation
 
-The creators of ARDaP have thus far developed and validated a custom database of AMR variants for *Burkholderia pseudomallei*, and the construction of a *Pseudomonas aeruginosa*-specific AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any bacterial species of interest. To add additional species requires a database of all known AMR determinants acquired from a) horizontal gene gain (through incorporation and improved annotation of the CARD database) and b) chromosomal mutations such as single nucleotide polymorphisms (SNPs), insertion-deletions (indels) and copy-number variations (CNVs). This task first requires a thorough review of the literature, followed by manual cataloguing and verification of individual resistance determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant. Development of such detailed databases can be laborious and time consuming, and certainly require regular updates as new AMR variants are published in the literature, but this activity is essential for truly comprehensive AMR detection. 
+ARDaP's creators have thus far developed and validated a custom database of AMR variants for *Burkholderia pseudomallei*, and the construction of a *Pseudomonas aeruginosa*-specific AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any bacterial species of interest. To add additional species requires a database of all known AMR determinants acquired from a) horizontal gene gain (through incorporation and improved annotation of the CARD database) and b) chromosomal mutations such as single nucleotide polymorphisms (SNPs), insertion-deletions (indels) and copy-number variations (CNVs). This task first requires a thorough review of the literature, followed by manual cataloguing and verification of individual resistance determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant. Development of such detailed databases can be laborious and time consuming, and certainly require regular updates as new AMR variants are published in the literature, but this activity is essential for truly comprehensive AMR detection. 
 
 The species-specific databases are incorporated into ARDaP using SQLite. The ARDaP software looks for information in specific tables of the  database, and the structure and names of columns in these tables must not be modified when creating the custom database; if they are, ARDaP will be unable to properly detect and annotate the AMR information in a given strain. 
 
