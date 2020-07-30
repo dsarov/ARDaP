@@ -198,7 +198,7 @@ SNP and indel AMR variants can be added to the 'Data' tab of the 'Variants_SNP_i
 
 Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data' tab of the 'Coverage' table (e.g. Figure 3) should be used to list genes that confer AMR when lost (either fully or partially), or for genes where CNVs or upregulation cause AMR.
 
-![](https://raw.githubusercontent.com/erin-price/ARDaP/master/ARDaP%coverage_Pa%db.tif)
+![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.tif)
 **Figure 3:** 'Data' tab of the 'Coverage' table in the *P. aeruginosa* ARDaP SQLite database
 
 **Still to come: annotation of the CARD database to only include relevant species-specific AMR determinants and to ignore conserved/irrelevant genes**
