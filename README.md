@@ -125,16 +125,16 @@ Optional Parameter: \
   
   `$ nextflow run dsarov/ardap --phylogeny`
   
-  `--database` Use this flag to specify an ARDaP database that contains species specific resistance information. Note that you will also need to specify the correct reference file with `--ref`.
+  `--species` Use this flag to specify an ARDaP database that contains species specific resistance information.
   
   Currently there are databases available for:
-  <i>Pseudomonas aeruginosa</i> `--database Pseudomonas_aeruginosa_pao1 --ref Pa_PAO1`
-  <i>Burkholderia pseudomallei</i> `--database Burkholderia_pseudomallei_k96243 --ref k96243` 
+  <i>Pseudomonas aeruginosa</i> `--species Pseudomonas_aeruginosa`
+  <i>Burkholderia pseudomallei</i> `--species Burkholderia_pseudomallei` 
   
   For example: \
-  `nextflow run dsarov/ardap --database Pseudomonas_aeruginosa_pao1 --ref Pa_PAO1`
+  `nextflow run dsarov/ardap --species Pseudomonas_aeruginosa`
 
-If you don't want to constantly use the flags for different databases, all of these settings can be changed in the nextflow.config file if the default parameters aren't suitable.
+If you don't want to constantly use the flags for different species, all of these settings can be changed in the nextflow.config file if the default parameters aren't suitable.
 
 `--fastq` ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
 
@@ -156,7 +156,7 @@ STRAIN_2_sequence.fq.gz (second pair)
 
 ## Inclusion of Assembled Genomes
 
-ARDaP can optionally include assembled genomes in the workflow. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+ARDaP can optionally include assembled genomes in the workflowusing the `--assemblies` flag. To do so please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in fasta format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
 ### Database Creation
 
