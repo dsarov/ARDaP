@@ -118,7 +118,7 @@ Optional Parameter: \
   
   `$ nextflow run dsarov/ardap --mixtures`
   
-  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly coresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. Note that this option is switch off when mixture analysis is requested.
+  `--size` ARDaP can optionally down-sample your read data to run through the pipeline quicker (integer value expected). Default=1000000, which roughly coresponds to a 50x coverage given a genome size of 6Mbp. To switch downsampling off, specify --size 0. When mixture analysis is requested, this option should be switched to 0 for the most sensitive detection of resistance determinants.
   
   Example:
   
