@@ -115,7 +115,7 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 - [Mosdepth](https://doi.org/10.1093/bioinformatics/btx699)
 - [SNPEff](https://doi.org/10.4161/fly.19695)
 - [CARD](https://doi.org/10.1093/nar/gkz935)
-- [SQLite]((https://sqlite.org/index.html)
+- [SQLite](https://sqlite.org/index.html)
 - [FastTree 2](https://doi.org/10.1371/journal.pone.0009490)
 
 
