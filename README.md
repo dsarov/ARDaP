@@ -92,19 +92,20 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- ART ([doi: 10.1093/bioinformatics/btr708](https://academic.oup.com/bioinformatics/article/28/4/593/213322))
-- Trimmomatic ([doi: 10.1093/bioinformatics/btu170](https://academic.oup.com/bioinformatics/article/30/15/2114/2390096))
-- Seqtk (https://github.com/lh3/seqtk)
-- Burrows Wheeler Aligner (BWA) ([doi: 10.1093/bioinformatics/btp324](https://academic.oup.com/bioinformatics/article/25/14/1754/225615))
-- SAMTools ([doi: 10.1093/bioinformatics/btp352ref](https://academic.oup.com/bioinformatics/article/25/16/2078/204688))
-- Picard (https://broadinstitute.github.io/picard/)
-- Genome Analysis Toolkit (GATK) ([doi: 10.1101/gr.107524.110.](https://genome.cshlp.org/content/20/9/1297))
-- BEDTools ([doi: 10.1093/bioinformatics/btq033](https://academic.oup.com/bioinformatics/article/26/6/841/244688))
-- Pindel ([doi: 10.1093/bioinformatics/btp394](https://academic.oup.com/bioinformatics/article/25/21/2865/2112044))
-- Mosdepth ([doi: 10.1093/bioinformatics/btx699](https://academic.oup.com/bioinformatics/article/34/5/867/4583630))
-- SNPEff ([doi 10.4161/fly.19695](https://www.tandfonline.com/doi/full/10.4161/fly.19695))
-- CARD ([doi: 10.1093/nar/gkz935](https://academic.oup.com/nar/article/48/D1/D517/5608993))
-- SQLite (https://sqlite.org/index.html)
+- (['ART'] (https://doi.org//bioinformatics/btr708))
+- (['Trimmomatic'] (https://doi.org/10.1093/bioinformatics/btu170))
+- (['Seqtk'] (https://github.com/lh3/seqtk))
+- (['Burrows Wheeler Aligner (BWA)'] (https://doi.org//bioinformatics/btp324))
+- (['SAMTools'] (https://doi.org/10.1093/bioinformatics/btp352ref))
+- (['Picard'] (https://broadinstitute.github.io/picard/))
+- (['Genome Analysis Toolkit (GATK)'] (https://doi.org/10.1101/gr.107524.110))
+- (['BEDTools'] (https://doi.org/10.1093/bioinformatics/btq033))
+- (['Pindel'] (https://doi.org/10.1093/bioinformatics/btp394))
+- (['Mosdepth'] (https://doi.org/10.1093/bioinformatics/btx699))
+- (['SNPEff'] (https://doi.org/10.4161/fly.19695))
+- (['CARD'] (https://doi.org/10.1093/nar/gkz935))
+- (['SQLite'] ((https://sqlite.org/index.html))
+- (['FastTree 2'] (https://doi.org/10.1371/journal.pone.0009490))
 
 ## Parameters
    
@@ -198,10 +199,13 @@ SNP and indel AMR variants can be added to the 'Data' tab of the 'Variants_SNP_i
 
 Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data' tab of the 'Coverage' table (e.g. Figure 3) should be used to list genes that confer AMR when lost (either fully or partially), or for genes where CNVs or upregulation cause AMR.
 
-![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.tif)
+![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.png)
 **Figure 3:** 'Data' tab of the 'Coverage' table in the *P. aeruginosa* ARDaP SQLite database
 
-**Still to come: annotation of the CARD database to only include relevant species-specific AMR determinants and to ignore conserved/irrelevant genes**
+**Still to come: 
+
+   **- Annotation of the CARD database to only include relevant species-specific AMR determinants and to ignore conserved/non-AMR-conferring genes**
+   **- Description of the GWAS component of ARDaP for AMR determinant prediction across well-curated genomic datasets with associated AMR phenotyping data**
 
 ## Troubleshooting
 
@@ -209,6 +213,10 @@ Q: My pipeline crashed. Where do I go to figure out what happened?
 
 A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being processed and where the log files are kept for that step.
 
-### Bugs!!
+## Citation
+
+(['Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*.'] (https://doi.org/10.1101/720607))
+
+## Bugs!!
 Please send bug reports to derek.sarovich@gmail.com or log them in the github 'issues' tab
 =======
