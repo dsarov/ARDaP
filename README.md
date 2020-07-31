@@ -76,7 +76,7 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 ARDaP is implemented in Nextflow. More information about Nextflow can be found [here](https://www.nextflow.io/docs/latest/getstarted.html)
 
-ARDaP can be called from the command line through [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
+ARDaP can be called from the command line through Nextflow. This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
 
 For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP`, we can run:
 
@@ -185,7 +185,7 @@ The species-specific databases are incorporated into ARDaP using SQLite. ARDaP l
 
 The following sections outline, with an example, what components of the database can be customised to tailor the database for any microbial species of interest. The ARDaP tables include: 
 -	**A table specifying the clinically-relevant antibiotics for the bacterial species of interest.** Required columns include: Antibiotic, abbreviation, drug class, drug family
--	**A Coverage table** (for identifying CNVs or gene loss that confer AMR). Required columns include:Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments.  
+-	**A Coverage table** (for identifying CNVs or gene loss that confer AMR). Required columns include: Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments.  
 -	**A table for the genome-wide association study (GWAS) used in the predictive component of ARDaP.** Note that incorporation of this table requires a large amount of genomes, with accompanying AMR phenotypic data from sensitive and resistant strains from the microbial species of interest. Depending on the target microbe, this table may not be workable; for example, too few genomes are currently available for a GWAS to be undertaken in the *B. pseudomallei* module of ARDaP. In contrast, there are sufficient public genomes with accompanying AMR profiles in the *P. aeruginosa* module for a GWAS approach to be used. Required columns include: GWAS ID, genomic coordinate, reference base, mutation type, specific ‘antibiotic’ resistant p-value and specific ‘antibiotic’ intermediate resistance p-value (note: these resistant and intermediate p-values need to be included for every individual antibiotic)
 -	**A table of mutational variants (i.e SNPs and indels) for conferring AMR**. Required columns include: Gene name, variant annotation, alternative variant annotation, antibiotic affected, known combination, comments
 
@@ -247,7 +247,7 @@ A: Nextflow (and ARDaP) will output A LOT of information about why a certain ste
 
 ## Citation
 
-Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. [*BioRxiv*](https://doi.org/10.1101/720607).
+[Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*](https://doi.org/10.1101/720607).
 
 
 ## Bugs
