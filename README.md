@@ -177,7 +177,7 @@ Although it is strongly recommended to use raw Illumina reads to enable to most 
 
 ### Database Creation
 
-When creating your own custom database, please use the (['database templates'](https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template)) to ensure ARDaP compatibility.
+When creating your own custom database, please use the [database templates](https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template)) to ensure ARDaP compatibility.
 
 ARDaP's creators have, to date, developed and validated a custom AMR database for *Burkholderia pseudomallei*, and a *Pseudomonas aeruginosa* AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any microbial species of interest. Adding species requires populating a database of all known AMR determinants acquired from: a) chromosomal mutations (SNPs, indels, CNVs, and gene loss); and b) horizontal gene gain (through incorporation and improved annotation of the CARD database). To develop a truly comprehensive AMR database is a nontrivial and ongoing effort; however, doing so is essential for enhancing the value of tools like ARDaP for AMR determinant identification from microbial genomes. It is recommended that a thorough literature review first be carried out, followed by manual cataloguing and verification of individual AMR determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant.
 
