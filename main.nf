@@ -225,7 +225,7 @@ process Trimmomatic {
     """
     trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
     ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
-    ILLUMINACLIP:${baseDir}/resources/all_adapters.fa:2:30:10: \
+    ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
     LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
     """
 }
