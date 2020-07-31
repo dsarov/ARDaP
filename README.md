@@ -175,7 +175,7 @@ STRAIN_2_sequence.fq.gz (second pair)
 Although it is strongly recommended to use raw Illumina reads to enable to most robust AMR detection (especially CNVs and gene upregulation), ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
 
-### Database Creation
+### Custom Database Creation
 
 When creating your own custom database, please use the [database templates](https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template) to ensure ARDaP compatibility.
 
