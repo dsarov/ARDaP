@@ -103,11 +103,11 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- [ART](https://doi.org//bioinformatics/btr708)
+- [ART](https://doi.org/10.1093/bioinformatics/btr708)
 - [Trimmomatic](https://doi.org/10.1093/bioinformatics/btu170)
 - [Seqtk](https://github.com/lh3/seqtk)
-- [Burrows Wheeler Aligner (BWA)](https://doi.org//bioinformatics/btp324)
-- [SAMTools](https://doi.org/10.1093/bioinformatics/btp352ref)
+- [Burrows Wheeler Aligner (BWA)](https://doi.org/10.1093/bioinformatics/btp324)
+- [SAMTools](https://doi.org/10.1093/bioinformatics/btp352)
 - [Picard](https://broadinstitute.github.io/picard/)
 - [Genome Analysis Toolkit (GATK)](https://doi.org/10.1101/gr.107524.110)
 - [BEDTools](https://doi.org/10.1093/bioinformatics/btq033)
