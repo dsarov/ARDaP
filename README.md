@@ -1,4 +1,4 @@
-# ARDaP - Antimicrobial Resistance Detection and Prediction <img src='image.png' align="right" height="210" />
+# ARDaP - Antimicrobial Resistance Detection and Prediction <img src='https://github.com/dsarov/ARDaP/blob/master/Reports/data/ARDaP_logo.png' align="right" height="210" />
 
 
 ![](https://img.shields.io/badge/version-alpha-red.svg)
