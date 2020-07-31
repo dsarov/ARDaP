@@ -20,7 +20,7 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [Parameters](#parameters)
 - [Inclusion of Assembled Genomes](#Inclusion-of-Assembled-Genomes)
 - [Custom Database Creation](#Database-Creation)
-- [ARDaP Reports] (#ARDaP-Reports)
+- [ARDaP Reports](#ARDaP-Reports)
 - [Troubleshooting](#Troubleshooting)
 - [Citation](#citation)
 
