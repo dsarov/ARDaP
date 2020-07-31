@@ -103,20 +103,20 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- (['ART'] (https://doi.org//bioinformatics/btr708))
-- (['Trimmomatic'] (https://doi.org/10.1093/bioinformatics/btu170))
-- (['Seqtk'] (https://github.com/lh3/seqtk))
-- (['Burrows Wheeler Aligner (BWA)'] (https://doi.org//bioinformatics/btp324))
-- (['SAMTools'] (https://doi.org/10.1093/bioinformatics/btp352ref))
-- (['Picard'] (https://broadinstitute.github.io/picard/))
-- (['Genome Analysis Toolkit (GATK)'] (https://doi.org/10.1101/gr.107524.110))
-- (['BEDTools'] (https://doi.org/10.1093/bioinformatics/btq033))
-- (['Pindel'] (https://doi.org/10.1093/bioinformatics/btp394))
-- (['Mosdepth'] (https://doi.org/10.1093/bioinformatics/btx699))
-- (['SNPEff'] (https://doi.org/10.4161/fly.19695))
-- (['CARD'] (https://doi.org/10.1093/nar/gkz935))
-- (['SQLite'] ((https://sqlite.org/index.html))
-- (['FastTree 2'] (https://doi.org/10.1371/journal.pone.0009490))
+- (['ART'](https://doi.org//bioinformatics/btr708))
+- (['Trimmomatic'](https://doi.org/10.1093/bioinformatics/btu170))
+- (['Seqtk'](https://github.com/lh3/seqtk))
+- (['Burrows Wheeler Aligner (BWA)'](https://doi.org//bioinformatics/btp324))
+- (['SAMTools'](https://doi.org/10.1093/bioinformatics/btp352ref))
+- (['Picard'](https://broadinstitute.github.io/picard/))
+- (['Genome Analysis Toolkit (GATK)'](https://doi.org/10.1101/gr.107524.110))
+- (['BEDTools'](https://doi.org/10.1093/bioinformatics/btq033))
+- (['Pindel'](https://doi.org/10.1093/bioinformatics/btp394))
+- (['Mosdepth'](https://doi.org/10.1093/bioinformatics/btx699))
+- (['SNPEff'](https://doi.org/10.4161/fly.19695))
+- (['CARD'](https://doi.org/10.1093/nar/gkz935))
+- (['SQLite']((https://sqlite.org/index.html))
+- (['FastTree 2'](https://doi.org/10.1371/journal.pone.0009490))
 
 
 ## Parameters
@@ -247,7 +247,7 @@ A: Nextflow (and ARDaP) will output A LOT of information about why a certain ste
 
 ## Citation
 
-(['Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*.'] (https://doi.org/10.1101/720607))
+(['Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*.'](https://doi.org/10.1101/720607))
 
 
 ## Bugs!!
