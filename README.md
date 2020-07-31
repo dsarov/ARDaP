@@ -230,7 +230,7 @@ Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data'
    **- Description of the GWAS component of ARDaP for AMR determinant prediction across well-curated genomic datasets with associated AMR phenotyping data**
 
 
-## ARDaP Reports
+## ARDaP-Reports
 
 ARDaP summarises the AMR findings, if any, for each (meta)genome or (meta)transcriptome of interest in an easy-to-interpret report (Figure 4). This report also correlates AMR genotype with AMR phenotype. Finally, ARDaP flags quality issues, incorrect species, and natural genetic variation that does not confer AMR.
 
