@@ -76,7 +76,7 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 ARDaP is implemented in Nextflow. More information about Nextflow can be found [here](https://www.nextflow.io/docs/latest/getstarted.html)
 
-ARDaP can be called from the command line through [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html). This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
+ARDaP can be called from the command line through Nextflow. This will pull the current workflow into local storage. Any parameter in the configuration file `nextflow.config` can be changed on the command line via `--` dashes, while Nextflow runtime parameters can be changed via `-` dash. 
 
 For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP`, we can run:
 
@@ -103,20 +103,20 @@ If you would like to just submit jobs to the resource manager queue without moni
 
 To achieve high-quality variant calls, ARDaP incorporates the following programs into its workflow:
 
-- (['ART'] (https://doi.org//bioinformatics/btr708))
-- (['Trimmomatic'] (https://doi.org/10.1093/bioinformatics/btu170))
-- (['Seqtk'] (https://github.com/lh3/seqtk))
-- (['Burrows Wheeler Aligner (BWA)'] (https://doi.org//bioinformatics/btp324))
-- (['SAMTools'] (https://doi.org/10.1093/bioinformatics/btp352ref))
-- (['Picard'] (https://broadinstitute.github.io/picard/))
-- (['Genome Analysis Toolkit (GATK)'] (https://doi.org/10.1101/gr.107524.110))
-- (['BEDTools'] (https://doi.org/10.1093/bioinformatics/btq033))
-- (['Pindel'] (https://doi.org/10.1093/bioinformatics/btp394))
-- (['Mosdepth'] (https://doi.org/10.1093/bioinformatics/btx699))
-- (['SNPEff'] (https://doi.org/10.4161/fly.19695))
-- (['CARD'] (https://doi.org/10.1093/nar/gkz935))
-- (['SQLite'] ((https://sqlite.org/index.html))
-- (['FastTree 2'] (https://doi.org/10.1371/journal.pone.0009490))
+- [ART](https://doi.org/10.1093/bioinformatics/btr708)
+- [Trimmomatic](https://doi.org/10.1093/bioinformatics/btu170)
+- [Seqtk](https://github.com/lh3/seqtk)
+- [Burrows Wheeler Aligner (BWA)](https://doi.org/10.1093/bioinformatics/btp324)
+- [SAMTools](https://doi.org/10.1093/bioinformatics/btp352)
+- [Picard](https://broadinstitute.github.io/picard/)
+- [Genome Analysis Toolkit (GATK)](https://doi.org/10.1101/gr.107524.110)
+- [BEDTools](https://doi.org/10.1093/bioinformatics/btq033)
+- [Pindel](https://doi.org/10.1093/bioinformatics/btp394)
+- [Mosdepth](https://doi.org/10.1093/bioinformatics/btx699)
+- [SNPEff](https://doi.org/10.4161/fly.19695)
+- [CARD](https://doi.org/10.1093/nar/gkz935)
+- [SQLite](https://sqlite.org/index.html)
+- [FastTree 2](https://doi.org/10.1371/journal.pone.0009490)
 
 
 ## Parameters
@@ -172,12 +172,12 @@ STRAIN_2_sequence.fq.gz (second pair)
 
 ## Inclusion of Assembled Genomes
 
-ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+Although it is strongly recommended to use raw Illumina reads to enable to most robust AMR detection (especially CNVs and gene upregulation), ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
 
 
-### Database Creation
+## Custom Database Creation
 
-When creating your own custom database, please use the (['database templates'] (https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template)) to ensure ARDaP compatibility.
+When creating your own custom database, please use the [database templates](https://github.com/dsarov/ARDaP/tree/master/Databases/Blank_database_template) to ensure ARDaP compatibility.
 
 ARDaP's creators have, to date, developed and validated a custom AMR database for *Burkholderia pseudomallei*, and a *Pseudomonas aeruginosa* AMR database is in progress; however, ARDaP is capable of detecting and predicting AMR determinants in any microbial species of interest. Adding species requires populating a database of all known AMR determinants acquired from: a) chromosomal mutations (SNPs, indels, CNVs, and gene loss); and b) horizontal gene gain (through incorporation and improved annotation of the CARD database). To develop a truly comprehensive AMR database is a nontrivial and ongoing effort; however, doing so is essential for enhancing the value of tools like ARDaP for AMR determinant identification from microbial genomes. It is recommended that a thorough literature review first be carried out, followed by manual cataloguing and verification of individual AMR determinants that specify not only what class, but what specific antibiotic/s are affected by the presence of an AMR variant.
 
@@ -185,7 +185,7 @@ The species-specific databases are incorporated into ARDaP using SQLite. ARDaP l
 
 The following sections outline, with an example, what components of the database can be customised to tailor the database for any microbial species of interest. The ARDaP tables include: 
 -	**A table specifying the clinically-relevant antibiotics for the bacterial species of interest.** Required columns include: Antibiotic, abbreviation, drug class, drug family
--	**A Coverage table** (for identifying CNVs or gene loss that confer AMR). Required columns include:Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments.  
+-	**A Coverage table** (for identifying CNVs or gene loss that confer AMR). Required columns include: Gene, Locus tag, chromosome, start coordinates, end coordinates, upregulation or loss, antibiotic affected, known combination, comments.  
 -	**A table for the genome-wide association study (GWAS) used in the predictive component of ARDaP.** Note that incorporation of this table requires a large amount of genomes, with accompanying AMR phenotypic data from sensitive and resistant strains from the microbial species of interest. Depending on the target microbe, this table may not be workable; for example, too few genomes are currently available for a GWAS to be undertaken in the *B. pseudomallei* module of ARDaP. In contrast, there are sufficient public genomes with accompanying AMR profiles in the *P. aeruginosa* module for a GWAS approach to be used. Required columns include: GWAS ID, genomic coordinate, reference base, mutation type, specific ‘antibiotic’ resistant p-value and specific ‘antibiotic’ intermediate resistance p-value (note: these resistant and intermediate p-values need to be included for every individual antibiotic)
 -	**A table of mutational variants (i.e SNPs and indels) for conferring AMR**. Required columns include: Gene name, variant annotation, alternative variant annotation, antibiotic affected, known combination, comments
 
@@ -199,7 +199,7 @@ Important: DO NOT alter any information in the 'Structure' tabs; otherwise ARDaP
 
 **A.	Antimicrobial list**
 
-The ‘Data’ tab located within the 'Antibiotics' table (Figure 1) enables the database creator to add new rows listing all relevant antimicrobials, along with information about antimicrobial drug class and family. The abbreviations in this 'Data' table link to the final AMR reports generated by ARDaP. In other words, ARDaP will only report AMR determinants when the antimicrobial abbreviations have been added to this tab. Please use (['standardised antimicrobial abbreviations'] (https://aac.asm.org/content/abbreviations-and-conventions)). Make ensure you commit changes when new additions/changes are made by clicking on the green checkbox in SQLite. 
+The ‘Data’ tab located within the 'Antibiotics' table (Figure 1) enables the database creator to add new rows listing all relevant antimicrobials, along with information about antimicrobial drug class and family. The abbreviations in this 'Data' table link to the final AMR reports generated by ARDaP. In other words, ARDaP will only report AMR determinants when the antimicrobial abbreviations have been added to this tab. Please use [standardised antimicrobial abbreviations](https://aac.asm.org/content/abbreviations-and-conventions). Make ensure you commit changes when new additions/changes are made by clicking on the green checkbox in SQLite. 
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/Antibiotic%20tab%20explained.png)
 **Figure 1:** 'Data' tab of the 'Antibiotics' table in the *P. aeruginosa* ARDaP SQLite database
@@ -234,7 +234,7 @@ Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data'
 
 ARDaP summarises the AMR findings, if any, for each (meta)genome or (meta)transcriptome of interest in an easy-to-interpret report (Figure 4). This report also correlates AMR genotype with AMR phenotype. Finally, ARDaP flags quality issues, incorrect species, and natural genetic variation that does not confer AMR.
 
-![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.png)
+![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20report%20for%20MSHR5654.png)
 **Figure 4:** Easy-to-interpret AMR report generated by ARDaP
 
 
@@ -247,9 +247,10 @@ A: Nextflow (and ARDaP) will output A LOT of information about why a certain ste
 
 ## Citation
 
-(['Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*.'] (https://doi.org/10.1101/720607))
+[Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*](https://doi.org/10.1101/720607).
 
 
-## Bugs!!
+## Bugs
+
 Please send bug reports to derek.sarovich@gmail.com or log them in the github 'issues' tab
 =======
