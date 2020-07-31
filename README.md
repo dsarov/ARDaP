@@ -19,18 +19,22 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 - [Usage](#usage)
 - [Parameters](#parameters)
 - [Inclusion of Assembled Genomes](#Inclusion-of-Assembled-Genomes)
-- [Custom database creation](#Database-creation)
+- [Custom Database Creation](#Database-Creation)
+- [ARDaP Reports] (#ARDaP-Reports)
 - [Troubleshooting](#Troubleshooting)
 - [Citation](#citation)
 
 
+
 ## Introduction
 
-ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is a pipeline designed to identify genetic variants (i.e. single-nucleotide polymorphisms [SNPs], insertions/deletions [indels], copy-number variants [CNVs], and gene loss) associated with antimicrobial resistance (AMR) from microbial (meta)genomes or (meta)transcriptomes. The impetus behind developing ARDaP was our frustration with current methodology being unable to detect AMR conferred by "complex" chromosomal alterations. Our two species of interest, *Burkholderia pseudomallei* and *Pseudomonas aeruginosa*§, can develop AMR in a multiple ways, predominantly through chromosomal gene loss, CNVs, SNPs, and indels; and in *B. pseudomallei*, gene gain plays no role in conferring AMR, rendering many existing AMR tools entirely ineffective. ARDaP first identifies all genetic variation in a microbial sequence data (either .fasta assemblies or Illumina paired-end data; other data types currently not supported), and then interrogates this information against a user-created database of AMR determinants. The software will then summarise the identified AMR determinants and produce an easy-to-interpret summary report.
+ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is a pipeline designed to identify genetic variants (i.e. single-nucleotide polymorphisms [SNPs], insertions/deletions [indels], copy-number variants [CNVs], and gene loss) associated with antimicrobial resistance (AMR) from microbial (meta)genomes or (meta)transcriptomes. Further, ARDaP reports these variants in a user-friendly manner that does not require extensive domain-specific knowledge, and that links AMR genotype to AMR phenotype. The impetus behind developing ARDaP was our frustration with current methodology being unable to detect AMR conferred by "complex" chromosomal alterations, and accurate AMR detection from mixtures, meaning that many tools cannot offer comprehensive AMR determinant detection. Our species of interest, *Burkholderia pseudomallei*, *Pseudomonas aeruginosa*\*, and *Haemophilus influenzae*\*, can develop AMR in a multiple ways, predominantly through chromosomal gene loss, CNVs, SNPs, and indels; and in *B. pseudomallei*, gene gain plays no role in conferring AMR, rendering many existing AMR tools entirely ineffective. ARDaP first identifies all genetic variation in a microbial sequence data (either .fasta assemblies or Illumina paired-end data; other data types currently not supported), and then interrogates this information against a user-created database of AMR determinants. The software will then summarise the identified AMR determinants and produce an easy-to-interpret summary report.
 
-§*P. aeruginosa* module still under development
+\**P. aeruginosa* and *H. influenzae* modules still under development
+
 
 ## Installation
+
 
 ### Short version for those that just want to get started and understand how conda environments work
 
@@ -52,6 +56,7 @@ If you want to make changes to the default `nextflow.config` file, clone the wor
 
 Or navigate to the conda install path of ARDaP and change the `nextflow.config` in that location.
 
+
 ### Long version for those unfamiliar with environments or who just want all the steps for recommended installation
 
 1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you  have conda installed,  it's a good idea to update conda so you have the latest version: `conda update conda`. If you don't have this software installed,  go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After conda install, make sure your install is up-to-date: `conda update conda`.
@@ -64,6 +69,7 @@ Or navigate to the conda install path of ARDaP and change the `nextflow.config` 
 
 5) If you're running ARDaP on a HPC/submission system (e.g. PBS), the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
 
+
 ## Usage
 
 ARDaP is implemented in Nextflow. More information about Nextflow can be found [here](https://www.nextflow.io/docs/latest/getstarted.html)
@@ -74,9 +80,11 @@ For example, to run Nextflow with the default cluster job submission template pr
 
 `nextflow run dsarov/ardap --executor pbs --mixtures`
 
+
 ### Error-handling strategy
 
 The nextflow pipeline language allows different error strategies to be applied to make sure your pipeline runs as seamlessly as possible. ARDaP will attempt to re-run any failed jobs four times before giving up. Frequent crashes may represent a bug and should be reported, but an occasional crash may happen and should be mostly mitigated by the "retry" error strategy. 
+
 
 ## Resource Managers
 
@@ -87,6 +95,7 @@ The list of schedulers and default template profiles is in `nextflow.config` and
 If you require more information about how to set your resource manager (e.g. memory, queue, account settings), please see https://www.nextflow.io/docs/latest/executor.html
 
 If you would like to just submit jobs to the resource manager queue without monitoring, then use of the `screen` or `nohup` commands will allow you to run the pipeline process in the background, and won't kill the pipeline if the shell is terminated. Examples of `nohup` are included below.
+
 
 ## ARDaP Workflow
 
@@ -106,6 +115,7 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 - (['CARD'] (https://doi.org/10.1093/nar/gkz935))
 - (['SQLite'] ((https://sqlite.org/index.html))
 - (['FastTree 2'] (https://doi.org/10.1371/journal.pone.0009490))
+
 
 ## Parameters
    
@@ -157,9 +167,11 @@ STRAIN_2_sequence.fq.gz (second pair)
 ```
 `nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"`
 
+
 ## Inclusion of Assembled Genomes
 
 ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+
 
 ### Database Creation
 
@@ -177,35 +189,52 @@ The following sections outline, with an example, what components of the database
 
 NB. A complete, closed archetypal reference genome should be used where possible, and this genome must be present in the SnpEff database. Run the following command to identify the available SnpEff databases for your microbe of interest: e.g. `conda activate ardap && snpEff databases | grep 'Burkholderia_pseudomallei'`
 
-** 1.	Populating the SQLite AMR database** 
+
+**Populating the SQLite AMR database** 
 
 Important: DO NOT alter any information in the 'Structure' tabs; otherwise ARDaP will not work!
+
 
 **A.	Antimicrobial list**
 
 The ‘Data’ tab located within the 'Antibiotics' table (Figure 1) enables the database creator to add new rows listing all relevant antimicrobials, along with information about antimicrobial drug class and family. The abbreviations in this 'Data' table link to the final AMR reports generated by ARDaP. In other words, ARDaP will only report AMR determinants when the antimicrobial abbreviations have been added to this tab. Please use (['standardised antimicrobial abbreviations'] (https://aac.asm.org/content/abbreviations-and-conventions)). Make ensure you commit changes when new additions/changes are made by clicking on the green checkbox in SQLite. 
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/Antibiotic%20tab%20explained.png)
-**Figure 1:** 'Data' tab of the 'Antibiotics' table in the ARDaP SQLite database
+**Figure 1:** 'Data' tab of the 'Antibiotics' table in the *P. aeruginosa* ARDaP SQLite database
+
+
 
 **B.	Variants table - for SNPs and indels conferring AMR**
 
 SNP and indel AMR variants can be added to the 'Data' tab of the 'Variants_SNP_indel' table (as illustrated in Figure 2). Required information includes the AMR gene name, the SnpEff AMR variant annotation (and alternate gene annotation, if applicable), and the antimicrobial/s affected by the variant. For example, in row 3 of Figure 2, a frameshift mutation is present in the *P. aeruginosa ampD* AMR gene at residue 18 (serine), which confers AMR towards the cephalosporin antibiotics, ceftazidime (CAZ) and cefipime (FEP). Within this table is also a ‘known combination’ column, which should be populated in instances where two or more stepwise mutations are required to confer AMR.  
 
 ![](https://raw.githubusercontent.com/demadden/ARDaP/master/SNPs%20indels%20database%20explained.png)
-**Figure 2:** 'Data' tab of the 'Variants_SNP_indel' table in the ARDaP SQLite database
+**Figure 2:** 'Data' tab of the 'Variants_SNP_indel' table in the *P. aeruginosa* ARDaP SQLite database
 
-**B.	Coverage table - for AMR conferred by CNVs, gene loss, or gene upregulation (in RNA-seq data)**
+
+
+**C.	Coverage table - for AMR conferred by CNVs, gene loss, or gene upregulation (in RNA-seq data)**
 
 Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data' tab of the 'Coverage' table (e.g. Figure 3) should be used to list genes that confer AMR when lost (either fully or partially), or for genes where CNVs or upregulation cause AMR.
 
 ![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.png)
 **Figure 3:** 'Data' tab of the 'Coverage' table in the *P. aeruginosa* ARDaP SQLite database
 
+
+
 **Still to come: 
 
    **- Annotation of the CARD database to only include relevant species-specific AMR determinants and to ignore conserved/non-AMR-conferring genes**
    **- Description of the GWAS component of ARDaP for AMR determinant prediction across well-curated genomic datasets with associated AMR phenotyping data**
+
+
+## ARDaP Reports
+
+ARDaP summarises the AMR findings, if any, for each (meta)genome or (meta)transcriptome of interest in an easy-to-interpret report (Figure 4). This report also correlates AMR genotype with AMR phenotype. Finally, ARDaP flags quality issues, incorrect species, and natural genetic variation that does not confer AMR.
+
+![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.png)
+**Figure 4:** Easy-to-interpret AMR report generated by ARDaP
+
 
 ## Troubleshooting
 
@@ -213,9 +242,11 @@ Q: My pipeline crashed. Where do I go to figure out what happened?
 
 A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being processed and where the log files are kept for that step.
 
+
 ## Citation
 
 (['Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*.'] (https://doi.org/10.1101/720607))
+
 
 ## Bugs!!
 Please send bug reports to derek.sarovich@gmail.com or log them in the github 'issues' tab
