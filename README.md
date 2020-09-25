@@ -244,10 +244,13 @@ Q: My pipeline crashed. Where do I go to figure out what happened?
 
 A: Nextflow (and ARDaP) will output A LOT of information about why a certain step failed and how to go about fixing the error. The first place to start looking is in the nextflow output to screen. This output will tell you where each step of the pipeline is being processed and where the log files are kept for that step.
 
+Q: My pipeline crashed with an error 143 - Job terminated by sytem.
+
+A: Take a look at the nextflow.config file to see if sufficient resources are being requested for the individual steps. These parameters have been chosen as a "most common use" scenario but they may not be suitable for all computational systems or all data. ARDaP will retry a number of times at each failed step but it may help to increase resources at specific steps, especially if repeated failures are noted.
 
 ## Citation
 
-[Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei* genomes. *BioRxiv*](https://doi.org/10.1101/720607).
+[Madden DE et al., 2019. Taking the next-gen step: comprehensive antibiotic resistance detection from *Burkholderia pseudomallei*. *BioRxiv*](https://doi.org/10.1101/720607).
 
 
 ## Bugs
