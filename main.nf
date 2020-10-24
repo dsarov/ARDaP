@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.7
+ *  Version             1.8
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.7
+                             v1.8
 ================================================================================
 
 Optional Parameters:
@@ -59,6 +59,14 @@ Optional Parameters:
                  nextflow documentation
 
                  Currently executor is set to $params.executor
+
+    --gwas       **Experimental**. If you have a database of GWAS co-ordinates
+                 ARDaP can interrogate SNPs and indels across the entire genome
+                 to identify novel mutations likely contributing to an antibiotic
+                 resistance phenotype. For more information about this feature,
+                 please contact the developers.
+
+                 Currently gwas is set to $params.gwas
 
 If you want to make changes to the default `nextflow.config` file
 clone the workflow into a local directory and change parameters
