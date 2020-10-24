@@ -520,8 +520,8 @@ if (params.mixtures) {
 
       output:
       set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
-      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
-      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
+      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch, annotated_indels_ch2
+      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch, annotated_snps_ch2
       set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
       set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs
       set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
@@ -698,6 +698,29 @@ if (params.mixtures) {
     bash AbR_reports.sh ${id} ${resistance_db}
     """
   }
+}
+
+if (params.gwas) {
+  process GWASInterrogate {
+    label "genomic_queries"
+    tag { "$id" }
+    publishDir "./Outputs/AbR_reports", mode 'copy', overwrite: true
+
+    input:
+    set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
+    set id, file("${id}.annotated.snp.effects") from annotated_snps_ch2
+
+    output:
+    set id, file("${id}.AbR_output.GWAS.txt")
+
+    script:
+    """
+    bash SQL_GWAS.sh ${id} ${resistance_db}
+    """
+
+
+  }
+
 }
 
 process R_report {

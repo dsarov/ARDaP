@@ -2,9 +2,8 @@
 
 
 #File inputs
-
-AnnotatedSNPs=$1
-AnnotatedIndels=$2
+seq=$1
+RESISTANCE_DB=$2
 
 echo -e "Creating SQL SELECT statements\n"
 
@@ -31,7 +30,7 @@ WHERE
 _EOF_
 
 	COUNTER=$((COUNTER+1))
-	done < ${AnnotatedSNPs}
+	done < ${seq}.annotated.snp.effects
 	}
 
 
@@ -57,7 +56,7 @@ _EOF_
 
 	COUNTER=$((COUNTER+1))
 
-	done < AnnotatedIndels
+	done < ${seq}.annotated.indel.effects
 
 	}
 
