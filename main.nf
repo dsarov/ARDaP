@@ -702,9 +702,10 @@ if (params.mixtures) {
 
 if (params.gwas) {
   process GWASInterrogate {
+
     label "genomic_queries"
     tag { "$id" }
-    //publishDir "./Outputs/AbR_reports", mode 'copy', overwrite: true
+    
 
     input:
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
@@ -717,12 +718,11 @@ if (params.gwas) {
     """
     bash SQL_GWAS.sh ${id} ${resistance_db}
     """
-
   }
-
 }
 
 process R_report {
+
   label "report"
   tag { "$id" }
   publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
