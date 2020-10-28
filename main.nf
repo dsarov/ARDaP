@@ -185,6 +185,7 @@ process IndexReference {
 
 if (params.assemblies) {
   process Read_synthesis {
+
     label "art"
     tag {"$assembly.baseName"}
 
@@ -705,7 +706,7 @@ if (params.gwas) {
 
     label "genomic_queries"
     tag { "$id" }
-    
+    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
 
     input:
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
