@@ -521,11 +521,11 @@ if (params.mixtures) {
 
       output:
       set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
-      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch, annotated_indels_ch2
-      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch, annotated_snps_ch2
+      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
+      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
       set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
-      set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs
-      set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels
+      set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs, annotated_snps_ch2
+      set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels, annotated_indels_ch2
       set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
       set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
       set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
@@ -709,12 +709,13 @@ if (params.gwas) {
     publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
 
     input:
-    set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
-    set id, file("${id}.annotated.snp.effects") from annotated_snps_ch2
+    set id, file("${id}.PASS.snps.annotated.vcf") from annotated_snps_ch2
+    set id, file("${id}.PASS.indels.annotated.vcf") from annotated_indels_ch2
     file resistance_db from resistance_database_file
 
     output:
-    set id, file("${id}.AbR_output.GWAS.txt")
+    set id, file("${id}.AbR_output.GWAS_SNP.txt")
+    set id, file("${id}.AbR_output.GWAS_indel.txt")
 
     script:
     """
