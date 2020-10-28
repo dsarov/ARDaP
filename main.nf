@@ -704,7 +704,7 @@ if (params.gwas) {
   process GWASInterrogate {
     label "genomic_queries"
     tag { "$id" }
-    publishDir "./Outputs/AbR_reports", mode 'copy', overwrite: true
+    //publishDir "./Outputs/AbR_reports", mode 'copy', overwrite: true
 
     input:
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
@@ -717,7 +717,6 @@ if (params.gwas) {
     """
     bash SQL_GWAS.sh ${id} ${resistance_db}
     """
-
 
   }
 
