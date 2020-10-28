@@ -711,6 +711,7 @@ if (params.gwas) {
     input:
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch2
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch2
+    file resistance_db from resistance_database_file
 
     output:
     set id, file("${id}.AbR_output.GWAS.txt")
