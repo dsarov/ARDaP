@@ -32,7 +32,7 @@ _EOF_
     )
 
 COUNTER=$((COUNTER+1))
-done < ${seq}.PASS.snps.vcf
+done < ${seq}.PASS.snps.annotated.vcf
 SNP_GWAS_COUNT="$COUNTER"
 }
 
@@ -60,7 +60,7 @@ _EOF_
 )
 	COUNTER=$((COUNTER+1))
 
-	done < ${seq}.PASS.indels.vcf
+	done < ${seq}.PASS.indels.annotated.vcf
 indel_GWAS_COUNT="$COUNTER"
 }
 
@@ -78,7 +78,7 @@ FROM GWAS
 LIMIT 1;
 _EOF_
 
-"$SQLITE" "$RESISTANCE_DB" < GWAS.header.tmp | head -n1 > AbR_GWAS_output.header
+sqlite3 "$RESISTANCE_DB" < GWAS.header.tmp | head -n1 > AbR_GWAS_output.header
 
 echo -e "Running queries to generate AbR_GWAS_report.txt\n"
 
@@ -115,11 +115,11 @@ while read line; do  grep -w "$line" "$seq".snps.PASS.vcf.annotated | awk '{if (
 paste AbR_GWAS_output.annot.SNP.temp1 AbR_GWAS_output.annot.SNP.temp2 > AbR_GWAS_output.annot.SNP.temp3
 echo -e "Variant_type\tImpact\tGene_name\tGene_Id\tMutation" > header.tmp
 paste AbR_GWAS_output.header header.tmp > AbR_GWAS_output.header.mutations
-cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.SNP.temp3 > "{$seq}".AbR_output.GWAS_SNP.txt
+cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.SNP.temp3 > "$seq".AbR_output.GWAS_SNP.txt
 
 
 awk -F"|" '$4=="indel"' AbR_GWAS_output.annot > AbR_GWAS_output.annot.indels.temp1
 while read line; do  grep -w "$line" "$seq".indels.PASS.vcf.annotated | awk '{if (match($0,"ANN=")){print substr($0,RSTART)} else print ""}' | awk -F"|" '{print $2,$3,$4,$5,$11}' >> AbR_GWAS_output.annot.indels.temp2;  done < AbR_GWAS_output.annot.indels
 
 paste AbR_GWAS_output.annot.indels.temp1 AbR_GWAS_output.annot.indels.temp2 > AbR_GWAS_output.annot.indels.temp3
-cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.indels.temp3 > "{$seq}".AbR_output.GWAS_indel.txt
+cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.indels.temp3 > "$seq".AbR_output.GWAS_indel.txt
