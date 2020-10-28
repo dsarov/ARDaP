@@ -13,9 +13,9 @@ STATEMENT_SNPS_GWAS () {
 
 	COUNTER=1
 	while read line; do 
-	location=$(echo "$line" | awk '{print $1}')
+	location=$(echo $line | grep '#' -v | awk '{print $1"_"$2}')
 	#echo $gene
-	variant=$(echo "$line" | awk '{print $2 }')
+	variant=$(echo $line | grep '#' -v | awk '{print $5 }')
 	#echo $variant
 	
 SQL_SNP_GWAS_report[$COUNTER]=$(
@@ -32,7 +32,7 @@ _EOF_
     )
 
 COUNTER=$((COUNTER+1))
-done < ${seq}.annotated.snp.effects
+done < ${seq}.PASS.snps.vcf
 SNP_GWAS_COUNT="$COUNTER"
 }
 
@@ -41,9 +41,9 @@ STATEMENT_INDELS_GWAS () {
 
 	COUNTER=1
 	while read line; do 
-	location=$(echo $line | awk '{print $1}')
+	location=$(echo $line | grep '#' -v | awk '{print $1"_"$2}')
 	#echo $gene
-	variant=$(echo $line | awk '{print $2 }')
+	variant=$(echo $line | grep '#' -v | awk '{print $5 }')
 	#echo $variant
 
 SQL_indel_GWAS_report[$COUNTER]=$(
@@ -60,7 +60,7 @@ _EOF_
 )
 	COUNTER=$((COUNTER+1))
 
-	done < ${seq}.annotated.indel.effects
+	done < ${seq}.PASS.indels.vcf
 indel_GWAS_COUNT="$COUNTER"
 }
 
@@ -83,9 +83,10 @@ _EOF_
 echo -e "Running queries to generate AbR_GWAS_report.txt\n"
 
 for (( i=1; i<"$SNP_GWAS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_SNP_GWAS_report[$i]}" >> AbR_GWAS_output.txt; done
+date
 for (( i=1; i<"$indel_GWAS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_indel_GWAS_report[$i]}" >> AbR_GWAS_output.txt; done
 echo "done"
-
+date
 #for f in GWAS*; do "$SQLITE" "$RESISTANCE_DB" < "$f" >> AbR_GWAS_output.txt; done
 
 awk -v cutoff="$cutoff" -F"|" '{ 
