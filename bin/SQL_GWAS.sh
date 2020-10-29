@@ -5,6 +5,10 @@
 seq=$1
 RESISTANCE_DB=$2
 
+
+#cutoff value for inclusion in GWAS output
+cutoff=0.00000005
+
 echo -e "Creating SQL SELECT statements\n"
 
 #statements for GWAS component
@@ -87,7 +91,7 @@ date
 for (( i=1; i<"$indel_GWAS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_indel_GWAS_report[$i]}" >> AbR_GWAS_output.txt; done
 echo "done"
 date
-#for f in GWAS*; do "$SQLITE" "$RESISTANCE_DB" < "$f" >> AbR_GWAS_output.txt; done
+
 
 awk -v cutoff="$cutoff" -F"|" '{ 
 	for (i=5;i<=NF;i++) if ($i < cutoff && $i > 0) {
@@ -109,7 +113,7 @@ awk -F"|" '$4=="SNP" {print $2 }' AbR_GWAS_output.annot | sed -r 's/(.*)_/\1\t/'
 
 awk -F"|" '$4=="SNP"' AbR_GWAS_output.annot > AbR_GWAS_output.annot.SNP.temp1
 
-while read line; do  grep -w "$line" "$seq".snps.PASS.vcf.annotated | awk '{if (match($0,"ANN=")){print substr($0,RSTART)} else print ""}' | awk -F"|" '{print $2,$3,$4,$5,$11}' >> AbR_GWAS_output.annot.SNP.temp2;  done < AbR_GWAS_output.annot.SNP
+while read line; do  grep -w "$line" "$seq".PASS.snps.annotated.vcf | awk '{if (match($0,"ANN=")){print substr($0,RSTART)} else print ""}' | awk -F"|" '{print $2,$3,$4,$5,$11}' >> AbR_GWAS_output.annot.SNP.temp2;  done < AbR_GWAS_output.annot.SNP
 
 
 paste AbR_GWAS_output.annot.SNP.temp1 AbR_GWAS_output.annot.SNP.temp2 > AbR_GWAS_output.annot.SNP.temp3
@@ -119,7 +123,7 @@ cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.SNP.temp3 > "$seq".A
 
 
 awk -F"|" '$4=="indel"' AbR_GWAS_output.annot > AbR_GWAS_output.annot.indels.temp1
-while read line; do  grep -w "$line" "$seq".indels.PASS.vcf.annotated | awk '{if (match($0,"ANN=")){print substr($0,RSTART)} else print ""}' | awk -F"|" '{print $2,$3,$4,$5,$11}' >> AbR_GWAS_output.annot.indels.temp2;  done < AbR_GWAS_output.annot.indels
+while read line; do  grep -w "$line" "$seq".PASS.indels.annotated.vcf | awk '{if (match($0,"ANN=")){print substr($0,RSTART)} else print ""}' | awk -F"|" '{print $2,$3,$4,$5,$11}' >> AbR_GWAS_output.annot.indels.temp2;  done < AbR_GWAS_output.annot.indels
 
 paste AbR_GWAS_output.annot.indels.temp1 AbR_GWAS_output.annot.indels.temp2 > AbR_GWAS_output.annot.indels.temp3
 cat  AbR_GWAS_output.header.mutations AbR_GWAS_output.annot.indels.temp3 > "$seq".AbR_output.GWAS_indel.txt
