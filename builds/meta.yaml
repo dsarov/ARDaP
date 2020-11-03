@@ -29,6 +29,8 @@ requirements:
       - nextflow
       - bioconductor-ggtree
       - fasttree
+      - delly
+      - bcftools
   run:
       - trimmomatic
       - bwa
@@ -45,6 +47,7 @@ requirements:
       - bioconductor-ggtree
       - fasttree
       - delly
+      - bcftools
 
 test:
   commands:
