@@ -1,4 +1,4 @@
-{% set version = "1.7" %}
+{% set version = "1.8" %}
 
 package:
   name: ardap
@@ -44,6 +44,7 @@ requirements:
       - nextflow
       - bioconductor-ggtree
       - fasttree
+      - delly
 
 test:
   commands:
