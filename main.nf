@@ -413,6 +413,7 @@ if (params.mixtures) {
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
     set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
+    set id, file("${id}.delly.inv.annotated.vcf") into mixtureInversionSummary
 
 
     """
@@ -439,6 +440,12 @@ if (params.mixtures) {
       snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
     done
 
+    delly call -q 5 -o ${id}.delly.bcf -g ${reference} ${id}.dedup.bam
+    bcftools view ${id}.delly.bcf > ${id}.delly.vcf
+    grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
+    snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
+
+
     """
   }
 
@@ -451,6 +458,7 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
+    file(dellyINV) into mixtureInversionSummary
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
 
     output:
@@ -495,6 +503,8 @@ if (params.mixtures) {
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.TD
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
 		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
+
+
     '''
 
   }
