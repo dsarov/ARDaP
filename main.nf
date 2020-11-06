@@ -458,7 +458,7 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
-    file(dellyINV) into mixtureInversionSummary
+    file(dellyINV) from mixtureInversionSummary
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
 
     output:
