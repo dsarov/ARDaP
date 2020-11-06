@@ -1,4 +1,4 @@
-{% set version = "1.8" %}
+{% set version = "1.8.1" %}
 
 package:
   name: ardap
@@ -27,7 +27,6 @@ requirements:
       - sqlite
       - snpEff=4.3.1t
       - nextflow
-      - bioconductor-ggtree
       - fasttree
       - delly
       - bcftools
@@ -44,7 +43,6 @@ requirements:
       - sqlite
       - snpEff=4.3.1t
       - nextflow
-      - bioconductor-ggtree
       - fasttree
       - delly
       - bcftools
