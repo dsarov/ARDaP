@@ -510,7 +510,10 @@ if (params.mixtures) {
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
 		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
 		
-		gatk VariantsToTable -V ${id}.delly.inv.annotated.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -GF AD -GF DP -O ${id}.delly.inv.annotated.vcf.table
+		awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
+		sed -i '/^\s*$/d' delly.tmp
+		cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
+		mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
 
 
     '''
