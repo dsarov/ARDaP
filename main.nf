@@ -442,8 +442,14 @@ if (params.mixtures) {
 
     delly call -q 5 -o ${id}.delly.bcf -g ${reference} ${id}.dedup.bam
     bcftools view ${id}.delly.bcf > ${id}.delly.vcf
+    grep "#" ${id}.delly.vcf > delly.header
     grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
+    cat delly.header ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
+    mv ${id}.delly.inv.vcf.tmp ${id}.delly.inv.vcf
+    
+    
     snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
+    
 
 
     """
@@ -503,6 +509,8 @@ if (params.mixtures) {
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.TD
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
 		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
+		
+		gatk VariantsToTable -V ${id}.delly.inv.annotated.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -GF AD -GF DP -O ${id}.delly.inv.annotated.vcf.table
 
 
     '''
