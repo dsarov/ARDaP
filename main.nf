@@ -448,10 +448,13 @@ if (params.mixtures) {
     grep -v "LowQual" ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
     cat delly.header ${id}.delly.inv.vcf.tmp > ${id}.delly.inv.vcf
 =======
+    cat delly.header ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
+    mv ${id}.delly.inv.vcf.tmp ${id}.delly.inv.vcf
     
     
 >>>>>>> 52380867af84b81168eb431663edff752748e17c
     snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
+    
 
     """
   }
@@ -510,6 +513,11 @@ if (params.mixtures) {
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.TD
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
 		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
+		
+		awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
+		sed -i '/^\s*$/d' delly.tmp
+		cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
+		mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
 
 
     '''
