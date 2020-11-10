@@ -444,8 +444,13 @@ if (params.mixtures) {
     bcftools view ${id}.delly.bcf > ${id}.delly.vcf
     grep "#" ${id}.delly.vcf > delly.header
     grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
+<<<<<<< HEAD
     grep -v "LowQual" ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
     cat delly.header ${id}.delly.inv.vcf.tmp > ${id}.delly.inv.vcf
+=======
+    
+    
+>>>>>>> 52380867af84b81168eb431663edff752748e17c
     snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
 
     """
