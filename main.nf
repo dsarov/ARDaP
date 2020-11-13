@@ -1,9 +1,9 @@
-#!/usr/bin/env nextflow
+      #!/usr/bin/env nextflow
 
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.8
+ *  Version             1.8.1
  *  Description         Antimicrobial resistance genotyping for B. pseudomallei
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.8
+                             v1.8.1
 ================================================================================
 
 Optional Parameters:
@@ -413,8 +413,6 @@ if (params.mixtures) {
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
     set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
-    set id, file("${id}.delly.inv.annotated.vcf") into mixtureInversionSummary
-
 
     """
     gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
@@ -440,17 +438,6 @@ if (params.mixtures) {
       snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
     done
 
-    delly call -q 5 -o ${id}.delly.bcf -g ${reference} ${id}.dedup.bam
-    bcftools view ${id}.delly.bcf > ${id}.delly.vcf
-    grep "#" ${id}.delly.vcf > delly.header
-    grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
-
-    grep -v "LowQual" ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
-    cat delly.header ${id}.delly.inv.vcf.tmp > ${id}.delly.inv.vcf
-    
-    snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
-    
-
     """
   }
 
@@ -463,7 +450,6 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
-    file(dellyINV) from mixtureInversionSummary
     set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
 
     output:
@@ -508,12 +494,6 @@ if (params.mixtures) {
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.TD
 		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
 		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
-		
-		awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
-		sed -i '/^\s*$/d' delly.tmp
-		cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
-		mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
-
 
     '''
 
@@ -651,6 +631,74 @@ if (params.mixtures) {
       grep 'HIGH' indel.effects.tmp | awk -F"|" '{ print $4,$11 }' >> !{id}.Function_lost_list.txt
 
       sed -i 's/p\\.//' !{id}.Function_lost_list.txt
+
+      delly call -q 5 -o !{id}.delly.bcf -g !{reference} !{id}.dedup.bam
+      bcftools view !{id}.delly.bcf > !{id}.delly.vcf
+      grep "#" !{id}.delly.vcf > delly.header
+      grep "<INV>" !{id}.delly.vcf > !{id}.delly.inv.vcf
+      grep -v "LowQual" !{id}.delly.inv.vcf > !{id}.delly.inv.vcf.tmp
+      cat delly.header !{id}.delly.inv.vcf.tmp > !{id}.delly.inv.vcf
+
+      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff !{id}.delly.inv.vcf > !{id}.delly.inv.annotated.vcf
+
+      bcftools query -f '%CHROM %POS[\t%GT\t%GL]\n' !{id}.delly.inv.vcf > likelihoods.delly
+      while read line; do
+      echo "$line" > line.desc;
+      awk '{print $4}' line.desc > geno.likelihoods;
+      genotype_RR=$(awk -F"," '{print $1}' geno.likelihoods);
+      genotype_RA=$(awk -F"," '{print $2}' geno.likelihoods);
+      genotype_AA=$(awk -F"," '{print $3}' geno.likelihoods);
+      genotype=$(awk '{print $3}' line.desc);
+      if [ "$genotype" == "0/1"  ]; then
+        if [ "$genotype_RR" == 0 ]; then
+          echo "Genotype ignored";
+        fi;
+        if [ "$genotype_AA" == 0 ]; then
+          echo "Genotype included";
+          chromosome=$(awk '{print $1}' line.desc);
+          location=$(awk '{print $2}' line.desc);
+          echo -e "$chromosome\t$location" >> filtered.inversions;
+        fi;
+        if [ "$genotype_RA" == 0 ]; then
+          alt_ref_check=0;
+          alt_ref_check=$(awk -v a="$genotype_RR" -v b="$genotype_AA" 'BEGIN {if (a < b) {print "1" }}');
+          if [ "$alt_ref_check" == 1 ]; then
+            echo "calculating log likelihood";
+            log_genotype_AA=$(awk -v a="$genotype_AA" 'BEGIN {print (10^a)}');
+            log_genotype_RA=$(awk -v a="$genotype_RA" 'BEGIN {print (10^a)}');
+            log_genotype_RR=$(awk -v a="$genotype_RR" 'BEGIN {print (10^a)}');
+            sum_AA_RR=$(awk -v a="$log_genotype_AA" -v b="$log_genotype_RR" 'BEGIN {print (a+b)}' );
+            likelihood_ratio=$(awk -v a="$log_genotype_RA" -v b="$sum_AA_RR" 'BEGIN {print (a/b)}');
+            echo -e "$log_genotype_AA\t$log_genotype_RA\t$log_genotype_RR" >> likelihood.ratios.2
+            echo -e "$likelihood_ratio\n" >> likelihood.ratios.2
+            likelihood_ratio_test=$(awk -v a="$likelihood_ratio" 'BEGIN {if (a < 100000) {print "1" }}')
+            if [ "$likelihood_ratio_test" == 1 ]; then
+              echo "changing genotype to 1/1";
+              chromosome=$(awk '{print $1}' line.desc);
+              location=$(awk '{print $2}' line.desc);
+              echo -e "$chromosome\t$location" >> filtered.inversions;
+            else
+              echo "Ignoring variant due to poor quality"
+            fi;
+	      else
+	         echo "Ignoring variant due to likely reference allele"
+          fi;
+        fi;
+      fi;
+      if [ "$genotype" == "1/1"  ]; then
+        echo "Genotype included";
+        chromosome=$(awk '{print $1}' line.desc);
+        location=$(awk '{print $2}' line.desc);
+        echo -e "$chromosome\t$location" >> filtered.inversions;
+      fi;
+      done < likelihoods.delly
+
+      while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
+      cat delly.header !{id}.delly.inv.annotated.vcf.tmp > ${id}.delly.inv.annotated.vcf
+      awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
+      sed -i '/^\s*$/d' delly.tmp
+      cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
+      mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
       '''
     }
 }
