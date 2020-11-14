@@ -639,9 +639,9 @@ if (params.mixtures) {
       grep -v "LowQual" !{id}.delly.inv.vcf > !{id}.delly.inv.vcf.tmp
       cat delly.header !{id}.delly.inv.vcf.tmp > !{id}.delly.inv.vcf
 
-      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff $params.snpeff !{id}.delly.inv.vcf > !{id}.delly.inv.annotated.vcf
+      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} !{id}.delly.inv.vcf > !{id}.delly.inv.annotated.vcf
 
-      bcftools query -f '%CHROM %POS[\t%GT\t%GL]\n' !{id}.delly.inv.vcf > likelihoods.delly
+      bcftools query -f '%CHROM %POS[\\t%GT\\t%GL]\\n' !{id}.delly.inv.vcf > likelihoods.delly
       while read line; do
       echo "$line" > line.desc;
       awk '{print $4}' line.desc > geno.likelihoods;
@@ -657,7 +657,7 @@ if (params.mixtures) {
           echo "Genotype included";
           chromosome=$(awk '{print $1}' line.desc);
           location=$(awk '{print $2}' line.desc);
-          echo -e "$chromosome\t$location" >> filtered.inversions;
+          echo -e "$chromosome\\t$location" >> filtered.inversions;
         fi;
         if [ "$genotype_RA" == 0 ]; then
           alt_ref_check=0;
@@ -669,14 +669,14 @@ if (params.mixtures) {
             log_genotype_RR=$(awk -v a="$genotype_RR" 'BEGIN {print (10^a)}');
             sum_AA_RR=$(awk -v a="$log_genotype_AA" -v b="$log_genotype_RR" 'BEGIN {print (a+b)}' );
             likelihood_ratio=$(awk -v a="$log_genotype_RA" -v b="$sum_AA_RR" 'BEGIN {print (a/b)}');
-            echo -e "$log_genotype_AA\t$log_genotype_RA\t$log_genotype_RR" >> likelihood.ratios.2
-            echo -e "$likelihood_ratio\n" >> likelihood.ratios.2
+            echo -e "$log_genotype_AA\\t$log_genotype_RA\\t$log_genotype_RR" >> likelihood.ratios.2
+            echo -e "$likelihood_ratio\\n" >> likelihood.ratios.2
             likelihood_ratio_test=$(awk -v a="$likelihood_ratio" 'BEGIN {if (a < 100000) {print "1" }}')
             if [ "$likelihood_ratio_test" == 1 ]; then
               echo "changing genotype to 1/1";
               chromosome=$(awk '{print $1}' line.desc);
               location=$(awk '{print $2}' line.desc);
-              echo -e "$chromosome\t$location" >> filtered.inversions;
+              echo -e "$chromosome\\t$location" >> filtered.inversions;
             else
               echo "Ignoring variant due to poor quality"
             fi;
@@ -689,14 +689,14 @@ if (params.mixtures) {
         echo "Genotype included";
         chromosome=$(awk '{print $1}' line.desc);
         location=$(awk '{print $2}' line.desc);
-        echo -e "$chromosome\t$location" >> filtered.inversions;
+        echo -e "$chromosome\\t$location" >> filtered.inversions;
       fi;
       done < likelihoods.delly
 
       while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
       cat delly.header !{id}.delly.inv.annotated.vcf.tmp > ${id}.delly.inv.annotated.vcf
       awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
-      sed -i '/^\s*$/d' delly.tmp
+      sed -i '/^\\s*$/d' delly.tmp
       cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
       mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
       '''
