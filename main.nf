@@ -694,7 +694,7 @@ if (params.mixtures) {
       done < likelihoods.delly
 
       while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
-      cat delly.header !{id}.delly.inv.annotated.vcf.tmp > ${id}.delly.inv.annotated.vcf
+      cat delly.header !{id}.delly.inv.annotated.vcf.tmp > !{id}.delly.inv.annotated.vcf
       awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
       sed -i '/^\\s*$/d' delly.tmp
       cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
