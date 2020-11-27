@@ -296,6 +296,7 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
+    rm ${id}.sam ${id}.bam_tmp
 
     bwa index ${card_ref}
     samtools faidx ${card_ref}
@@ -338,7 +339,8 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
-
+    rm ${id}.sam ${id}.bam_tmp
+    
     bwa index ${card_ref}
     samtools faidx ${card_ref}
     bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
@@ -692,7 +694,7 @@ if (params.mixtures) {
         echo -e "$chromosome\\t$location" >> filtered.inversions;
       fi;
       done < likelihoods.delly
-      
+
       if [ -s filtered.inversions ]; then
         while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
         cat delly.header !{id}.delly.inv.annotated.vcf.tmp > !{id}.delly.inv.annotated.vcf
