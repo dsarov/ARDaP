@@ -338,7 +338,7 @@ if (params.assemblies) {
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
-
+    
     bwa index ${card_ref}
     samtools faidx ${card_ref}
     bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
@@ -693,12 +693,15 @@ if (params.mixtures) {
       fi;
       done < likelihoods.delly
 
+<<<<<<< HEAD
       while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
       cat delly.header !{id}.delly.inv.annotated.vcf.tmp > !{id}.delly.inv.annotated.vcf
       awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
       sed -i '/^\\s*$/d' delly.tmp
       cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
       mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
+=======
+>>>>>>> 232b09ac34f21549b1f72574d51b6cc1f526a0a3
       '''
     }
 }
