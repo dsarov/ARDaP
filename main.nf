@@ -236,6 +236,7 @@ process Trimmomatic {
     ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
     ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
     LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
+    rm ${id}_1_u.fq.gz ${id}_2_u.fq.gz
     """
 }
 /*
@@ -247,7 +248,7 @@ process Downsample {
 
     label "spandx_default"
     tag { "$id" }
-    publishDir "./Clean_reads", mode: 'copy', overwrite: false
+    // publishDir "./Clean_reads", mode: 'copy', overwrite: false
 
     input:
     set id, file(forward), file(reverse) from downsample
@@ -340,7 +341,7 @@ if (params.assemblies) {
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
-    
+
     bwa index ${card_ref}
     samtools faidx ${card_ref}
     bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
@@ -695,14 +696,6 @@ if (params.mixtures) {
       fi;
       done < likelihoods.delly
 
-<<<<<<< HEAD
-      while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
-      cat delly.header !{id}.delly.inv.annotated.vcf.tmp > !{id}.delly.inv.annotated.vcf
-      awk -F"|" '/HIGH/ {f=NR} f&&NR-1==f' RS="|" !{id}.delly.inv.annotated.vcf > delly.tmp
-      sed -i '/^\\s*$/d' delly.tmp
-      cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
-      mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
-=======
       if [ -s filtered.inversions ]; then
         while read line; do grep -w "$line" !{id}.delly.inv.annotated.vcf >> !{id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
         cat delly.header !{id}.delly.inv.annotated.vcf.tmp > !{id}.delly.inv.annotated.vcf
@@ -711,7 +704,7 @@ if (params.mixtures) {
         cat delly.tmp !{id}.Function_lost_list.txt > !{id}.Function_lost_list.txt.tmp
         mv !{id}.Function_lost_list.txt.tmp !{id}.Function_lost_list.txt
       fi
->>>>>>> 232b09ac34f21549b1f72574d51b6cc1f526a0a3
+
       '''
     }
 }
