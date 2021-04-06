@@ -222,7 +222,7 @@ Part 2: read processing, reference alignment and variant identification
 
 process Trimmomatic {
 
-    label "spandx_default"
+    label "trimmomatic"
     tag {"$id"}
 
     input:
@@ -246,7 +246,7 @@ process Trimmomatic {
 */
 process Downsample {
 
-    label "spandx_default"
+    label "default"
     tag { "$id" }
     // publishDir "./Clean_reads", mode: 'copy', overwrite: false
 
@@ -278,7 +278,7 @@ process Downsample {
 if (params.assemblies) {
   process ReferenceAlignment_assembly {
 
-    label "spandx_alignment"
+    label "alignment"
     tag {"$id"}
 
     input:
@@ -320,7 +320,7 @@ if (params.assemblies) {
 */
   process ReferenceAlignment {
 
-    label "spandx_alignment"
+    label "alignment"
     tag {"$id"}
     publishDir "./Outputs/CARD", mode: 'copy', pattern: "*CARD_primary_output.txt", overwrite: false
 
@@ -363,7 +363,7 @@ if (params.assemblies) {
 */
 process Deduplicate {
 
-    label "spandx_default"
+    label "markduplicates"
     tag { "$id" }
     publishDir "./Outputs/bams", mode: 'copy', pattern: "*.bam*", overwrite: false
 
@@ -398,7 +398,7 @@ if (params.mixtures) {
 
   process VariantCallingMixture {
 
-    label "spandx_gatk"
+    label "gatk"
     tag { "$id" }
     publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*.ALL.annotated.mixture.vcf", overwrite: false
     publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*.PASS.snps.indels.mixed.vcf", overwrite: false
@@ -446,7 +446,7 @@ if (params.mixtures) {
 
   process MixtureSummariesSQL {
 
-    label "spandx_default"
+    label "default"
     tag { "$id" }
 
     input:
@@ -508,7 +508,7 @@ if (params.mixtures) {
 
     process VariantCalling {
 
-      label "spandx_gatk"
+      label "gatk"
       tag { "$id" }
       publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: false
       publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: false
@@ -720,7 +720,7 @@ if (params.mixtures) {
 
   process SqlSnpsIndelsMix {
 
-    label "genomic_queries"
+    label "queries"
     tag { "$id" }
 
     input:
@@ -830,7 +830,7 @@ process R_report {
 if (params.phylogeny) {
   process VariantCallingGVCF {
 
-    label "spandx_gatk"
+    label "gatk"
     tag { "$id" }
     publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
 
