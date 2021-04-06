@@ -246,7 +246,7 @@ process Trimmomatic {
 */
 process Downsample {
 
-    label "default"
+    label "ardap_default"
     tag { "$id" }
     // publishDir "./Clean_reads", mode: 'copy', overwrite: false
 
@@ -378,7 +378,7 @@ process Deduplicate {
     set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_2
 
     """
-    gatk --java-options -Xmx${task.memory} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
+    gatk --java-options -Xmx${task.memory.toString().replaceAll(/[\sB]/,'')} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
     --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT
     samtools index ${id}.dedup.bam
 
@@ -446,7 +446,7 @@ if (params.mixtures) {
 
   process MixtureSummariesSQL {
 
-    label "default"
+    label "ardap_default"
     tag { "$id" }
 
     input:
