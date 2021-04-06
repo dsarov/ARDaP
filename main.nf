@@ -3,8 +3,8 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.8.1
- *  Description         Antimicrobial resistance genotyping for B. pseudomallei
+ *  Version             1.8.2
+ *  Description         Antimicrobial resistance detection and prediction from WGS
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
  */
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.8.1
+                             v1.8.2
 ================================================================================
 
 Optional Parameters:
