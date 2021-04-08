@@ -38,11 +38,31 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 ## Installation
 
 
+
+### New conda environment and fresh install from scratch (recommended).
+
+1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you  have conda installed,  it's a good idea to update conda so you have the latest version: `conda update conda`. If you don't have this software installed,  go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After conda install, make sure your install is up-to-date: `conda update conda`.
+
+2) Create a new environment with conda called "ardap" and install the ARDaP software with `conda create --name ardap -c dsarov -c bioconda ardap`. Follow the instructions and the software should fully install with all dependencies.
+
+3) Activate the ARDaP environment that was installed by conda: `conda activate ardap`
+
+4) To run ARDaP: `nextflow run dsarov/ardap`
+
+The local cache can be updated with:
+
+`nextflow pull dsarov/ardap`
+
+5) Update the nextflow.config file with any HPC specifics or to change pipeline defaults. The config file can be found in ~/.nextflow/assets/dsarov/ardap/
+
+5) If you're running ARDaP on a HPC/submission system (e.g. PBS), the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
+
+
 ### Short version for those that just want to get started and understand how conda environments work
 
 ARDaP is available on our development channel, and its dependencies can be installed with:
 
-`conda install -c dsarov -c bioconda -c conda-forge ardap`
+`conda install -c dsarov -c bioconda ardap`
 
 The pipeline itself is run with Nextflow from a local cache of the repository:
 
@@ -57,19 +77,6 @@ If you want to make changes to the default `nextflow.config` file, clone the wor
 `nextflow clone dsarov/ardap install_dir/`
 
 Or navigate to the conda install path of ARDaP and change the `nextflow.config` in that location.
-
-
-### Long version for those unfamiliar with environments or who just want all the steps for recommended installation
-
-1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you  have conda installed,  it's a good idea to update conda so you have the latest version: `conda update conda`. If you don't have this software installed,  go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After conda install, make sure your install is up-to-date: `conda update conda`.
-
-2) Create a new environment with conda called "ardap" and install the ARDaP software with `conda create --name ardap -c dsarov -c bioconda -c conda-forge ardap`. Follow the instructions and the software should fully install with all dependencies.
-
-3) Activate the ARDaP environment that was installed by conda: `conda activate ardap`
-
-4) To run ARDaP: `nextflow run dsarov/ardap`
-
-5) If you're running ARDaP on a HPC/submission system (e.g. PBS), the `screen` command will allow you to detach the terminal while the pipeline is still running in the background
 
 
 ## Usage
