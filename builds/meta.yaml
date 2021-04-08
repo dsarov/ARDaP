@@ -1,4 +1,4 @@
-{% set version = "1.8.1" %}
+{% set version = "1.8.2" %}
 
 package:
   name: ardap
@@ -31,6 +31,7 @@ requirements:
       - delly
       - bcftools
   run:
+      - art
       - trimmomatic
       - bwa
       - bedtools=2.28.0
@@ -55,5 +56,5 @@ about:
   home: 'https://github.com/dsarov/ardap'
   license: MIT
   license_file: LICENSE
-  summary: 'Comprehensive resistance detection from WGS'
+  summary: 'Antimicrobial resistance detection and prediction from WGS'
 
