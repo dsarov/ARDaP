@@ -38,8 +38,23 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 ## Installation
 
 
+**Github + Conda** 
+### Currently recommended because updating packages in Conda is broken for me
 
-### New conda environment and fresh install from scratch (recommended).
+1) Download the latest installation with git clone
+
+```
+git clone https://github.com/dsarov/ardap.git
+```
+
+2) Install a ardap environment using conda
+
+```
+conda env create --name ardap -f ./ardap/env.yaml
+```
+
+**Conda**
+### New conda environment and fresh install from scratch.
 
 1) Make sure you have the conda package manager installed (e.g. Anaconda, miniconda). You can check this by testing if you can find the `conda` command (`which conda`). If you  have conda installed,  it's a good idea to update conda so you have the latest version: `conda update conda`. If you don't have this software installed,  go to [the miniconda install page](https://docs.conda.io/en/latest/miniconda.html) and follow the instructions for your OS. After conda install, make sure your install is up-to-date: `conda update conda`.
 
