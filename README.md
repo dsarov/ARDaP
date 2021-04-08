@@ -47,10 +47,18 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 git clone https://github.com/dsarov/ardap.git
 ```
 
-2) Install a ardap environment using conda
+2) Install an ardap environment using conda
 
 ```
 conda env create --name ardap -f ./ardap/env.yaml
+```
+
+3) Download the Delly binary (or install with conda in the ardap environment but I've found that approach error prone). Just make sure the binary is placed into a directory contained in your PATH.
+
+```
+wget https://github.com/dellytools/delly/releases/download/v0.8.7/delly_v0.8.7_linux_x86_64bit
+mv ./delly_v0.8.7_linux_x86_64bit delly
+chmod +x delly
 ```
 
 **Conda**
