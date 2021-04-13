@@ -535,7 +535,7 @@ if (params.mixtures) {
 
       script:
       """
-      bash VariantCalling.sh ${id} ${reference} ${baseDir}
+      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff}
 
       """
 
