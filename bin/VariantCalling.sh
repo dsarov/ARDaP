@@ -1,5 +1,6 @@
 
-
+#Input files
+#set id, file(perbase), file(depth) from coverageData
 
 #Set variables
 #strain id
@@ -8,7 +9,11 @@ id=$1
 #reference genome
 reference=$2
 
-gatk HaplotypeCaller -R ${reference} --ploidy 1 --I !{dedup_bam} -O ${id}.raw.snps.indels.vcf
+#baseDir for snpEff
+baseDir=$3
+
+
+gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
 
@@ -57,9 +62,9 @@ header=`grep -a -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.indels.vcf > indel_head
 cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
+snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
+snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
 
 echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
 zcat !{perbase} | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
@@ -114,59 +119,61 @@ grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
 grep -v "LowQual" ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
 cat delly.header ${id}.delly.inv.vcf.tmp > ${id}.delly.inv.vcf
 
-snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir !{baseDir}/resources/snpeff !{params.snpeff} ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
+snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
 
-bcftools query -f '%CHROM %POS[\\t%GT\\t%GL]\\n' ${id}.delly.inv.vcf > likelihoods.delly
-while read line; do
-echo "$line" > line.desc;
-awk '{print $4}' line.desc > geno.likelihoods;
-genotype_RR=$(awk -F"," '{print $1}' geno.likelihoods);
-genotype_RA=$(awk -F"," '{print $2}' geno.likelihoods);
-genotype_AA=$(awk -F"," '{print $3}' geno.likelihoods);
-genotype=$(awk '{print $3}' line.desc);
-if [ "$genotype" == "0/1"  ]; then
-  if [ "$genotype_RR" == 0 ]; then
-    echo "Genotype ignored";
+if [ -s !{id}.delly.inv.vcf.tmp ]; then
+  bcftools query -f '%CHROM %POS[\\t%GT\\t%GL]\\n' ${id}.delly.inv.vcf > likelihoods.delly
+  while read line; do
+    echo "$line" > line.desc;
+    awk '{print $4}' line.desc > geno.likelihoods;
+    genotype_RR=$(awk -F"," '{print $1}' geno.likelihoods);
+    genotype_RA=$(awk -F"," '{print $2}' geno.likelihoods);
+    genotype_AA=$(awk -F"," '{print $3}' geno.likelihoods);
+    genotype=$(awk '{print $3}' line.desc);
+    if [ "$genotype" == "0/1"  ]; then
+      if [ "$genotype_RR" == 0 ]; then
+      echo "Genotype ignored";
+      fi;
+    if [ "$genotype_AA" == 0 ]; then
+      echo "Genotype included";
+      chromosome=$(awk '{print $1}' line.desc);
+      location=$(awk '{print $2}' line.desc);
+      echo -e "$chromosome\\t$location" >> filtered.inversions;
+    fi;
+    if [ "$genotype_RA" == 0 ]; then
+      alt_ref_check=0;
+      alt_ref_check=$(awk -v a="$genotype_RR" -v b="$genotype_AA" 'BEGIN {if (a < b) {print "1" }}');
+      if [ "$alt_ref_check" == 1 ]; then
+        echo "calculating log likelihood";
+        log_genotype_AA=$(awk -v a="$genotype_AA" 'BEGIN {print (10^a)}');
+        log_genotype_RA=$(awk -v a="$genotype_RA" 'BEGIN {print (10^a)}');
+        log_genotype_RR=$(awk -v a="$genotype_RR" 'BEGIN {print (10^a)}');
+        sum_AA_RR=$(awk -v a="$log_genotype_AA" -v b="$log_genotype_RR" 'BEGIN {print (a+b)}' );
+        likelihood_ratio=$(awk -v a="$log_genotype_RA" -v b="$sum_AA_RR" 'BEGIN {print (a/b)}');
+        echo -e "$log_genotype_AA\\t$log_genotype_RA\\t$log_genotype_RR" >> likelihood.ratios.2
+        echo -e "$likelihood_ratio\\n" >> likelihood.ratios.2
+        likelihood_ratio_test=$(awk -v a="$likelihood_ratio" 'BEGIN {if (a < 100000) {print "1" }}')
+        if [ "$likelihood_ratio_test" == 1 ]; then
+          echo "changing genotype to 1/1";
+          chromosome=$(awk '{print $1}' line.desc);
+          location=$(awk '{print $2}' line.desc);
+          echo -e "$chromosome\\t$location" >> filtered.inversions;
+        else
+          echo "Ignoring variant due to poor quality"
+        fi;
+	  else
+	    echo "Ignoring variant due to likely reference allele"
+      fi;
+    fi;
   fi;
-  if [ "$genotype_AA" == 0 ]; then
+  if [ "$genotype" == "1/1"  ]; then
     echo "Genotype included";
     chromosome=$(awk '{print $1}' line.desc);
     location=$(awk '{print $2}' line.desc);
     echo -e "$chromosome\\t$location" >> filtered.inversions;
   fi;
-  if [ "$genotype_RA" == 0 ]; then
-    alt_ref_check=0;
-    alt_ref_check=$(awk -v a="$genotype_RR" -v b="$genotype_AA" 'BEGIN {if (a < b) {print "1" }}');
-    if [ "$alt_ref_check" == 1 ]; then
-echo "calculating log likelihood";
-log_genotype_AA=$(awk -v a="$genotype_AA" 'BEGIN {print (10^a)}');
-log_genotype_RA=$(awk -v a="$genotype_RA" 'BEGIN {print (10^a)}');
-log_genotype_RR=$(awk -v a="$genotype_RR" 'BEGIN {print (10^a)}');
-sum_AA_RR=$(awk -v a="$log_genotype_AA" -v b="$log_genotype_RR" 'BEGIN {print (a+b)}' );
-likelihood_ratio=$(awk -v a="$log_genotype_RA" -v b="$sum_AA_RR" 'BEGIN {print (a/b)}');
-echo -e "$log_genotype_AA\\t$log_genotype_RA\\t$log_genotype_RR" >> likelihood.ratios.2
-echo -e "$likelihood_ratio\\n" >> likelihood.ratios.2
-likelihood_ratio_test=$(awk -v a="$likelihood_ratio" 'BEGIN {if (a < 100000) {print "1" }}')
-if [ "$likelihood_ratio_test" == 1 ]; then
-  echo "changing genotype to 1/1";
-  chromosome=$(awk '{print $1}' line.desc);
-  location=$(awk '{print $2}' line.desc);
-  echo -e "$chromosome\\t$location" >> filtered.inversions;
-else
-  echo "Ignoring variant due to poor quality"
+  done < likelihoods.delly
 fi;
-	else
-	   echo "Ignoring variant due to likely reference allele"
-    fi;
-  fi;
-fi;
-if [ "$genotype" == "1/1"  ]; then
-  echo "Genotype included";
-  chromosome=$(awk '{print $1}' line.desc);
-  location=$(awk '{print $2}' line.desc);
-  echo -e "$chromosome\\t$location" >> filtered.inversions;
-fi;
-done < likelihoods.delly
 
 if [ -s filtered.inversions ]; then
   while read line; do grep -w "$line" ${id}.delly.inv.annotated.vcf >> ${id}.delly.inv.annotated.vcf.tmp ; done < filtered.inversions
@@ -175,4 +182,4 @@ if [ -s filtered.inversions ]; then
   sed -i '/^\\s*$/d' delly.tmp
   cat delly.tmp ${id}.Function_lost_list.txt > ${id}.Function_lost_list.txt.tmp
   mv ${id}.Function_lost_list.txt.tmp ${id}.Function_lost_list.txt
-fi
+fi;
