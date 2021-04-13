@@ -1,3 +1,5 @@
+#!/bin/bash
+
 
 #Input files
 #set id, file(perbase), file(depth) from coverageData
@@ -12,69 +14,72 @@ reference=$2
 #baseDir for snpEff
 baseDir=$3
 
+#import GATK filtering parameters
+source ${baseDir}/configs/gatk_source.config
+
 
 gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
 
 gatk VariantFiltration -R ${reference} -O ${id}.filtered.snps.vcf -V ${id}.raw.snps.vcf \
---cluster-size !{params.CLUSTER_SNP} -window !{params.CLUSTER_WINDOW_SNP} \
--filter "MLEAF < !{params.MLEAF_SNP}" --filter-name "AFFilter" \
--filter "QD < !{params.QD_SNP}" --filter-name "QDFilter" \
--filter "MQ < !{params.MQ_SNP}" --filter-name "MQFilter" \
--filter "FS > !{params.FS_SNP}" --filter-name "FSFilter" \
--filter "QUAL < !{params.QUAL_SNP}" --filter-name "StandardFilters"
+--cluster-size ${CLUSTER_SNP} -window ${CLUSTER_WINDOW_SNP} \
+-filter "MLEAF < ${MLEAF_SNP}" --filter-name "AFFilter" \
+-filter "QD < ${QD_SNP}" --filter-name "QDFilter" \
+-filter "MQ < ${MQ_SNP}" --filter-name "MQFilter" \
+-filter "FS > ${FS_SNP}" --filter-name "FSFilter" \
+-filter "QUAL < ${QUAL_SNP}" --filter-name "StandardFilters"
 
 header=`grep -a -n "#CHROM" ${id}.filtered.snps.vcf | cut -d':' -f 1`
 head -n $header ${id}.filtered.snps.vcf > snp_head
 cat ${id}.filtered.snps.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.vcf
 
 gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V ${id}.raw.snps.vcf \
---cluster-size !{params.CLUSTER_SNP} -window !{params.CLUSTER_WINDOW_SNP} \
--filter "MLEAF < !{params.MLEAF_SNP}" --filter-name "FAIL" \
--filter "QD < !{params.QD_SNP}" --filter-name "FAIL1" \
--filter "MQ < !{params.MQ_SNP}" --filter-name "FAIL2" \
--filter "FS > !{params.FS_SNP}" --filter-name "FAIL3" \
--filter "QUAL < !{params.QUAL_SNP}" --filter-name "FAIL5"
+--cluster-size ${CLUSTER_SNP} -window ${CLUSTER_WINDOW_SNP} \
+-filter "MLEAF < ${MLEAF_SNP}" --filter-name "FAIL" \
+-filter "QD < ${QD_SNP}" --filter-name "FAIL1" \
+-filter "MQ < ${MQ_SNP}" --filter-name "FAIL2" \
+-filter "FS > ${FS_SNP}" --filter-name "FAIL3" \
+-filter "QUAL < ${QUAL_SNP}" --filter-name "FAIL5"
 
 header=`grep -a -n "#CHROM" ${id}.failed.snps.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.snps.vcf > snp_head
 cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
 
 gatk VariantFiltration -R ${reference} -O ${id}.filtered.indels.vcf -V ${id}.raw.indels.vcf \
--filter "MLEAF < !{params.MLEAF_INDEL}" --filter-name "AFFilter" \
--filter "QD < !{params.QD_INDEL}" --filter-name "QDFilter" \
--filter "FS > !{params.FS_INDEL}" --filter-name "FSFilter" \
--filter "QUAL < !{params.QUAL_INDEL}" --filter-name "QualFilter"
+-filter "MLEAF < ${MLEAF_INDEL}" --filter-name "AFFilter" \
+-filter "QD < ${QD_INDEL}" --filter-name "QDFilter" \
+-filter "FS > ${FS_INDEL}" --filter-name "FSFilter" \
+-filter "QUAL < ${QUAL_INDEL}" --filter-name "QualFilter"
 
 header=`grep -a -n "#CHROM" ${id}.filtered.indels.vcf | cut -d':' -f 1`
 head -n $header ${id}.filtered.indels.vcf > snp_head
 cat ${id}.filtered.indels.vcf | grep PASS | cat snp_head - > ${id}.PASS.indels.vcf
 
 gatk VariantFiltration -R  ${reference} -O ${id}.failed.indels.vcf -V ${id}.raw.indels.vcf \
--filter "MLEAF < !{params.MLEAF_INDEL}" --filter-name "FAIL" \
--filter "MQ < !{params.MQ_INDEL}" --filter-name "FAIL1" \
--filter "QD < !{params.QD_INDEL}" --filter-name "FAIL2" \
--filter "FS > !{params.FS_INDEL}" --filter-name "FAIL3" \
--filter "QUAL < !{params.QUAL_INDEL}" --filter-name "FAIL5"
+-filter "MLEAF < ${MLEAF_INDEL}" --filter-name "FAIL" \
+-filter "MQ < ${MQ_INDEL}" --filter-name "FAIL1" \
+-filter "QD < ${QD_INDEL}" --filter-name "FAIL2" \
+-filter "FS > ${FS_INDEL}" --filter-name "FAIL3" \
+-filter "QUAL < ${QUAL_INDEL}" --filter-name "FAIL5"
 
 header=`grep -a -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.indels.vcf > indel_head
 cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
+snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
+snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
 
 echo -e "Chromosome\tStart\tEnd\tInterval" > tmp.header
-zcat !{perbase} | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
+zcat ${perbase} | awk '$4 ~ /^0/ { print $1,$2,$3,$3-$2 }' > del.summary.tmp
 cat tmp.header del.summary.tmp > ${id}.deletion_summary.txt
 
-covdep=$(head -n 1 !{depth})
+covdep=$(head -n 1 ${depth})
 DUP_CUTOFF=$(echo $covdep*3 | bc)
 echo "dup cutoff is $DUP_CUTOFF"
 
-zcat !{perbase} | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
+zcat ${perbase} | awk -v DUP_CUTOFF="$DUP_CUTOFF" '$4 >= DUP_CUTOFF { print $1,$2,$3,$3-$2 }' > dup.summary.tmp
 
 i=$(head -n1 dup.summary.tmp | awk '{ print $2 }')
 k=$(tail -n1 dup.summary.tmp | awk '{ print $3 }')
@@ -119,9 +124,9 @@ grep "<INV>" ${id}.delly.vcf > ${id}.delly.inv.vcf
 grep -v "LowQual" ${id}.delly.inv.vcf > ${id}.delly.inv.vcf.tmp
 cat delly.header ${id}.delly.inv.vcf.tmp > ${id}.delly.inv.vcf
 
-snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff !{params.snpeff} ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
+snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.delly.inv.vcf > ${id}.delly.inv.annotated.vcf
 
-if [ -s !{id}.delly.inv.vcf.tmp ]; then
+if [ -s ${id}.delly.inv.vcf.tmp ]; then
   bcftools query -f '%CHROM %POS[\\t%GT\\t%GL]\\n' ${id}.delly.inv.vcf > likelihoods.delly
   while read line; do
     echo "$line" > line.desc;
