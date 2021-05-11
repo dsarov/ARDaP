@@ -26,7 +26,6 @@ gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.sn
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
 
 gatk VariantFiltration -R ${reference} -O ${id}.filtered.snps.vcf -V ${id}.raw.snps.vcf \
---cluster-size ${CLUSTER_SNP} -window ${CLUSTER_WINDOW_SNP} \
 -filter "MLEAF < ${MLEAF_SNP}" --filter-name "AFFilter" \
 -filter "QD < ${QD_SNP}" --filter-name "QDFilter" \
 -filter "MQ < ${MQ_SNP}" --filter-name "MQFilter" \
@@ -38,7 +37,6 @@ head -n $header ${id}.filtered.snps.vcf > snp_head
 cat ${id}.filtered.snps.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.vcf
 
 gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V ${id}.raw.snps.vcf \
---cluster-size ${CLUSTER_SNP} -window ${CLUSTER_WINDOW_SNP} \
 -filter "MLEAF < ${MLEAF_SNP}" --filter-name "FAIL" \
 -filter "QD < ${QD_SNP}" --filter-name "FAIL1" \
 -filter "MQ < ${MQ_SNP}" --filter-name "FAIL2" \
