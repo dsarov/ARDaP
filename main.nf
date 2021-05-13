@@ -524,6 +524,7 @@ if (params.mixtures) {
 
       output:
       set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
+      set id, file("${id}.PASS.indels.vcf"), file("${id}.FAIL.indels.vcf") into filteredindels
       set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
       set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
       set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
