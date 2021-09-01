@@ -45,7 +45,7 @@ gatk VariantFiltration -R ${reference} -O ${id}.failed.snps.vcf -V ${id}.raw.snp
 
 header=`grep -a -n "#CHROM" ${id}.failed.snps.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.snps.vcf > snp_head
-cat ${id}.filtered.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
+cat ${id}.failed.snps.vcf | grep FAIL | cat snp_head - > ${id}.FAIL.snps.vcf
 
 gatk VariantFiltration -R ${reference} -O ${id}.filtered.indels.vcf -V ${id}.raw.indels.vcf \
 -filter "MLEAF < ${MLEAF_INDEL}" --filter-name "AFFilter" \
@@ -66,7 +66,7 @@ gatk VariantFiltration -R  ${reference} -O ${id}.failed.indels.vcf -V ${id}.raw.
 
 header=`grep -a -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.indels.vcf > indel_head
-cat ${id}.filtered.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
+cat ${id}.failed.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
 
 snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
 
