@@ -168,6 +168,7 @@ Optional Parameter: \
   `$ nextflow run dsarov/ardap --size 0 --mixtures`
   or
   `$ nextflow run /path/to/ardap/main.nf  --size 0 --mixtures`
+  
   `--phylogeny` Use this flag if you would like a whole-genome phylogeny, or an annotated variant matrix file. Note that this may take a long time if you have a large number of isolates. Default=false
   
   Example:
@@ -186,6 +187,7 @@ Optional Parameter: \
   `nextflow run dsarov/ardap --species Pseudomonas_aeruginosa`
   or
   `$ nextflow run /path/to/ardap/main.nf  --species Pseudomonas_aeruginosa`
+  
 If you don't want to constantly use the flags for different species, this setting can be changed in the `nextflow.config` file.
 
 `--fastq` ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
