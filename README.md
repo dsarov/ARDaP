@@ -111,7 +111,8 @@ ARDaP can be called from the command line through Nextflow. This will pull the c
 For example, to run Nextflow with the default cluster job submission template profile for `PBS`, and activate the mixture setting in `ARDaP`, we can run:
 
 `nextflow run dsarov/ardap --executor pbs --mixtures`
-
+or 
+`nextflow run /path/to/ardap/main.nf --executor pbs --mixtures`
 
 ### Error-handling strategy
 
@@ -157,18 +158,23 @@ Optional Parameter: \
   Example:
   
   `$ nextflow run dsarov/ardap --mixtures`
+  or
+  `$ nextflow run /path/to/ardap/main.nf --mixtures`
   
   `--size` ARDaP can optionally down-sample your read data to run through the pipeline more quickly (integer value expected). Default=1000000, which corresponds to ~50x coverage for a 6Mbp genome. To switch down-sampling off, specify --size 0. When mixture analysis is requested, this option should be switched to 0 for the most sensitive ARM determinant detection.
   
   Example:
   
   `$ nextflow run dsarov/ardap --size 0 --mixtures`
-  
+  or
+  `$ nextflow run /path/to/ardap/main.nf  --size 0 --mixtures`
   `--phylogeny` Use this flag if you would like a whole-genome phylogeny, or an annotated variant matrix file. Note that this may take a long time if you have a large number of isolates. Default=false
   
   Example:
   
   `$ nextflow run dsarov/ardap --phylogeny`
+  or
+  `$ nextflow run /path/to/ardap/main.nf  --phylogeny`
   
   `--species` Use this flag to specify an ARDaP database that contains species-specific AMR determinant information.
   
@@ -178,7 +184,8 @@ Optional Parameter: \
   
   For example: \
   `nextflow run dsarov/ardap --species Pseudomonas_aeruginosa`
-
+  or
+  `$ nextflow run /path/to/ardap/main.nf  --species Pseudomonas_aeruginosa`
 If you don't want to constantly use the flags for different species, this setting can be changed in the `nextflow.config` file.
 
 `--fastq` ARDaP, by default, expects reads to be paired-end, Illumina data in the following format: 
@@ -198,7 +205,8 @@ STRAIN_1_sequence.fq.gz (first pair)
 STRAIN_2_sequence.fq.gz (second pair)
 ```
 `nextflow run dsarov/ardap --fastq "*_{1,2}_sequence.fq.gz"`
-
+or
+  `$ nextflow run /path/to/ardap/main.nf  --fastq "*_{1,2}_sequence.fq.gz"`
 
 ## Inclusion of Assembled Genomes
 
