@@ -1,0 +1,17 @@
+* Problem when using __setitem__ in the TableResults object instead of the add_table method:
+tr = TableResults("software X", "6.6.6", "20200128", "runsoft -i arg",
+                  "sampleX")
+tr["some table"]
+
+
+* Table merge function should implement the copy argument.
+
+* Table add_table function should implement the copy argument so that the added table will be copied instead of referenced.
+
+* SortList entries does not get updated when the corresponding value in the Table object is changed.
+
+
+REQUIRES ATTENTION SOON:
+  * from testdata Salmonella Agone using raw reads / KMA, results_tab.txt etc. does not report the mdf(A) gene (18% ID), but the Table.as_txt method does.
+  * Test two genes on same contig
+  * cge.phenotype2genotype.feature exists twice also in cge.feature, only one copy should persist

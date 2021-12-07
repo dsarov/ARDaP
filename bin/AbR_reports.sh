@@ -37,7 +37,25 @@ sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
 }
 
 Report_structure
-cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}.CARD_primary_output.txt | tee AbR_output.txt AbR_output.final.txt
+
+
+#format Resfinder output for report
+while read line; do
+Antibiotic=$(awk '{print $2}')
+abbrev=$(awk '{print $3}')
+gene=$(awk '{print $5}')
+grep -w ${Antibiotic} ${seq}_resfinder.txt > resfinder_tmp.txt
+#look for resistance
+awk -F "\t" '$3 ~ "Resistant" { exit 1} ' resfinder_tmp.txt &> /dev/null
+	status=$? 
+	if [ "$status" == 1 ]; then  #Resistant strain
+	  echo -e "Resfinder|$gene||${abbrev}r" >> ${seq}_resfinder_report.txt
+	fi
+	  
+done < drug.table.txt
+
+
+cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
 cp drug.table.txt drug.table.txt.backup
 
 #Deduplicate any repition in the resistance list
