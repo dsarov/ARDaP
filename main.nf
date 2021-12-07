@@ -355,7 +355,7 @@ if (params.assemblies) {
     #samtools sort -@ 1 -o ${id}.card.bam bam_tmp
     #samtools index ${id}.card.bam
     #bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
-    bash Run_resfinder.sh ${forward} ${reverse} ${baseDir} ${id}
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
 
   }
