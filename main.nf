@@ -60,6 +60,11 @@ Optional Parameters:
 
                  Currently executor is set to $params.executor
 
+    --resfinder  **Experimental**. Future implementation to switch from CARD to
+                 Resfinder database due to improved calls. Not yet tested.
+
+                 Currently resfinder is set to $params.resfinder
+
     --gwas       **Experimental**. If you have a database of GWAS co-ordinates
                  ARDaP can interrogate SNPs and indels across the entire genome
                  to identify novel mutations likely contributing to an antibiotic

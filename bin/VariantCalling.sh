@@ -17,11 +17,43 @@ baseDir=$3
 #annotation genome for snpeff
 snpeff=$4
 
+intervals=no
+
 #import GATK filtering parameters
 source ${baseDir}/configs/gatk_source.config
 
+if [ $intervals==yes ]; then
+  #test for interval file
+  if [ ! -s ${baseDir}/Databases/${snpeff}/intervals.list ]; then
 
-gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf
+
+cat << _EOF_ > interval.query.txt
+SELECT 
+	Variants_SNP_indel.Gene_name
+FROM 
+	Variants_SNP_indel
+_EOF_
+
+
+  #create interval file
+  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.query.txt > gene.list
+  uniq gene.list > gene.list.tmp
+  mv gene.list.tmp gene.list
+  snpEff genes2bed ${snpeff} -dataDir ${baseDir}/resources/snpeff -f gene.list > intervals.list
+  sed -i 's/\t/:/' intervals.list
+  sed -i 's/\t/-/' intervals.list
+  awk '{print $1}' intervals.list | tail -n+2 > intervals.list.tmp
+  mv intervals.list.tmp intervals.list
+  gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf -L intervals.list --interval-padding 200
+ else 
+  gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf -L ${baseDir}/Databases/${snpeff}/intervals.list --interval-padding 200
+ fi
+else
+  gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf 
+fi
+
+
+
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.snps.vcf -select-type SNP
 gatk SelectVariants -R ${reference} -V ${id}.raw.snps.indels.vcf -O ${id}.raw.indels.vcf -select-type INDEL
 
