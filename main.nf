@@ -294,7 +294,7 @@ if (params.assemblies) {
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}._resfinder.txt") into abr_report_resfinder_ch_1
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -337,7 +337,7 @@ if (params.assemblies) {
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_resfinder_ch_1
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -355,7 +355,7 @@ if (params.assemblies) {
     #samtools sort -@ 1 -o ${id}.card.bam bam_tmp
     #samtools index ${id}.card.bam
     #bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
-    bash Run_resfinder.sh ${forward} ${reverse} ${baseDir} ${id} 
+    bash Run_resfinder.sh ${forward} ${reverse} ${baseDir} ${id}
     """
 
   }
@@ -375,12 +375,12 @@ process Deduplicate {
     input:
     set id, file(bam_alignment), file(bam_index) from dup
     file refcov from refcov_ch
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_1
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_1
 
     output:
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (variantCalling, mixturePindel, variantcallingGVCF_ch)
     set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into coverageData
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_2
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_2
 
     """
     gatk --java-options -Xmx${task.memory.toString().replaceAll(/[\sB]/,'')} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
@@ -413,13 +413,13 @@ if (params.mixtures) {
     file reference_fai from ref_fai_ch1
     file reference_dict from ref_dict_ch1
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantCalling
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
 
     output:
     set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
     file("pindel.out_D.vcf") into mixtureDeletionSummary
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
     set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
 
     """
@@ -458,7 +458,7 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_card_ch_3
 
     output:
     set id, file("${id}.annotated.ALL.effects") into variants_all_ch
@@ -524,7 +524,7 @@ if (params.mixtures) {
       file reference_fai from ref_fai_ch1
       file reference_dict from ref_dict_ch1
       set id, file(dedup_bam), file(dedup_index) from variantCalling
-      set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
+      set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
       set id, file(perbase), file(depth) from coverageData
 
       output:
@@ -537,7 +537,7 @@ if (params.mixtures) {
       set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels, annotated_indels_ch2
       set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
       set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
-      set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+      set id, file("${id}_resfinder.txt") into abr_report_card_ch_3
 
       script:
       """
@@ -594,7 +594,7 @@ if (params.mixtures) {
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_card_ch_3
     set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
     set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
     file("patientMetaData.csv") from patient_meta_file
