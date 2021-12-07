@@ -22,7 +22,8 @@ intervals=no
 #import GATK filtering parameters
 source ${baseDir}/configs/gatk_source.config
 
-if [ $intervals==yes ]; then
+if [ "$intervals" == "yes" ]; then
+#echo "intervals == $intervals"
   #test for interval file
   if [ ! -s ${baseDir}/Databases/${snpeff}/intervals.list ]; then
 
@@ -49,6 +50,7 @@ _EOF_
   gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf -L ${baseDir}/Databases/${snpeff}/intervals.list --interval-padding 200
  fi
 else
+#echo "intervals == $intervals"
   gatk HaplotypeCaller -R ${reference} --ploidy 1 --I ${id}.dedup.bam -O ${id}.raw.snps.indels.vcf 
 fi
 
