@@ -332,8 +332,8 @@ if (params.assemblies) {
     input:
     file ref_index from ref_index_ch
     set id, file(forward), file(reverse) from alignment
-    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    file card_db_ref from card_db_file
+    //file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
+    //file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
