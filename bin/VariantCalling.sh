@@ -17,7 +17,7 @@ baseDir=$3
 #annotation genome for snpeff
 snpeff=$4
 
-intervals=no
+intervals=yes
 
 #import GATK filtering parameters
 source ${baseDir}/configs/gatk_source.config
