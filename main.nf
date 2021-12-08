@@ -304,14 +304,6 @@ if (params.assemblies) {
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
 
-    #bwa index ${card_ref}
-    #samtools faidx ${card_ref}
-    #bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    #bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    #samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    #samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    #samtools index ${id}.card.bam
-    #bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
 
@@ -347,14 +339,6 @@ if (params.assemblies) {
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
 
-    #bwa index ${card_ref}
-    #samtools faidx ${card_ref}
-    #bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    #bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    #samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    #samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    #samtools index ${id}.card.bam
-    #bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
 
