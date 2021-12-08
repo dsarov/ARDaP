@@ -30,6 +30,7 @@ requirements:
       - fasttree
       - delly
       - bcftools
+      - kma
   run:
       - art
       - trimmomatic
@@ -47,6 +48,7 @@ requirements:
       - fasttree
       - delly
       - bcftools
+      - kma
 
 test:
   commands:
