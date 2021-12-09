@@ -342,6 +342,7 @@ if (params.assemblies) {
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
     set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
+    if (params.fast) {
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
     -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
@@ -352,7 +353,17 @@ if (params.assemblies) {
 
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
-
+    } else {
+    """
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
+    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
+    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
+    samtools index ${id}.bam
+    rm ${id}.sam ${id}.bam_tmp
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
+    """
+    }
   }
 }
 
@@ -536,7 +547,7 @@ if (params.mixtures) {
 
       script:
       """
-      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff}
+      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff} ${params.fast}
 
       """
 
