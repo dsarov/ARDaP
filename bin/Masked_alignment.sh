@@ -23,7 +23,7 @@ echo "snpEff=$snpeff"
 #create interval list
 cat << _EOF_ > interval.coverage.query.txt
 SELECT 
-	Coverage.Gene_name
+	Coverage.Gene
 FROM 
 	Coverage
 _EOF_

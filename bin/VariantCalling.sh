@@ -36,7 +36,7 @@ if [ "$fast" == "true" ]; then
 
 cat << _EOF_ > interval.coverage.query.txt
 SELECT 
-	Coverage.Gene_name
+	Coverage.Gene
 FROM 
 	Coverage
 _EOF_
