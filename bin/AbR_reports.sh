@@ -41,17 +41,18 @@ Report_structure
 
 #format Resfinder output for report
 while read line; do
-Antibiotic=$(awk '{print $2}')
-abbrev=$(awk '{print $3}')
-gene=$(awk '{print $5}')
-grep -w ${Antibiotic} ${seq}_resfinder.txt > resfinder_tmp.txt
-#look for resistance
-awk -F "\t" '$3 ~ "Resistant" { exit 1} ' resfinder_tmp.txt &> /dev/null
-	status=$? 
-	if [ "$status" == 1 ]; then  #Resistant strain
-	  echo -e "Resfinder|$gene||${abbrev}r" >> ${seq}_resfinder_report.txt
-	fi
-	  
+  Antibiotic=$(awk -F "," '{print $2}')
+  abbrev=$(awk -F "," '{print $3}')
+  awk -F "\t" -v Ab=${Antibiotic} 'BEGIN{IGNORECASE=1} $1 ~ Ab' ${seq}_resfinder.txt > resfinder_tmp.txt
+  gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
+  #look for resistance
+  awk -F "\t" '$3 ~ "Resistant" { exit 1 } ' resfinder_tmp.txt &> /dev/null
+  status=$?
+  #echo $status  
+  if [ "$status" == 1 ]; then  #Resistant strain
+    echo "Found resistance to ${Antibiotic} for ${seq}"
+    echo -e "Resfinder|$gene||${abbrev}r" >> ${seq}_resfinder_report.txt
+  fi
 done < drug.table.txt
 
 
