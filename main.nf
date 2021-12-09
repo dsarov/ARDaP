@@ -364,8 +364,8 @@ if (params.assemblies) {
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
     }
+  }
 }
-
 /*
 =======================================================================
                        Part 2D: De-duplicate bams
