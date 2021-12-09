@@ -28,6 +28,13 @@ if [ "$intervals" == "yes" ]; then
   if [ ! -s ${baseDir}/Databases/${snpeff}/intervals.list ]; then
 
 
+cat << _EOF_ > interval.coverage.query.txt
+SELECT 
+	Coverage.Gene_name
+FROM 
+	Coverage
+_EOF_
+
 cat << _EOF_ > interval.query.txt
 SELECT 
 	Variants_SNP_indel.Gene_name
@@ -35,9 +42,14 @@ FROM
 	Variants_SNP_indel
 _EOF_
 
+  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.query.txt > gene.list
+  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.coverage.query.txt > gene.list2
+  
+cat gene.list gene.list2 interval.coverage.query.txt > gene.list.tmp
+mv gene.list.tmp gene.list 
 
   #create interval file
-  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.query.txt > gene.list
+
   uniq gene.list > gene.list.tmp
   mv gene.list.tmp gene.list
   snpEff genes2bed ${snpeff} -dataDir ${baseDir}/resources/snpeff -f gene.list > intervals.list
