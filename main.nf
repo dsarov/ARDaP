@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.8.2
+                             v1.9
 ================================================================================
 
 Optional Parameters:
@@ -335,13 +335,12 @@ if (params.assemblies) {
     input:
     file ref_index from ref_index_ch
     set id, file(forward), file(reverse) from alignment
-    //file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    //file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
     set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
+    script:
     if (params.fast) {
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
