@@ -12,7 +12,13 @@ echo "reverse=$reverse"
 id=$4
 echo "id=$id"
 
+#baseDir for snpEff
+baseDir=$5
+echo "baseDir=$baseDir"
 
+#annotation genome for snpeff
+snpeff=$6
+echo "snpEff=$snpeff"
 
 #create interval list
 cat << _EOF_ > interval.coverage.query.txt

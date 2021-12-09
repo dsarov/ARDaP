@@ -344,7 +344,7 @@ if (params.assemblies) {
     if (params.fast) {
     """
 
-    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id}
+    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
     } else {
