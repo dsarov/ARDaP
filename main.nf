@@ -32,7 +32,11 @@ Optional Parameters:
                  subdirectory called 'assemblies'. (default: false)
 
                  Currently mixtures is set to $params.assemblies
-
+				 
+    --notrim     Although not generally recommended to switch off, set to true
+                 if you want to skip the timmomatic step (default: false).
+                 Currently notrim is set to $params.notrim
+				 
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
@@ -60,10 +64,11 @@ Optional Parameters:
 
                  Currently executor is set to $params.executor
 
-    --resfinder  **Experimental**. Future implementation to switch from CARD to
-                 Resfinder database due to improved calls. Not yet tested.
+    --fast       **Experimental**. Future implementation to only look at regions that
+	             may cause AMR rather than the whole genome. I expect this may impact on the 
+				 performance of predicting structural variants.
 
-                 Currently resfinder is set to $params.resfinder
+                 Currently fast is set to $params.fast
 
     --gwas       **Experimental**. If you have a database of GWAS co-ordinates
                  ARDaP can interrogate SNPs and indels across the entire genome
@@ -217,9 +222,6 @@ Part 2: read processing, reference alignment and variant identification
 =======================================================================
 // Variant calling sub-workflow - basically SPANDx with a tonne of updates
 
-*/
-
-/*
 =======================================================================
    Part 2A: Trim reads with light quality filter and remove adapters
 =======================================================================
@@ -235,8 +237,15 @@ process Trimmomatic {
 
     output:
     set id, "${id}_1.fq.gz", "${id}_2.fq.gz" into downsample
-
+    
+	script:
+	if (params.notrim) {
     """
+    mv ${forward} ${id}_1.fq.gz
+    mv ${reverse} ${id}_2.fq.gz
+    """
+    } else {
+	"""
     trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
     ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
     ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
