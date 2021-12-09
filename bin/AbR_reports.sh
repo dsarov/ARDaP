@@ -78,8 +78,8 @@ i=1
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
-	#awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}_resfinder_report.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -122,7 +122,7 @@ done < <(grep -E "First-line|first-line" drug.table.txt.backup | awk -F "," '{ p
 
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
-	#awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}.CARD_primary_output.txt >> "$f"s.output
+	awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}_resfinder_report.txt >> "$f"s.output
 	grep -w "$f"s "$f"s.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -150,8 +150,8 @@ done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ pri
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
-	#awk -F"|" -v f="$f" '$4~ f"i"' ${seq}.CARD_primary_output.txt >> "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}_resfinder_report.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -195,7 +195,7 @@ done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{
 #Looking for resistance
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' ${seq}.CARD_primary_output.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
 	grep -w "$f"r "$f"r.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -226,8 +226,8 @@ awk -F"|" -v f="speciation" 'BEGIN{IGNORECASE=1} $4~ f' AbR_output.txt > speciat
 grep -iw "speciation" speciation.output &> /dev/null
 status=$?
 if [[ "$status" -eq 0 ]]; then
-	echo "Species specific marker is missing. Likely quality control issue"
-	echo "Interpret AMR profile with caution"
+	echo "Species specific marker is missing. Likely quality control issue" #TO DO This should go into final report
+	echo "Interpret AMR profile with caution" #TO DO This should go into final report
 fi	
 
 # create patientDrugSusceptibilityData.csv
