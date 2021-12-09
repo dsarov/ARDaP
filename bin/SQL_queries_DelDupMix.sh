@@ -42,7 +42,6 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
 	Coverage.Comments
 FROM
     Coverage
@@ -73,7 +72,6 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
 	Coverage.Comments
 FROM
     Coverage
@@ -103,7 +101,6 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
 	Coverage.Comments
 FROM
     Coverage

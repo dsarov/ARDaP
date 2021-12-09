@@ -38,6 +38,7 @@ sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
 
 Report_structure
 
+cp drug.table.txt drug.table.txt.backup
 
 #format Resfinder output for report
 while read line; do
@@ -62,7 +63,7 @@ done < drug.table.txt.backup
 
 
 cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
-cp drug.table.txt drug.table.txt.backup
+
 
 #Deduplicate any repition in the resistance list
 awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
