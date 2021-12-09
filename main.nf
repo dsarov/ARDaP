@@ -32,11 +32,11 @@ Optional Parameters:
                  subdirectory called 'assemblies'. (default: false)
 
                  Currently mixtures is set to $params.assemblies
-				 
+
     --notrim     Although not generally recommended to switch off, set to true
                  if you want to skip the timmomatic step (default: false).
                  Currently notrim is set to $params.notrim
-				 
+
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
@@ -65,7 +65,7 @@ Optional Parameters:
                  Currently executor is set to $params.executor
 
     --fast       **Experimental**. Future implementation to only look at regions that
-	             may cause AMR rather than the whole genome. I expect this may impact on the 
+	             may cause AMR rather than the whole genome. I expect this may impact on the
 				 performance of predicting structural variants.
 
                  Currently fast is set to $params.fast
@@ -237,21 +237,22 @@ process Trimmomatic {
 
     output:
     set id, "${id}_1.fq.gz", "${id}_2.fq.gz" into downsample
-    
+
 	script:
 	if (params.notrim) {
     """
     mv ${forward} ${id}_1.fq.gz
     mv ${reverse} ${id}_2.fq.gz
     """
-    } else {
-	"""
+  } else {
+    """
     trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
     ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
     ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
     LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
     rm ${id}_1_u.fq.gz ${id}_2_u.fq.gz
     """
+  }
 }
 /*
 =======================================================================
