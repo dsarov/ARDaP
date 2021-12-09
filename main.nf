@@ -343,13 +343,8 @@ if (params.assemblies) {
     script:
     if (params.fast) {
     """
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
-    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
-    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
-    samtools index ${id}.bam
-    rm ${id}.sam ${id}.bam_tmp
 
+    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id}
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
     } else {
