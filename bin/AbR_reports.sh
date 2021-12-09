@@ -41,8 +41,11 @@ Report_structure
 
 #format Resfinder output for report
 while read line; do
-  Antibiotic=$(awk -F "," '{print $2}')
-  abbrev=$(awk -F "," '{print $3}')
+  echo "$line" > resfinder_query_string.txt
+  Antibiotic=$(awk -F "," '{print $2}' resfinder_query_string.txt)
+  abbrev=$(awk -F "," '{print $3}' resfinder_query_string.txt)
+  echo "Antibiotic = $Antibiotic"
+  echo "abbrev=$abbrev"
   awk -F "\t" -v Ab=${Antibiotic} 'BEGIN{IGNORECASE=1} $1 ~ Ab' ${seq}_resfinder.txt > resfinder_tmp.txt
   gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
   #look for resistance
@@ -52,8 +55,10 @@ while read line; do
   if [ "$status" == 1 ]; then  #Resistant strain
     echo "Found resistance to ${Antibiotic} for ${seq}"
     echo -e "Resfinder|$gene||${abbrev}r" >> ${seq}_resfinder_report.txt
+  else
+    echo "Strain appears sensitive to $Antibiotic"
   fi
-done < drug.table.txt
+done < drug.table.txt.backup
 
 
 cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
