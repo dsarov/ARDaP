@@ -7,23 +7,29 @@
 #Set variables
 #strain id
 id=$1
+echo "id=$id"
 
 #reference genome
 reference=$2
+echo "reference=$reference"
 
 #baseDir for snpEff
 baseDir=$3
+echo "baseDir=$baseDir"
 
 #annotation genome for snpeff
 snpeff=$4
+echo "snpEff=$snpeff"
 
-intervals=yes
+fast=$5
+echo "fast = $fast"
+
 
 #import GATK filtering parameters
 source ${baseDir}/configs/gatk_source.config
 
-if [ "$intervals" == "yes" ]; then
-#echo "intervals == $intervals"
+if [ "$fast" == "true" ]; then
+
   #test for interval file
   if [ ! -s ${baseDir}/Databases/${snpeff}/intervals.list ]; then
 

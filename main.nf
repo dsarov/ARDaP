@@ -44,7 +44,8 @@ Optional Parameters:
                  Currently mixtures is set to $params.mixtures
 
     --size       ARDaP can optionally down-sample your read data to
-                 run through the pipeline quicker. (default: 1000000)
+                 run through the pipeline quicker. Please set to 0 to skip this step
+                 (default: 1000000)
 
                  Currently you are using $params.size
 
