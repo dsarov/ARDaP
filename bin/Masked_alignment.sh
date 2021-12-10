@@ -53,7 +53,7 @@ mv intervals.list.tmp intervals.list
 
 bedtools maskfasta -fi ref.fasta -bed intervals.list -fo ref.intervals
 
-mv ref.intervals ref.fasta
+#mv ref.intervals ref.fasta
 
 bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $cpus ref ${forward} ${reverse} > ${id}.sam
 samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
