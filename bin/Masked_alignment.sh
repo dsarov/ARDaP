@@ -51,11 +51,11 @@ sed -i 's/\t/-/' intervals.list
 awk '{print $1}' intervals.list | tail -n+2 > intervals.list.tmp
 mv intervals.list.tmp intervals.list
 
-bedtools maskfasta -fi ref.fasta -bed intervals.list -fo ref.intervals
+#bedtools maskfasta -fi ref.fasta -bed intervals.list -fo ref.intervals
 
 #mv ref.intervals ref.fasta
 
-bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $cpus ref ${forward} ${reverse} > ${id}.sam
+bwa mem -R '@RG\tID:${params.org}\tSM:${id}\tPL:ILLUMINA' -a -t $cpus ref ${forward} ${reverse} > ${id}.sam
 samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
 samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
 samtools index ${id}.bam
