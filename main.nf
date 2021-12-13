@@ -66,8 +66,8 @@ Optional Parameters:
                  Currently executor is set to $params.executor
 
     --fast       **Experimental**. Future implementation to only look at regions that
-	             may cause AMR rather than the whole genome. I expect this may impact on the
-				 performance of predicting structural variants.
+	               may cause AMR rather than the whole genome. I expect this may impact on the
+		             performance of predicting structural variants.
 
                  Currently fast is set to $params.fast
 
