@@ -295,7 +295,7 @@ if (params.assemblies) {
   process ReferenceAlignment_assembly {
 
     label "alignment"
-    tag {"$assembly.baseName"}
+    tag {"$id"}
 
     input:
     file ref_index from ref_index_ch
