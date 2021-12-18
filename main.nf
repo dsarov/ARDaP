@@ -304,18 +304,18 @@ if (params.assemblies) {
     //file card_db_ref from card_db_file
 
     output:
-    set id, file("${assembly.baseName}.bam"), file("${assembly.baseName}.bam.bai") into dup
-    set id, file("${assembly.baseName}_resfinder.txt") into abr_report_resfinder_ch_1
+    set id, file("${id}.bam"), file("${id}.bam.bai") into dup
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
     """
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${assembly.baseName}\\tPL:ILLUMINA' -a \
-    -t $task.cpus ref ${forward} ${reverse} > ${assembly.baseName}.sam
-    samtools view -h -b -@ 1 -q 1 -o ${assembly.baseName}.bam_tmp ${assembly.baseName}.sam
-    samtools sort -@ 1 -o ${assembly.baseName}.bam ${assembly.baseName}.bam_tmp
-    samtools index ${assembly.baseName}.bam
-    rm ${assembly.baseName}.sam ${assembly.baseName}.bam_tmp
+    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
+    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
+    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
+    samtools index ${id}.bam
+    rm ${id}.sam ${id}.bam_tmp
 
-    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${assembly.baseName}
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
 
   }
