@@ -47,7 +47,7 @@ while read line; do
   abbrev=$(awk -F "," '{print $3}' resfinder_query_string.txt)
   echo "Antibiotic = $Antibiotic"
   echo "abbrev=$abbrev"
-  awk -F "\t" -v Ab=${Antibiotic} 'BEGIN{IGNORECASE=1} $1 ~ Ab' ${seq}_resfinder.txt > resfinder_tmp.txt
+  awk -F "\t" -v Ab=${Antibiotic} 'BEGIN{IGNORECASE=1} $1==Ab' ${seq}_resfinder.txt > resfinder_tmp.txt
   gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
   #look for resistance
   awk -F "\t" '$3 ~ "Resistant" { exit 1 } ' resfinder_tmp.txt &> /dev/null
