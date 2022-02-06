@@ -47,7 +47,7 @@ while read line; do
   abbrev=$(awk -F "," '{print $3}' resfinder_query_string.txt)
   echo "Antibiotic = $Antibiotic"
   echo "abbrev=$abbrev"
-  awk -F "\t" -v Ab="${Antibiotic}" 'BEGIN{IGNORECASE=1} $1==Ab' "${seq}"_resfinder.txt > resfinder_tmp.txt
+  awk -F "\t" -v Ab=${Antibiotic} 'BEGIN{IGNORECASE=1} $1==Ab' ${seq}_resfinder.txt > resfinder_tmp.txt
   gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
   #look for resistance
   awk -F "\t" '$3 ~ "Resistant" { exit 1 } ' resfinder_tmp.txt &> /dev/null
@@ -55,14 +55,14 @@ while read line; do
   #echo $status  
   if [ "$status" == 1 ]; then  #Resistant strain
     echo "Found resistance to ${Antibiotic} for ${seq}"
-    echo -e "Resfinder|$gene||${abbrev}r" >> "${seq}"_resfinder_report.txt
+    echo -e "Resfinder|$gene||${abbrev}r" >> ${seq}_resfinder_report.txt
   else
     echo "Strain appears sensitive to $Antibiotic"
   fi
 done < drug.table.txt.backup
 
 
-cat "${seq}".AbR_output_snp_indel.txt "${seq}".AbR_output_del_dup.txt "${seq}"_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
+cat ${seq}.AbR_output_snp_indel.txt ${seq}.AbR_output_del_dup.txt ${seq}_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
 
 
 #Deduplicate any repition in the resistance list
@@ -79,8 +79,8 @@ i=1
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' "${seq}"_resfinder_report.txt >> "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}_resfinder_report.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -123,7 +123,7 @@ done < <(grep -E "First-line|first-line" drug.table.txt.backup | awk -F "," '{ p
 
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
-	awk -F"|" -v f="$f" '$4~ f"s" ' "${seq}"_resfinder_report.txt >> "$f"s.output
+	awk -F"|" -v f="$f" '$4~ f"s" ' ${seq}_resfinder_report.txt >> "$f"s.output
 	grep -w "$f"s "$f"s.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -151,8 +151,8 @@ done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ pri
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' "${seq}"_resfinder_report.txt >> "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"i"' ${seq}_resfinder_report.txt >> "$f"i.output
 	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
@@ -196,7 +196,7 @@ done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{
 #Looking for resistance
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"r"' ${seq}_resfinder_report.txt >> "$f"r.output
 	grep -w "$f"r "$f"r.output &> /dev/null
 	status=$?
 	if [[ "$status" -eq 0 ]]; then
