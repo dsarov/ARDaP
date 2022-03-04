@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.8.2
+                             v1.9
 ================================================================================
 
 Optional Parameters:
@@ -33,6 +33,10 @@ Optional Parameters:
 
                  Currently mixtures is set to $params.assemblies
 
+    --notrim     Although not generally recommended to switch off, set to true
+                 if you want to skip the timmomatic step (default: false).
+                 Currently notrim is set to $params.notrim
+
     --mixtures   Optionally perform within species mixtures analysis.
                  Set this parameter to 'true' if you are dealing with
                  multiple strains. (default: false)
@@ -40,7 +44,8 @@ Optional Parameters:
                  Currently mixtures is set to $params.mixtures
 
     --size       ARDaP can optionally down-sample your read data to
-                 run through the pipeline quicker. (default: 1000000)
+                 run through the pipeline quicker. Please set to 0 to skip this step
+                 (default: 1000000)
 
                  Currently you are using $params.size
 
@@ -60,10 +65,11 @@ Optional Parameters:
 
                  Currently executor is set to $params.executor
 
-    --resfinder  **Experimental**. Future implementation to switch from CARD to
-                 Resfinder database due to improved calls. Not yet tested.
+    --fast       **Experimental**. Future implementation to only look at regions that
+	               may cause AMR rather than the whole genome. I expect this may impact on the
+		             performance of predicting structural variants.
 
-                 Currently resfinder is set to $params.resfinder
+                 Currently fast is set to $params.fast
 
     --gwas       **Experimental**. If you have a database of GWAS co-ordinates
                  ARDaP can interrogate SNPs and indels across the entire genome
@@ -217,9 +223,6 @@ Part 2: read processing, reference alignment and variant identification
 =======================================================================
 // Variant calling sub-workflow - basically SPANDx with a tonne of updates
 
-*/
-
-/*
 =======================================================================
    Part 2A: Trim reads with light quality filter and remove adapters
 =======================================================================
@@ -236,6 +239,13 @@ process Trimmomatic {
     output:
     set id, "${id}_1.fq.gz", "${id}_2.fq.gz" into downsample
 
+	script:
+	if (params.notrim) {
+    """
+    mv ${forward} ${id}_1.fq.gz
+    mv ${reverse} ${id}_2.fq.gz
+    """
+  } else {
     """
     trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
     ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
@@ -243,6 +253,7 @@ process Trimmomatic {
     LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
     rm ${id}_1_u.fq.gz ${id}_2_u.fq.gz
     """
+  }
 }
 /*
 =======================================================================
@@ -289,12 +300,12 @@ if (params.assemblies) {
     input:
     file ref_index from ref_index_ch
     set id, file(forward), file(reverse) from alignment.mix(alignment_assembly)
-    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    file card_db_ref from card_db_file
+    //file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
+    //file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_1
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
@@ -304,15 +315,7 @@ if (params.assemblies) {
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
 
-    bwa index ${card_ref}
-    samtools faidx ${card_ref}
-    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    samtools index ${id}.card.bam
-    bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
-    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
 
   }
@@ -332,13 +335,19 @@ if (params.assemblies) {
     input:
     file ref_index from ref_index_ch
     set id, file(forward), file(reverse) from alignment
-    file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_1
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
 
+    script:
+    if (params.fast) {
+    """
+
+    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
+    """
+    } else {
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
     -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
@@ -346,21 +355,11 @@ if (params.assemblies) {
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
-
-    bwa index ${card_ref}
-    samtools faidx ${card_ref}
-    bedtools makewindows -g ${card_ref}.fai -w 90000 > card.coverage.bed
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a -t $task.cpus ${card_ref} ${forward} ${reverse} > ${id}.card.sam
-    samtools view -h -b -@ 1 -q 1 -o bam_tmp ${id}.card.sam
-    samtools sort -@ 1 -o ${id}.card.bam bam_tmp
-    samtools index ${id}.card.bam
-    bedtools coverage -a card.coverage.bed -b ${id}.card.bam > ${id}.card.bedcov
-    bash SQL_queries_CARD.sh ${id} ${card_db_ref} ${baseDir}
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
-
+    }
   }
 }
-
 /*
 =======================================================================
                        Part 2D: De-duplicate bams
@@ -375,12 +374,12 @@ process Deduplicate {
     input:
     set id, file(bam_alignment), file(bam_index) from dup
     file refcov from refcov_ch
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_1
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_1
 
     output:
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (variantCalling, mixturePindel, variantcallingGVCF_ch)
     set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into coverageData
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_2
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_2
 
     """
     gatk --java-options -Xmx${task.memory.toString().replaceAll(/[\sB]/,'')} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
@@ -413,13 +412,13 @@ if (params.mixtures) {
     file reference_fai from ref_fai_ch1
     file reference_dict from ref_dict_ch1
     set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantCalling
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
 
     output:
     set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
     file("pindel.out_D.vcf") into mixtureDeletionSummary
     file("pindel.out_TD.vcf") into mixtureDuplicationSummary
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
     set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
 
     """
@@ -458,14 +457,15 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_3
 
     output:
     set id, file("${id}.annotated.ALL.effects") into variants_all_ch
     set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
     set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_4
+  //  set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
 
     shell:
 
@@ -524,7 +524,7 @@ if (params.mixtures) {
       file reference_fai from ref_fai_ch1
       file reference_dict from ref_dict_ch1
       set id, file(dedup_bam), file(dedup_index) from variantCalling
-      set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_2
+      set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
       set id, file(perbase), file(depth) from coverageData
 
       output:
@@ -537,11 +537,11 @@ if (params.mixtures) {
       set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels, annotated_indels_ch2
       set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
       set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
-      set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_3
+      set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
 
       script:
       """
-      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff}
+      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff} ${params.fast}
 
       """
 
@@ -569,7 +569,8 @@ if (params.mixtures) {
     file("patientMetaData.csv") from patient_meta_file
     set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_4
+    //set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
 
 
     output:
@@ -594,7 +595,7 @@ if (params.mixtures) {
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_card_ch_3
     set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
     set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
     file("patientMetaData.csv") from patient_meta_file

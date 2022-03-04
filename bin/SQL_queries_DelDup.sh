@@ -11,7 +11,7 @@ Variants_SNP_indel.Variant_annotation
 FROM
 	Variants_SNP_indel
 WHERE
-	Variants_SNP_indel.Antibiotic_affected LIKE 'none';
+	Variants_SNP_indel.Antibiotic_affected LIKE '%none%';
 _EOF_
 
 sqlite3 "$RESISTANCE_DB" < Variant_ignore_Q.txt >> Variant_ignore.txt;
@@ -37,7 +37,7 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
+	Coverage.Threshold,
 	Coverage.Comments
 FROM
     Coverage
@@ -69,7 +69,7 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
+	Coverage.Threshold,
 	Coverage.Comments
 FROM
     Coverage
@@ -99,7 +99,7 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-    Coverage.Known_combination,
+	Coverage.Threshold,
 	Coverage.Comments
 FROM
     Coverage

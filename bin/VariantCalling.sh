@@ -7,26 +7,39 @@
 #Set variables
 #strain id
 id=$1
+echo "id=$id"
 
 #reference genome
 reference=$2
+echo "reference=$reference"
 
 #baseDir for snpEff
 baseDir=$3
+echo "baseDir=$baseDir"
 
 #annotation genome for snpeff
 snpeff=$4
+echo "snpEff=$snpeff"
 
-intervals=no
+fast=$5
+echo "fast = $fast"
+
 
 #import GATK filtering parameters
 source ${baseDir}/configs/gatk_source.config
 
-if [ "$intervals" == "yes" ]; then
-#echo "intervals == $intervals"
+if [ "$fast" == "true" ]; then
+
   #test for interval file
   if [ ! -s ${baseDir}/Databases/${snpeff}/intervals.list ]; then
 
+
+cat << _EOF_ > interval.coverage.query.txt
+SELECT 
+	Coverage.Gene
+FROM 
+	Coverage
+_EOF_
 
 cat << _EOF_ > interval.query.txt
 SELECT 
@@ -35,9 +48,14 @@ FROM
 	Variants_SNP_indel
 _EOF_
 
+  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.query.txt > gene.list
+  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.coverage.query.txt > gene.list2
+  
+cat gene.list gene.list2 interval.coverage.query.txt > gene.list.tmp
+mv gene.list.tmp gene.list 
 
   #create interval file
-  sqlite3 ${baseDir}/Databases/${snpeff}/${snpeff}.db < interval.query.txt > gene.list
+
   uniq gene.list > gene.list.tmp
   mv gene.list.tmp gene.list
   snpEff genes2bed ${snpeff} -dataDir ${baseDir}/resources/snpeff -f gene.list > intervals.list

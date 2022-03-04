@@ -60,6 +60,10 @@ wget https://github.com/dellytools/delly/releases/download/v0.8.7/delly_v0.8.7_l
 mv ./delly_v0.8.7_linux_x86_64bit delly
 chmod +x delly
 ```
+4) Install Resfinder dependencies.
+```
+pip3 install tabulate biopython cgecore gitpython python-dateutil
+```
 
 **Conda**
 ### New conda environment and fresh install from scratch.
@@ -145,7 +149,7 @@ To achieve high-quality variant calls, ARDaP incorporates the following programs
 - [Pindel](https://doi.org/10.1093/bioinformatics/btp394)
 - [Mosdepth](https://doi.org/10.1093/bioinformatics/btx699)
 - [SNPEff](https://doi.org/10.4161/fly.19695)
-- [CARD](https://doi.org/10.1093/nar/gkz935)
+- [Resfinder](https://doi.org/10.1093/jac/dkaa345)
 - [SQLite](https://sqlite.org/index.html)
 - [FastTree 2](https://doi.org/10.1371/journal.pone.0009490)
 

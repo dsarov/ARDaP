@@ -1,0 +1,183 @@
+#!/bin/bash
+
+
+seq=$1
+RESISTANCE_DB=$2 
+
+
+
+cat << _EOF_ >  Variant_ignore_Q.txt  
+SELECT
+Variants_SNP_indel.Gene_name,
+Variants_SNP_indel.Variant_annotation
+FROM
+	Variants_SNP_indel
+WHERE
+	Variants_SNP_indel.Antibiotic_affected LIKE '%none%';
+_EOF_
+  
+
+sqlite3 "$RESISTANCE_DB" < Variant_ignore_Q.txt >> Variant_ignore.txt;
+
+sed -i 's/|/ /g' Variant_ignore.txt 
+
+
+while read f; do 
+	grep -vw "$f" ${seq}.Function_lost_list.txt > ${seq}.Function_lost_list.txt.tmp
+	mv ${seq}.Function_lost_list.txt.tmp ${seq}.Function_lost_list.txt
+done < Variant_ignore.txt
+
+
+declare -A SQL_loss_report_mix=()
+STATEMENT_GENE_LOSS_COV_MIX () {
+COUNTER=1
+while read line; do 
+chromosome=$(echo "$line" | awk '{print $1}')
+q_start=$(echo "$line" | awk '{print $2}')
+q_end=$(echo "$line" | awk '{print $3 }')
+SQL_loss_report_mix[$COUNTER]=$(
+cat << EOF
+SELECT
+    Coverage.Gene,
+    Coverage.Locus_tag,
+    Coverage.Upregulation_or_loss,
+    Coverage.Antibiotic_affected,
+	Coverage.Comments
+FROM
+    Coverage
+WHERE
+    Coverage.Chromosome = '$chromosome'
+    AND Coverage.Start_coords < '$q_end'
+    AND Coverage.End_coords > '$q_start'
+    AND Coverage.Upregulation_or_loss LIKE 'Loss';
+EOF
+)
+
+COUNTER=$((COUNTER+1))
+done < ${seq}.deletion_summary_mix.txt
+LOSS_COUNT_MIX="$COUNTER"
+}
+
+declare -A SQL_upregulation_report_mix=()
+STATEMENT_UPREGULATION_MIX () {
+COUNTER=1
+while read line; do
+  chromosome=$(echo "$line" | awk '{print $1}')
+  q_start=$(echo "$line" | awk '{print $2}')
+  q_end=$(echo "$line" | awk '{print $3 }')
+SQL_upregulation_report_mix[$COUNTER]=$(
+cat << EOF
+SELECT
+    Coverage.Gene,
+    Coverage.Locus_tag,
+    Coverage.Upregulation_or_loss,
+    Coverage.Antibiotic_affected,
+	Coverage.Comments
+FROM
+    Coverage
+WHERE
+    Coverage.Chromosome = '$chromosome'
+    AND Coverage.Start_coords > '$q_start'
+    AND Coverage.End_coords < '$q_end'
+    AND Coverage.Upregulation_or_loss LIKE 'Upregulation';
+EOF
+)
+
+COUNTER=$((COUNTER+1))
+done < ${seq}.duplication_summary_mix.txt
+UPREG_COUNT_MIX="$COUNTER"
+}
+
+declare -A SQL_loss_func=()
+STATEMENT_GENE_LOSS_FUNC () {
+COUNTER=1
+while read line; do 
+gene=$(echo "$line" | awk '{print $1}')
+#variant=$(echo $line | awk '{print $2 }')
+SQL_loss_func[$COUNTER]=$(
+cat << EOF
+SELECT
+    Coverage.Gene,
+    Coverage.Locus_tag,
+    Coverage.Upregulation_or_loss,
+    Coverage.Antibiotic_affected,
+	Coverage.Comments
+FROM
+    Coverage
+WHERE
+    Coverage.Gene = '$gene'
+	AND Coverage.Upregulation_or_loss LIKE 'loss';
+EOF
+)
+
+COUNTER=$((COUNTER+1))
+done < ${seq}.Function_lost_list.txt
+LOSS_FUNC_COUNT="$COUNTER"
+}
+
+echo "Creating function lost statements"
+STATEMENT_GENE_LOSS_FUNC 
+
+echo "Creating loss statements for mixtures"
+STATEMENT_GENE_LOSS_COV_MIX
+echo -e "Creating upregulation statements\n"
+STATEMENT_UPREGULATION_MIX
+
+
+echo "Running duplication detection queries"
+for (( i=1; i<"$UPREG_COUNT_MIX"; i++ )); do 
+	sqlite3 "$RESISTANCE_DB" "${SQL_upregulation_report_mix[$i]}" | tee -a output.temp ${seq}.AbR_output_del_dup_mix.txt
+	if [ -s output.temp ]; then
+		echo "Found upregulation mechanism. Determining mixture percent"
+		depth=$(awk -v i="$i" 'FNR==i' ${seq}.duplication_summary_mix.txt | awk '{ print $5 }' )
+		echo "$depth"
+		mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.duplication_summary_mix.txt | awk '{ print $4 }' )
+		echo "$mutant_depth"
+		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
+		echo "$mixture_percent"
+		mixture_percent="$mixture_percent"%
+		sed -i '$ d' ${seq}.AbR_output_del_dup_mix.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
+		rm output.temp
+	fi
+done
+echo "done"
+echo "Running loss of coverage queries"
+for (( i=1; i<"$LOSS_COUNT_MIX"; i++ )); do 
+	sqlite3 "$RESISTANCE_DB" "${SQL_loss_report_mix[$i]}" | tee -a output.temp ${seq}.AbR_output_del_dup_mix.txt
+	if [ -s output.temp ]; then
+		echo "Found deletion mechanism. Determining mixture percent"
+		echo "Mechanism on line $i"
+		depth=$(awk -v i="$i" 'FNR==i' ${seq}.deletion_summary_mix.txt | awk '{ print $5 }' )
+		echo "$depth"
+		mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.deletion_summary_mix.txt | awk '{ print $4 }' )
+		echo "$mutant_depth"
+		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
+		echo "$mixture_percent"
+		mixture_percent="$mixture_percent"%
+		sed -i '$ d' ${seq}.AbR_output_del_dup_mix.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
+		rm output.temp
+	fi
+done
+echo "done"
+echo -e "Looking for loss of function mutations and potential mixtures"
+for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do
+	sqlite3 "$RESISTANCE_DB" "${SQL_loss_func[$i]}" | tee -a output.temp ${seq}.AbR_output_del_dup_mix.txt
+	if [ -s output.temp ]; then
+		depth=$(awk -v i="$i" 'FNR==i' ${seq}.Function_lost_list.txt | awk '{ print $6 }' ) #column printed changed due to error in mix pipeline
+		mutant_depth=$(awk -v i="$i" 'FNR==i' ${seq}.Function_lost_list.txt | awk '{ print $5 }' | awk -F"," '{ print $2 }' ) #column printed changed due to error in mix pipeline
+		mixture_percent=$(echo "scale=2; $mutant_depth/$depth*100" | bc -l)
+		mixture_percent="$mixture_percent"%
+		sed -i '$ d' ${seq}.AbR_output_del_dup_mix.txt
+		echo "$mixture_percent" | paste output.temp - >> ${seq}.AbR_output_del_dup_mix.txt
+		rm output.temp
+	fi
+done
+echo "done"
+
+#if [ ! -s ${seq}.AbR_output_del_dep_mix.txt ]; then
+#	echo "ARDaP found no deletions or duplications that cause antibiotic resistance" >> ${seq}.AbR_output_del_dep_mix.txt
+#fi
+
+exit 0

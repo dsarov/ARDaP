@@ -1,0 +1,1 @@
+resfinder_dbs   /home/projects/cge/apps/run_finders/run_finders_data/ResFinder_db_latest/database
