@@ -99,7 +99,6 @@ SELECT
     Coverage.Locus_tag,
     Coverage.Upregulation_or_loss,
     Coverage.Antibiotic_affected,
-	Coverage.Threshold,
 	Coverage.Comments
 FROM
     Coverage
