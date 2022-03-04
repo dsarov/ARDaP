@@ -457,14 +457,15 @@ if (params.mixtures) {
     set id, file(variants) from mixtureArdapProcessing
     file(pindelD) from mixtureDeletionSummary
     file(pindelTD) from mixtureDuplicationSummary
-    set id, file("${id}_resfinder.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_3
 
     output:
     set id, file("${id}.annotated.ALL.effects") into variants_all_ch
     set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
     set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
-    set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
+    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_4
+  //  set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
 
     shell:
 
@@ -536,7 +537,7 @@ if (params.mixtures) {
       set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels, annotated_indels_ch2
       set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
       set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
-      set id, file("${id}_resfinder.txt") into abr_report_card_ch_3
+      set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
 
       script:
       """
@@ -568,7 +569,8 @@ if (params.mixtures) {
     file("patientMetaData.csv") from patient_meta_file
     set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
-    set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_4
+    //set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
 
 
     output:
