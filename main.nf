@@ -559,7 +559,7 @@ if (params.mixtures) {
 
   process SqlSnpsIndelsMix {
 
-    label "queries"
+    label "genomic_queries"
     tag { "$id" }
 
     input:
