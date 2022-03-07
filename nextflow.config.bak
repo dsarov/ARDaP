@@ -123,7 +123,7 @@ process {
         memory = "4G"
         time = "24h"
     }
-	withLabel: snp_matrix {
+	withLabel: SNP_matrix {
         cpus = 1
         memory = { 4.GB * task.attempt }
         time = "24h"
