@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/version-beta-green.svg)
 ![](https://img.shields.io/badge/lifecycle-operational-green.svg)
 ![](https://img.shields.io/badge/docs-latest-green.svg)
-![https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(20)30528-4/fulltext](https://img.shields.io/badge/EBioMedicine-published-green.svg)
+![](https://img.shields.io/badge/EBioMedicine-published-green.svg)
 
 
 ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekSarovich)) (University of the Sunshine Coast, Australia), with database construction, code testing and feature design by Danielle Madden ([@dmadden9](https://twitter.com/demadden9)), Eike Steinig ([@EikeSteinig](https://twitter.com/EikeSteinig)) (Australian Institute of Tropical Health and Medicine, Australia) and Erin Price ([@Dr_ErinPrice](https://twitter.com/Dr_ErinPrice)).
