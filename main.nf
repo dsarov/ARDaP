@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             1.8.2
+ *  Version             1.9
  *  Description         Antimicrobial resistance detection and prediction from WGS
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
