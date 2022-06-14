@@ -595,7 +595,7 @@ if (params.mixtures) {
     set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
     set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
     set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
-    set id, file("${id}_resfinder.txt") from abr_report_card_ch_3
+    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_3
     set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
     set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
     file("patientMetaData.csv") from patient_meta_file
