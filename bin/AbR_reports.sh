@@ -3,6 +3,10 @@
 seq=$1
 RESISTANCE_DB=$2
 
+
+#This variable restricts resfinder matches to "3" which means 100% nucleotide identity across the entire length of the gene. Set to "2" to reduce stringency 
+stringency=3
+
 echo -e "Importing isolate data"
 #echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > patientMetaData.csv
 date=$(date +"%F")
@@ -49,6 +53,9 @@ while read line; do
   echo "abbrev=$abbrev"
   awk -F "\t" -v Ab="${Antibiotic}" 'BEGIN{IGNORECASE=1} $1==Ab' "${seq}"_resfinder.txt > resfinder_tmp.txt
   gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
+  #apply resfinder stringency filter
+  #awk -v stringency="${stringency}" -F "\t" '$4==stringency' resfinder_tmp.txt > resfinder_tmp2.txt
+ 
   #look for resistance
   awk -F "\t" '$3 ~ "Resistant" { exit 1 } ' resfinder_tmp.txt &> /dev/null
   status=$?

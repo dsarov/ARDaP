@@ -66,11 +66,11 @@ cat "${seq}".AbR_output_snp_indel.txt "${seq}".AbR_output_del_dup.txt "${seq}"_r
 
 
 #Deduplicate any repition in the resistance list
-awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
+awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.final.txt
 
 #Deduplicate any repition in the resistance list
-awk '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
+awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.txt
 
 #TO DO -  replace with awk pattern matching is case users want to add custom drug classes
