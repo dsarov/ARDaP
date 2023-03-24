@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v1.9
+                             v1.91
 ================================================================================
 
 Optional Parameters:
@@ -114,7 +114,6 @@ database=databasetmp.trim()
 
 params.reference="${baseDir}/Databases/${database}/${ref}"
 params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
-params.card_db="${baseDir}/Databases/${database}/${database}_CARD.db"
 params.snpeff="${database}"
 
 fastq = Channel
@@ -154,7 +153,6 @@ or there was an error during the installation process and ARDaP needs to be re-i
 """
 }
 
-card_db_file = file(params.card_db)
 
 patient_meta_file = file(params.patientMetaData)
 if( !patient_meta_file.exists() ) {
@@ -221,7 +219,7 @@ if (params.assemblies) {
 =======================================================================
 Part 2: read processing, reference alignment and variant identification
 =======================================================================
-// Variant calling sub-workflow - basically SPANDx with a tonne of updates
+// Variant calling sub-workflow
 
 =======================================================================
    Part 2A: Trim reads with light quality filter and remove adapters
@@ -296,12 +294,11 @@ if (params.assemblies) {
 
     label "alignment"
     tag {"$id"}
+	publishDir "./Outputs/Resfinder", mode: 'copy', pattern: "*_resfinder.txt", overwrite: true
 
     input:
     file ref_index from ref_index_ch
     set id, file(forward), file(reverse) from alignment.mix(alignment_assembly)
-    //file(card_ref) from Channel.fromPath("$baseDir/Databases/CARD/nucleotide_fasta_protein_homolog_model.fasta").collect()
-    //file card_db_ref from card_db_file
 
     output:
     set id, file("${id}.bam"), file("${id}.bam.bai") into dup
@@ -330,7 +327,7 @@ if (params.assemblies) {
 
     label "alignment"
     tag {"$id"}
-    publishDir "./Outputs/CARD", mode: 'copy', pattern: "*CARD_primary_output.txt", overwrite: false
+    publishDir "./Outputs/Resfinder", mode: 'copy', pattern: "*_resfinder.txt", overwrite: true
 
     input:
     file ref_index from ref_index_ch
@@ -342,12 +339,20 @@ if (params.assemblies) {
 
     script:
     if (params.fast) {
-    """
 
-    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
-    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
     """
+    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
+	bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
+	-t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
+    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
+    samtools index ${id}.bam
+    rm ${id}.sam ${id}.bam_tmp
+    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
+	"""
+
     } else {
+
     """
     bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
     -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
@@ -465,7 +470,6 @@ if (params.mixtures) {
     set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
     set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_4
-  //  set id, file("${id}.CARD_primary_output.txt") into abr_report_card_ch_4
 
     shell:
 
@@ -550,7 +554,7 @@ if (params.mixtures) {
 /*
 ====================================================================
                               Part 3
-  These processes will interrogate the SQL databases (except CARD)
+  These processes will interrogate the SQL databases (except Resfinder)
   These have been split to run across different flavours of variants
                  so they can be run in parallel
 =====================================================================
@@ -570,8 +574,6 @@ if (params.mixtures) {
     set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
     set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
     set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_4
-    //set id, file("${id}.CARD_primary_output.txt") from abr_report_card_ch_4
-
 
     output:
     set id, file("${id}.AbR_output.final.txt") into r_report_ch
@@ -682,7 +684,7 @@ if (params.phylogeny) {
 
     output:
     set id, file("${id}.raw.gvcf")
-	  file("${id}.raw.gvcf") into gvcf_files
+	file("${id}.raw.gvcf") into gvcf_files
 
     """
     gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
@@ -690,8 +692,8 @@ if (params.phylogeny) {
   }
   process Master_vcf {
     label "master_vcf"
-    tag { "id" }
-    publishDir "./Outputs/Master_vcf", mode: 'copy', overwrite: false
+   // tag { "$id" }
+    publishDir "./Outputs/Master_vcf", mode: 'copy', overwrite: true
 
     input:
     file("*.raw.gvcf") from gvcf_files.collect()

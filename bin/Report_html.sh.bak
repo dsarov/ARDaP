@@ -89,11 +89,8 @@ readarray -t s_line_drug < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusc
 readarray -t f_line_resistance < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
 readarray -t s_line_resistance < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
 
-readarray -t f_line_level < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
-readarray -t s_line_level < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
-
-readarray -t f_line_mech < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $6}')
-readarray -t s_line_mech < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $6}')
+readarray -t f_line_mech < <( awk -F"," '$2 ~ /[Ff]irst-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
+readarray -t s_line_mech < <( awk -F"," '$2 ~ /[Ss]econd-line/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
 
 
 
@@ -104,7 +101,6 @@ first_line_table=$(cat <<EOF
 <td rowspan="$noFirstLine">First-line</td>
 <td>${f_line_resistance[0]}</td>
 <td>${f_line_drug[0]}</td>
-<td>${f_line_level[0]}</td>
 <td>${f_line_mech[0]}</td>
 </tr>
 EOF
@@ -115,7 +111,6 @@ first_line_table=$(cat <<EOF
 <td rowspan="$noFirstLine">First-line</td>
 <td>${f_line_resistance[0]}</td>
 <td>${f_line_drug[0]}</td>
-<td>${f_line_level[0]}</td>
 <td>${f_line_mech[0]}</td>
 </tr>
 EOF
@@ -126,7 +121,6 @@ cat <<EOF
 <tr>
 <td>${f_line_resistance[$i]}</td>
 <td>${f_line_drug[$i]}</td>
-<td>${f_line_level[$i]}</td>
 <td>${f_line_mech[$i]}</td>
 </tr>
 EOF
@@ -141,7 +135,6 @@ second_line_table=$(cat <<EOF
 <td rowspan="$noSecondLine">Second-line</td>
 <td>${s_line_resistance[0]}</td>
 <td>${s_line_drug[0]}</td>
-<td>${s_line_level[0]}</td>
 <td>${s_line_mech[0]}</td>
 </tr>
 EOF
@@ -152,7 +145,6 @@ second_line_table=$(cat <<EOF
 <td rowspan="$noSecondLine">Second-line</td>
 <td>${s_line_resistance[0]}</td>
 <td>${s_line_drug[0]}</td>
-<td>${s_line_level[0]}</td>
 <td>${s_line_mech[0]}</td>
 </tr>
 EOF
@@ -163,7 +155,6 @@ cat <<EOF
 <tr>
 <td>${s_line_resistance[$i]}</td>
 <td>${s_line_drug[$i]}</td>
-<td>${s_line_level[$i]}</td>
 <td>${s_line_mech[$i]}</td>
 </tr>
 EOF
@@ -176,8 +167,7 @@ fi
 if [ "$noTertiary" -gt 0 ]; then
   readarray -t t_line_drug < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
   readarray -t t_line_resistance < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
-  readarray -t t_line_level < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
-  readarray -t t_line_mech < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $6}')
+  readarray -t t_line_mech < <( awk -F"," '$2 ~ /[Tt]ertiary/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
 
 ####populate tertiary variable
 if [ "$noTertiary" -eq 1 ]; then
@@ -186,7 +176,6 @@ tertiary_line_table=$(cat <<EOF
 <td rowspan="$noTertiary">Tertiary</td>
 <td>${t_line_resistance[0]}</td>
 <td>${t_line_drug[0]}</td>
-<td>${t_line_level[0]}</td>
 <td>${t_line_mech[0]}</td>
 </tr>
 EOF
@@ -197,7 +186,6 @@ tertiary_line_table=$(cat <<EOF
 <td rowspan="$noTertiary">Tertiary</td>
 <td>${t_line_resistance[0]}</td>
 <td>${t_line_drug[0]}</td>
-<td>${t_line_level[0]}</td>
 <td>${t_line_mech[0]}</td>
 </tr>
 EOF
@@ -208,7 +196,6 @@ cat <<EOF
 <tr>
 <td>${t_line_resistance[$i]}</td>
 <td>${t_line_drug[$i]}</td>
-<td>${t_line_level[$i]}</td>
 <td>${t_line_mech[$i]}</td>
 </tr>
 EOF
@@ -221,8 +208,7 @@ fi
 if [ "$noIntrinsic" -gt 0 ]; then
   readarray -t i_line_drug < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $3}')
   readarray -t i_line_resistance < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $4}')
-  readarray -t i_line_level < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
-  readarray -t i_line_mech < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $6}')
+  readarray -t i_line_mech < <( awk -F"," '$2 ~ /[Ii]ntrinsic/ ' patientDrugSusceptibilityData.csv | awk -F"," '{print $5}')
 
 ####populate intrinsic variable
 if [ "$noIntrinsic" -eq 1 ]; then
@@ -231,7 +217,6 @@ intrinsic_line_table=$(cat <<EOF
 <td rowspan="$noIntrinsic">Intrinsic </td>
 <td>${i_line_resistance[0]}</td>
 <td>${i_line_drug[0]}</td>
-<td>${i_line_level[0]}</td>
 <td>${i_line_mech[0]}</td>
 </tr>
 EOF
@@ -242,7 +227,6 @@ intrinsic_line_table=$(cat <<EOF
 <td rowspan="$noIntrinsic">Intrinsic</td>
 <td>${i_line_resistance[0]}</td>
 <td>${i_line_drug[0]}</td>
-<td>${i_line_level[0]}</td>
 <td>${i_line_mech[0]}</td>
 </tr>
 EOF
@@ -253,7 +237,6 @@ cat <<EOF
 <tr>
 <td>${i_line_resistance[$i]}</td>
 <td>${i_line_drug[$i]}</td>
-<td>${i_line_level[$i]}</td>
 <td>${i_line_mech[$i]}</td>
 </tr>
 EOF
@@ -1466,7 +1449,7 @@ border: 1px solid #AAAAAA;
 <table class="drug_suscep">
 <thead>
 <tr>
-<th colspan="5">Drug Susceptibility</th>
+<th colspan="4">Drug Susceptibility</th>
 </tr>
 </thead>
 <tbody>
@@ -1515,11 +1498,10 @@ table.minimalistBlack tfoot td {
 </table></td>
 </tr>
 <tr>
-<td WIDTH="20%"><strong>Drug class</strong></td>
-<td WIDTH="20%"><strong>Interpretation</strong></td>
-<td WIDTH="20%"><strong>Drug</strong></td>
-<td WIDTH="20%"><strong>Level (0-49=sensitive; 50-99=intermediate; >99=resistant) </strong></td>
-<td WIDTH="20%"><strong>Resistance determinant</strong></td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Resistance determinant</td>
 </tr>
 $first_line_table
 ${f_line_table_more[@]}
@@ -1533,16 +1515,15 @@ ${s_line_table_more[@]}
 <table class="drug_suscep">
 <thead>
 <tr>
-<th colspan="5">Extended/non-clinical drug susceptibility</th>
+<th colspan="4">Extended/non-clinical drug susceptibility</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td WIDTH="20%">Drug class</td>
-<td WIDTH="20%">Interpretation</td>
-<td WIDTH="20%">Drug</td>
-<td WIDTH="20%">Level</td>
-<td WIDTH="20%">Resistance determinant</td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Resistance determinant</td>
 </tr>
 $tertiary_line_table
 ${t_line_table_more[@]}
@@ -1552,16 +1533,15 @@ ${t_line_table_more[@]}
 <table class="drug_suscep">
 <thead>
 <tr>
-<th colspan="5">Intrinsic drug resistance/unusual drug susceptibility</th>
+<th colspan="4">Intrinsic drug resistance/unusual drug susceptibility</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td WIDTH="20%">Drug class</td>
-<td WIDTH="20%">Interpretation</td>
-<td WIDTH="20%">Drug</td>
-<td WIDTH="20%">Level</td>
-<td WIDTH="20%">Mechanism of sensitivity</td>
+<td WIDTH="25%">Drug class</td>
+<td WIDTH="25%">Interpretation</td>
+<td WIDTH="25%">Drug</td>
+<td WIDTH="25%">Mechanism of sensitivity</td>
 </tr>
 $intrinsic_line_table
 ${i_line_table_more[@]}
