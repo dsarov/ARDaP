@@ -342,14 +342,14 @@ if (params.assemblies) {
 
     """
     bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
-	bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-	-t $task.cpus ref ${forward} ${reverse} > ${id}.sam
+  	bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
+  	-t $task.cpus ref ${forward} ${reverse} > ${id}.sam
     samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
     samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
     samtools index ${id}.bam
     rm ${id}.sam ${id}.bam_tmp
     bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
-	"""
+  	"""
 
     } else {
 
@@ -374,7 +374,7 @@ process Deduplicate {
 
     label "markduplicates"
     tag { "$id" }
-    publishDir "./Outputs/bams", mode: 'copy', pattern: "*.bam*", overwrite: false
+    publishDir "./Outputs/bams", mode: 'copy', pattern: "*.bam*", overwrite: true
 
     input:
     set id, file(bam_alignment), file(bam_index) from dup
@@ -409,8 +409,8 @@ if (params.mixtures) {
 
     label "gatk"
     tag { "$id" }
-    publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*.ALL.annotated.mixture.vcf", overwrite: false
-    publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*.PASS.snps.indels.mixed.vcf", overwrite: false
+    publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*.ALL.annotated.mixture.vcf", overwrite: true
+    publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*.PASS.snps.indels.mixed.vcf", overwrite: true
 
     input:
     file reference from reference_file
@@ -519,9 +519,9 @@ if (params.mixtures) {
 
       label "gatk"
       tag { "$id" }
-      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: false
-      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: false
-      publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*annotated*.vcf", overwrite: false
+      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: true
+      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: true
+      publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*annotated*.vcf", overwrite: true
 
       input:
       file reference from reference_file
@@ -674,7 +674,7 @@ if (params.phylogeny) {
 
     label "gatk"
     tag { "$id" }
-    publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
+    publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: true, pattern: '*.gvcf'
 
     input:
     file reference from reference_file
@@ -716,7 +716,7 @@ if (params.phylogeny) {
   }
   process snp_matrix {
     label "snp_matrix"
-    publishDir "./Outputs/Phylogeny_and_annotation", mode: 'copy', overwrite: false
+    publishDir "./Outputs/Phylogeny_and_annotation", mode: 'copy', overwrite: true
 
     input:
     set file(filtered_vcf), file(out_vcf) from snp_matrix_ch
