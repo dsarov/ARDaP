@@ -13,7 +13,7 @@ ant(2'')-Ia_2_JF826500	Aminoglycoside	Gentamicin, Tobramycin	22271862	Enzymatic 
 ant(2'')-Ia_20_AY139599	Aminoglycoside	Gentamicin, Tobramycin	19719593	Enzymatic modification
 ant(2'')-Ia_3_X74412	Aminoglycoside	Gentamicin, Tobramycin	unpublished	Enzymatic modification
 ant(2'')-Ia_4_AF458082	Aminoglycoside	Gentamicin, Tobramycin	12384364	Enzymatic modification
-ant(2'')-Ia_5_AY139594	Aminoglycoside	Gentamicin, Tobramycin	19719593	Enzymatic modification
+ant(2'')-Ia_5_AY139594	Aminoglycoside	Gentamicin	19719593	Enzymatic modification
 ant(2'')-Ia_6_AJ871915	Aminoglycoside	Gentamicin, Tobramycin	unpublished	Enzymatic modification
 ant(2'')-Ia_7_DQ018384	Aminoglycoside	Gentamicin, Tobramycin	15837385	Enzymatic modification
 ant(2'')-Ia_8_AY920928	Aminoglycoside	Gentamicin, Tobramycin	16048994	Enzymatic modification
@@ -83,7 +83,7 @@ aph(3')-Vc_1_S81599	Aminoglycoside	Neomycin,Ribostamycin,Paromomycin	1663923	Enz
 aph(3')-VI_1_KC170992	Aminoglycoside	Amikacin	23612200	Enzymatic modification
 aph(3')-VI_2_APPJ01000012	Aminoglycoside	Amikacin	21239566	Enzymatic modification	Chromosomal, Intrinsic in Acinetobacter guillouiae
 aph(3')-VIa_1_X07753	Aminoglycoside	Kanamycin,Neomycin,Paromomycin,Ribostamycin,Butirosin,Gentamicin,Amikacin	2846986	Enzymatic modification
-aph(3')-VIb_1_AJ627643	Aminoglycoside	Kanamycin,Neomycin,Paromomycin,Ribostamycin,Butirosin,Gentamicin,Amikacin	16048938	Enzymatic modification
+aph(3')-VIb_1_AJ627643	Aminoglycoside	Kanamycin,Neomycin,Paromomycin,Ribostamycin,Butirosin,Gentamicin	16048938	Enzymatic modification
 aph(3')-VIIa_1_M29953	Aminoglycoside	Kanamycin,Neomycin,Amikacin	2550983	Enzymatic modification
 aph(3')-VIII_1_ATGI01000028	Aminoglycoside	Amikacin	27965516	Enzymatic modification	Chromosomal, Intrinsic in Acinetobacter rudis
 aph(3')-XV_1_Y18050	Aminoglycoside	Unknown Aminoglycoside	10390207	Enzymatic modification
@@ -174,7 +174,7 @@ aac(6')-30-aac(6')-Ib'_1_AJ584652	Aminoglycoside	Amikacin, Gentamicin, Tobramyci
 aac(6')-31_1_AM283489	Aminoglycoside	Amikacin, Gentamicin, Tobramycin, Neomycin, Kanamycin, Netilmicin, isepamicin, Sisomicin	17470660	Enzymatic modification	Alternative name aacA31
 aac(6')-32_1_EF614235	Aminoglycoside	Tobramycin	17938181	Enzymatic modification	reduced susceptiblity to amikacin, gentamicin; Alternative name aacA32
 aac(6')-33_1_GQ337064	Aminoglycoside	Amikacin, Tobramycin	19738007	Enzymatic modification	Alternative name aacA42
-aac(6')-aph(2'')_1_M13771	Aminoglycoside	Gentamicin,Tobramycin,Netilmicin,Kanamycin,Amikacin,Dibekacin,Isepamicin,Fortimicin,Streptomycin	3015884	Enzymatic modification	Alternative name aac(6')-bifunctional, aac(6')-Ie, aacA-aphD, aac(6')-Ie-aph(2'')-Ia
+aac(6')-aph(2'')_1_M13771	Aminoglycoside	Gentamicin,Tobramycin,Netilmicin,Kanamycin,Dibekacin,Isepamicin,Fortimicin,Streptomycin	3015884	Enzymatic modification	Alternative name aac(6')-bifunctional, aac(6')-Ie, aacA-aphD, aac(6')-Ie-aph(2'')-Ia
 aac(6')-I30_1_AY289608	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	15231768	Enzymatic modification	Alternative name aacA30
 aac(6')-Ia_1_M18967	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	2826403	Enzymatic modification	Alternative name aacA1
 aac(6')-Ia_2_M86913	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	8393071	Enzymatic modification	Alternative name aacA1
@@ -189,12 +189,12 @@ aac(6')-Ian_1_AP014611	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Ne
 aac(6')-Ib_1_M21682	Aminoglycoside	Amikacin, Tobramycin	2841303	Enzymatic modification	Alternative name aacA4, aac(6')-4
 aac(6')-Ib_2_M23634	Aminoglycoside	Amikacin, Tobramycin, Kanamycin	2824444	Enzymatic modification	Alternative name aacA4, aac(6')-4
 aac(6')-Ib11_1_AY136758	Aminoglycoside	Amikacin, Gentamicin, Tobramycin, Netilmicin	12543680	Enzymatic modification
-aac(6')-Ib3_1_X60321	Aminoglycoside	Amikacin, Tobramycin	1331747	Enzymatic modification	Alternative name aac(6')-Ib5
-aac(6')-Ib-cr_1_DQ303918	Aminoglycoside,Fluoroquinolone	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin,Fluoroquinolone,Ciprofloxacin	unpublished	Enzymatic modification	MIC of ciprofloxacin does not always increase above ECOFF PMID 16369542
+aac(6')-Ib3_1_X60321	Aminoglycoside	Tobramycin	1331747	Enzymatic modification	Alternative name aac(6')-Ib5
+aac(6')-Ib-cr_1_DQ303918	Aminoglycoside,Fluoroquinolone	Tobramycin,Dibekacin,Sisomicin,Netilmicin,Fluoroquinolone,Ciprofloxacin	unpublished	Enzymatic modification	MIC of ciprofloxacin does not always increase above ECOFF PMID 16369542
 aac(6')-Ib-cr_2_EF636461	Aminoglycoside,Fluoroquinolone	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin,Fluoroquinolone,Ciprofloxacin	17938184	Enzymatic modification
 aac(6')-Ib-Hangzhou_1_FJ503047	Aminoglycoside	Amikacin, Tobramycin	19703723	Enzymatic modification
 aac(6')-Ib-Suzhou_1_EU085533	Aminoglycoside	Amikacin, Tobramycin	18843996	Enzymatic modification
-aac(6')-Ic_1_M94066	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	1354954	Enzymatic modification
+aac(6')-Ic_1_M94066	Aminoglycoside	Tobramycin,Dibekacin,Sisomicin,Netilmicin	1354954	Enzymatic modification
 aac(6')-If_1_X55353	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	2069376	Enzymatic modification
 aac(6')-Ig_1_L09246	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	8257129	Enzymatic modification
 aac(6')-Ih_1_L29044	Aminoglycoside	Tobramycin,Dibekacin,Amikacin,Sisomicin,Netilmicin	7810994	Enzymatic modification
@@ -298,13 +298,13 @@ blaOXA-13_1_U59183	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicil
 blaOXA-14_1_KJ420612	Beta-lactam	Cefepime, Ceftazidime, Piperacillin, Piperacillin+Tazobactam	7486940	Enzymatic inactivation	Class D;OXA-10-like;;;
 blaOXA-15_1_U63835	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Ceftazidime, Piperacillin	9087490	Enzymatic inactivation	Class D;OXA-2-like;;;
 blaOXA-16_1_AF043100	Beta-lactam	Cefepime, Cefixime, Cefotaxime, Ceftazidime, Piperacillin	9579076	Enzymatic inactivation	Class D;OXA-10-like;;;
-blaOXA-17_1_DQ902344	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefixime, Cefotaxime, Ceftazidime	10348753	Enzymatic inactivation	Class D;OXA-10-like;;;
+blaOXA-17_1_DQ902344	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefixime, Cefotaxime, Ceftazidime	10348753	Enzymatic inactivation	Class D;OXA-10-like;;;
 blaOXA-18_1_U85514	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefixime, Cefotaxime, Ceftazidime, Piperacillin	9333046	Enzymatic inactivation	Class D;;;;
 blaOXA-19_1_AF043381	Beta-lactam	Amoxicillin, Ampicillin, Ceftazidime	9835500	Enzymatic inactivation	Class D;OXA-10-like;;;
 blaOXA-20_1_AY307114	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid	15004037	Enzymatic inactivation	Class D;OXA-20-like;;;
 blaOXA-20_2_AF024602	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid	9687410	Enzymatic inactivation	Class D;OXA-20-like;;;
 blaOXA-21_1_AB626885	Beta-lactam	Unknown Beta-lactam	21862476, 9420053	Enzymatic inactivation	Class D;OXA-2-like;;;
-blaOXA-22_1_AF064820	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Piperacillin, Piperacillin+Tazobactam	10898703	Enzymatic inactivation	Class D;OXA-22-like;Natural in Ralstonia pickettii;;
+blaOXA-22_1_AF064820	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam	10898703	Enzymatic inactivation	Class D;OXA-22-like;Natural in Ralstonia pickettii;;
 blaOXA-23_1_AY795964	Beta-lactam	Imipenem, Meropenem	17284537, 10602749, 16948925	Enzymatic inactivation	Class D;OXA-23-like;Natural in Acinetobacter radioresistens;Alternative name blaARI-1;
 blaOXA-24_1_AJ239129	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Ceftazidime, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	12499201, 10817708	Enzymatic inactivation	Class D;OXA-24-like;;Alternative name blaOXA-40;
 blaOXA-25_1_AF201826	Beta-lactam	Unknown Beta-lactam	11158758	Enzymatic inactivation	Class D;OXA-24-like;;;
@@ -315,7 +315,7 @@ blaOXA-29_1_AJ400619	Beta-lactam	Unknown Beta-lactam	11709332	Enzymatic inactiva
 blaOXA-31_1_AF294653	Beta-lactam	Amoxicillin, Ampicillin, Cefepime, Piperacillin, Piperacillin+Tazobactam	11353602	Enzymatic inactivation	Class D;OXA-1-like;;;
 blaOXA-32_1_AF315351	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Aztreonam, Cefepime, Cefixime, Cefotaxime, Ceftazidime, Piperacillin	11796380	Enzymatic inactivation	Class D;OXA-2-like;;;
 blaOXA-34_1_AF350424	Beta-lactam	Unknown Beta-lactam	Unpublished	Enzymatic inactivation	Class D;OXA-2-like;;;
-blaOXA-35_1_AF315786	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Piperacillin	11679562	Enzymatic inactivation	Class D;OXA-10-like;;;
+blaOXA-35_1_AF315786	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam	11679562	Enzymatic inactivation	Class D;OXA-10-like;;;
 blaOXA-36_1_AF300985	Beta-lactam	Unknown Beta-lactam	Unpublished	Enzymatic inactivation	Class D;OXA-2-like;;;
 blaOXA-37_1_AY007784	Beta-lactam	Unknown Beta-lactam	12523622	Enzymatic inactivation	Class D;OXA-20-like;;;Hydrolysis of Amoxicillin, Amoxicillin+Clavulanic acid, Piperacillin, Cefotaxime, Ceftazidime, Cefoxitin but MIC remains below the ECOFF in E. coli laboratory strain
 blaOXA-42_1_AJ488302	Beta-lactam	Unknown Beta-lactam	12356787	Enzymatic inactivation	Class D;OXA-42-like;Natural in Burkholderia pseudomallei;;Oxacillin-hydrolysing beta-lactamases
@@ -332,9 +332,9 @@ blaOXA-54_1_AY500137	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampic
 blaOXA-55_1_AY343493	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Imipenem	15105119	Enzymatic inactivation	Class D;OXA-55-like;Natural in Shewanella algae;;
 blaOXA-56_1_AY445080	Beta-lactam	Unknown Beta-lactam	15047554	Enzymatic inactivation	Class D;OXA-10-like;;;
 blaOXA-57_1_AJ631966	Beta-lactam	Unknown Beta-lactam	15793160	Enzymatic inactivation	Class D;OXA-42-like;Natural in Burkholderia pseudomallei;;
-blaOXA-58_1_AY665723	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Imipenem, Meropenem	15616297, 16569863	Enzymatic inactivation	Class D;OXA-58-like;;;
+blaOXA-58_1_AY665723	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid	15616297, 16569863	Enzymatic inactivation	Class D;OXA-58-like;;;
 blaOXA-59_1_AJ632249	Beta-lactam	Unknown Beta-lactam	15793160	Enzymatic inactivation	Class D;OXA-42-like;Natural in Burkholderia pseudomallei;;
-blaOXA-60_1_AF525303	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Imipenem	15504844	Enzymatic inactivation	Class D;OXA-60-like;Natural in Ralstonia pickettii;;
+blaOXA-60_1_AF525303	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid	15504844	Enzymatic inactivation	Class D;OXA-60-like;Natural in Ralstonia pickettii;;
 blaOXA-60d_1_AY664506	Beta-lactam	Unknown Beta-lactam	15504844	Enzymatic inactivation	Class D;OXA-60-like;Natural in Ralstonia pickettii;;
 blaOXA-60c_1_AY664505	Beta-lactam	Unknown Beta-lactam	15504844	Enzymatic inactivation	Class D;OXA-60-like;Natural in Ralstonia pickettii;;
 blaOXA-60b_1_AY664504	Beta-lactam	Unknown Beta-lactam	15504844	Enzymatic inactivation	Class D;OXA-60-like;Natural in Ralstonia pickettii;;
@@ -1032,7 +1032,7 @@ blaIMP-9_1_FJ655384	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampici
 blaIMP-10_1_AB074435	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	12019129	Enzymatic inactivation	Subclass B1
 blaIMP-11_1_AB074436	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	Unpublished	Enzymatic inactivation	Subclass B1
 blaIMP-12_1_AJ420864	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	12709317	Enzymatic inactivation	Subclass B1
-blaIMP-13_1_AJ550807	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	12951335	Enzymatic inactivation	Subclass B1
+blaIMP-13_1_AJ550807	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Piperacillin, Piperacillin+Tazobactam	12951335	Enzymatic inactivation	Subclass B1
 blaIMP-14_1_AY553332	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	Unpublished	Enzymatic inactivation	Subclass B1
 blaIMP-15_1_AY553333	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	18362195	Enzymatic inactivation	Subclass B1
 blaIMP-16_1_AJ584652	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefepime, Cefixime, Cefotaxime, Cefoxitin, Ceftazidime, Ertapenem, Imipenem, Meropenem, Piperacillin, Piperacillin+Tazobactam	15561846	Enzymatic inactivation	Subclass B1
@@ -1459,7 +1459,7 @@ blaCMY-153_1_MF042206	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampi
 blaCMY-154_1_MF196231	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	Unpublished	Enzymatic inactivation	Class C;CMY-2-like;;;
 blaCMY-155_1_KR261698	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	Unpublished	Enzymatic inactivation	Class C;CMY-2-like;;;
 blaCMY-156_1_MF770636	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	Unpublished	Enzymatic inactivation	Class C;;;;
-blaDHA-1_1_Y16410	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	9736562, 10103179	Enzymatic inactivation	Class C;DHA-1-like;;Alternative name blaMOR-1;
+blaDHA-1_1_Y16410	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ticarcillin, Ticarcillin+Clavulanic acid	9736562, 10103179	Enzymatic inactivation	Class C;DHA-1-like;;Alternative name blaMOR-1;
 blaDHA-2_1_AF259520	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	11157909	Enzymatic inactivation	Class C;DHA-1-like;;;
 blaDHA-3_1_AY494945	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	16216104	Enzymatic inactivation	Class C;DHA-1-like;;;
 blaDHA-4_1_CP026046	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefotaxime, Cefoxitin, Ceftazidime, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	Unpublished	Enzymatic inactivation	Class C;DHA-1-like;Natural in Morganella morganii;;
@@ -1584,7 +1584,7 @@ blaTEM-112_1_AY589493	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, 
 blaTEM-113_1_AY589494	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	15282240	Enzymatic inactivation	Class A
 blaTEM-114_1_AY589495	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	15282240	Enzymatic inactivation	Class A
 blaTEM-115_1_AF535127	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	15047521	Enzymatic inactivation	Class A
-blaTEM-116_1_AY425988	Beta-lactam	Amoxicillin, Ampicillin, Cephalothin, Piperacillin, Ticarcillin	15243036, 8825372	Enzymatic inactivation	Class A
+blaTEM-116_1_AY425988	Beta-lactam	Amoxicillin, Ampicillin, Cephalothin, Ticarcillin	15243036, 8825372	Enzymatic inactivation	Class A
 blaTEM-120_1_AY243512	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	15047521	Enzymatic inactivation	Class A
 blaTEM-121_1_AY307374	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	15561821	Enzymatic inactivation	Class A
 blaTEM-122_1_AY307100	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	15105100	Enzymatic inactivation	Class A
@@ -1611,7 +1611,7 @@ blaTEM-143_1_DQ075245	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, 
 blaTEM-144_1_AM049400	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	16436745	Enzymatic inactivation	Class A
 blaTEM-145_1_DQ105528	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Piperacillin, Piperacillin+Tazobactam, Ticarcillin, Ticarcillin+Clavulanic acid	Unpublished	Enzymatic inactivation	Class A
 blaTEM-146_1_DQ105529	Beta-lactam	Unknown Beta-lactam	Unpublished	Enzymatic inactivation	Class A
-blaTEM-147_1_DQ279850	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	Unpublished	Enzymatic inactivation	Class A
+blaTEM-147_1_DQ279850	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	Unpublished	Enzymatic inactivation	Class A
 blaTEM-148_1_AM087454	Beta-lactam	Unknown Beta-lactam	Unpublished	Enzymatic inactivation	Class A
 blaTEM-149_1_DQ369751	Beta-lactam	Amoxicillin, Ampicillin, Aztreonam, Cefepime, Cefotaxime, Ceftazidime, Ceftriaxone, Piperacillin, Ticarcillin	18160520	Enzymatic inactivation	Class A
 blaTEM-150_1_AM183304	Beta-lactam	Unknown Beta-lactam	Unpublished	Enzymatic inactivation	Class A
@@ -2469,7 +2469,7 @@ qnrD1_1_FJ228229	Fluoroquinolone	Ciprofloxacin	19029321	Target protection
 qnrD2_1_KF055448	Fluoroquinolone	Ciprofloxacin	24733466	Target protection
 qnrD3_1_KX130945	Fluoroquinolone	Ciprofloxacin	28276133	Target protection
 qnrS1_1_AB187515	Fluoroquinolone	Ciprofloxacin	18426894	Target protection
-qnrS2_1_DQ485530	Fluoroquinolone	Ciprofloxacin	18426894	Target protection
+qnrS2_1_DQ485530	Fluoroquinolone	Unknown	18426894	Target protection
 qnrS3_1_EU077611	Fluoroquinolone	Ciprofloxacin	18426894	Target protection
 qnrS4_1_FJ418153	Fluoroquinolone	Ciprofloxacin	19056747	Target protection
 qnrS5_1_HQ631377	Fluoroquinolone	Ciprofloxacin	22024339	Target protection
@@ -2666,7 +2666,7 @@ blaCARB-10_1_EU850412	Beta-lactam	Amoxicillin, Ampicillin, Ampicillin+Clavulanic
 blaCARB-11_1_AY008290	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	unpublished		Class A;Alternative name PSE-5
 blaCARB-12_1_D13210	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	unpublished		Class A
 blaCARB-14_1_JQ364968	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	22633451		Class A;Alternative name RTG-5
-blaCARB-16_1_HF953351	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	25063046		Class A;Alternative name RTG-6
+blaCARB-16_1_HF953351	Beta-lactam	Ampicillin, Amoxicillin	25063046		Class A;Alternative name RTG-6
 blaCARB-17_1_KJ934265	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	25801555		Class A
 blaCARB-18_1_KJ934266	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	unpublished		Class A;Alternative name CARB-37
 blaCARB-19_1_KJ934267	Beta-lactam	Ampicillin, Amoxicillin, Piperacillin	unpublished		Class A
@@ -3088,7 +3088,7 @@ blaGES-1_1_HQ170511	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampici
 blaGES-2_1_AF326355	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	11502535	Enzymatic inactivation	Class A; perhaps some carbapenase activity
 blaGES-3_1_AB113580	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	15155185	Enzymatic inactivation	Class A; perhaps some carbapenase activity
 blaGES-4_1_AB116723	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	15273099	Enzymatic inactivation	Class A; perhaps some carbapenase activity
-blaGES-5_1_DQ236171	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	17284538	Enzymatic inactivation	Class A; perhaps some carbapenase activity
+blaGES-5_1_DQ236171	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Piperacillin, Ticarcillin	17284538	Enzymatic inactivation	Class A; perhaps some carbapenase activity
 blaGES-6_1_AY494718	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	15135524	Enzymatic inactivation	Class A; perhaps some carbapenase activity
 blaGES-7_1_HM453325	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	21149627	Enzymatic inactivation	Class A; perhaps some carbapenase activity
 blaGES-8_1_AF329699	Beta-lactam	Amoxicillin, Amoxicillin+Clavulanic acid, Ampicillin, Ampicillin+Clavulanic acid, Cefoxitin, Ceftazidime, Piperacillin, Ticarcillin	11679551	Enzymatic inactivation	Class A; perhaps some carbapenase activity
@@ -3153,3 +3153,478 @@ sitABCD_1_AY598030	Peroxides	Hydrogen peroxide	16514154	Transport
 OqxA_1_EU370913	Amphenicols, quinolones, Quaternary Ammonium Compounds, Folate pathway antagonist	Chloramphenicol, Benzylkonium Chloride, Cetylpyridinium Chloride, Nalidixic acid, Ciprofloxacin, Trimethoprim	18440636	Efflux pump	Must be in an operon with oqxB,phenotype differs based on genomic location of the operon PMID 25801572,also nitrofurantoin resistance PMID 26552976
 OqxB_1_EU370913	Amphenicols, quinolones, Quaternary Ammonium Compounds, Folate pathway antagonist	Chloramphenicol, Benzylkonium Chloride, Cetylpyridinium Chloride, Nalidixic acid, Ciprofloxacin, Trimethoprim	18440636	Efflux pump Must be in an operon with oqxA,phenotype differs based on genomic location of the operon PMID 25801572,also nitrofurantoin resistance PMID 26552976
 ClpL_1_CP023753	Heat	Temperature	29104933	ATP-dependant proteas
+PDC-8_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-5_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-1_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-7_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-10_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-3_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-2_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-9_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-6_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-4_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-118_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-384_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-324_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-73_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-74_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-75_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-76_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-77_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-78_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-79_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-80_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-81_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-82_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-83_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-84_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-85_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-86_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-87_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-88_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-89_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-90_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-91_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-92_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-93_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-323_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-258_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-438_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-284_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-65_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-55_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-63_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-57_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-68_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-70_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-66_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-14_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-47_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-51_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-11_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-62_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-43_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-54_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-59_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-67_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-56_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-52_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-44_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-240_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-61_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-45_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-49_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-50_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-48_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-53_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-72_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-69_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-23_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-28_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-41_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-105_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-225_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-413_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-264_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-201_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-346_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-285_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-337_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-212_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-352_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-464_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-19b_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-380_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-461_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-19a_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-272_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-255_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-293_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-183_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-207_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-306_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-376_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-117_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-231_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-104_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-173_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-292_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-393_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-119_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-313_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-257_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-429_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-449_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-100_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-101_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-102_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-103_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-106_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-107_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-108_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-109_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-110_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-111_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-112_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-113_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-114_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-115_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-116_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-12 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-120_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-121 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-122_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-123 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-124_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-125_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-126_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-127_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-128_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-129_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-13_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-130_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-131_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-132_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-133_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-134_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-135_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-136_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-137_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-138_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-139_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-140_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-141_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-142_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-143_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-144_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-145_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-146_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-147_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-148_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-149_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-15 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-150_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-151_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-152_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-153_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-154_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-155_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-156_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-157_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-158_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-159_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-16_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-160_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-161_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-162_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-163_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-164_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-165_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-166_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-167_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-168_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-169_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-17_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-170_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-171_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-172_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-174_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-175_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-176_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-177_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-178_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-179_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-18_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-180_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-181_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-182_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-184_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-185_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-186_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-187_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-188_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-189_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-190_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-191_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-192_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-193_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-194_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-195_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-196_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-197_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-198_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-199_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-20_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-200_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-202_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-203_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-204_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-205_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-206_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-208_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-209_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-210_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-211_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-213_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-214_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-215_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-216_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-217_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-218_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-219_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-21a_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-21b_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-22 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-220_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-221_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-222_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-223_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-224_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-226_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-227_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-228_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-229_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-230_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-232_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-233_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-234_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-235_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-236_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-237_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-238_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-239_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-24 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-241_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-242_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-243_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-244_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-245_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-246_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-247_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-248_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-249_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-25_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-250_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-251_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-252_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-253_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-254_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-256_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-259_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-26_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-260_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-261_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-262_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-263_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-265_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-266_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-267_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-268_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-270_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-271_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-273_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-274_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-275_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-276_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-277_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-278_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-279_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-280_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-281_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-282_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-283_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-286_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-287_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-288_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-289_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-290_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-291_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-294_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-295_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-296_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-297_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-298_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-299_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-30_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-300_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-301_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-302_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-303_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-304_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-305_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-307_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-308_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-309_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-31 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-310_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-311_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-312_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-314_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-315_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-316_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-317_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-318_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-319_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-32_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-320_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-321_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-322_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-325_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-326_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-327_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-328_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-329_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-33_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-330_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-331_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-332_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-333_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-334_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-335_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-336_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-338_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-339_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-34 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-340_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-341_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-342_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-343_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-344_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-345_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-347_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-348_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-349_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-35 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-350_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-351_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-353_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-354_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-355_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-356_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-357_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-358_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-359_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-36 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-360_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-361_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-362_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-363_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-364_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-365_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-366_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-367_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-368_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-369_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-37 _1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-370_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-371_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-372_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-373_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-374_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-375_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-377_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-378_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-379_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-38_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-381_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-382_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-383_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-385_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-386_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-387_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-388_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-389_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-39_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-390_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-391_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-392_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-394_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-395_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-396_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-397_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-398_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-399_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-40_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-400_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-401_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-402_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-403_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-404_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-405_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-406_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-407_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-408_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-409_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-410_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-411_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-412_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-414_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-415_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-416_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-417_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-418_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-419_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-42_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-420_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-421_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-422_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-423_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-424_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-425_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-426_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-427_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-428_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-430_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-431_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-432_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-433_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-434_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-435_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-436_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-437_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-439_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-440_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-441_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-442_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-443_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-444_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-445_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-446_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-447_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-448_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-450_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-451_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-452_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-453_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-454_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-455_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-456_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-457_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-458_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-459_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-46_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-460_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-462_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-463_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-465_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-466_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-467_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-468_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-469_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-470_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-471_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-472_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-473_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-474_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-475_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-476_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-58_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-60_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-64_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-71_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-94_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-95_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-96_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-97_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-98_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
+PDC-99_1_CARD-PDC-typing	Beta-lactam	Amoxicillin, Ampicillin	PDC-typing	Enzymatic inactivation
