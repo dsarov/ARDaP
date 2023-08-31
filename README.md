@@ -127,6 +127,12 @@ If you require more information about how to set your resource manager (e.g. mem
 
 If you would like to just submit jobs to the resource manager queue without monitoring, then use of the `screen` or `nohup` commands will allow you to run the pipeline process in the background, and won't kill the pipeline if the shell is terminated. Examples of `nohup` are included below.
 
+If you are running the pipeline on a system with overly draconian resource restrictions, or you need to specify specific queues because the default queue has a time limit of one hour (e.g. https://rcc.uq.edu.au/bunya), additional variables can be added to the nextflow.config file using the “clusterOptions” assignment.
+
+e.g.
+clusterOptions = "-A account_name"
+clusterOptions = "--partition=general"
+
 
 ## ARDaP Workflow
 
