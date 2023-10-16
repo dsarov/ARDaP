@@ -266,14 +266,6 @@ Gene loss and CNVs are important, yet underrecognised, causes of AMR. The 'Data'
 ![](https://github.com/erin-price/ARDaP/blob/master/ARDaP%20coverage_Pa%20db.png)
 **Figure 3:** 'Data' tab of the 'Coverage' table in the *P. aeruginosa* ARDaP SQLite database
 
-
-
-**Still to come: 
-
-   **- Annotation of the CARD database to only include relevant species-specific AMR determinants and to ignore conserved/non-AMR-conferring genes**
-   **- Description of the GWAS component of ARDaP for AMR determinant prediction across well-curated genomic datasets with associated AMR phenotyping data**
-
-
 ## AMR Report Summary
 
 ARDaP summarises the AMR findings, if any, for each (meta)genome or (meta)transcriptome of interest in an easy-to-interpret report (Figure 4). This report also correlates AMR genotype with AMR phenotype. Finally, ARDaP flags quality issues, incorrect species, and natural genetic variation that does not confer AMR.
