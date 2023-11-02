@@ -54,13 +54,13 @@ if [ "$no_resist" -eq 1 ]; then #resistant to one drug
   two_res="&#9744;"
   multi_res="&#9744;"
 fi  
-if [ "$no_resist" -eq 2 ]; then #no drug resistance
+if [ "$no_resist" -eq 2 ]; then #multi-drug resistance predicted
   no_res="&#9744;"
   one_res="&#9744;"
   two_res="&#9745;"
   multi_res="&#9744;"
 fi
-if [ "$no_resist" -gt 2 ]; then #no drug resistance
+if [ "$no_resist" -gt 2 ]; then #extensive drug resistance predicted
   no_res="&#9744;"
   one_res="&#9744;"
   two_res="&#9744;"
@@ -1411,7 +1411,7 @@ SbPIc79MgAkwASYgPYH/BwFb6F4ZRX86AAAAAElFTkSuQmCC" style="float:right;width:225px
 </thead>
 <tbody>
 <tr>
-<td>The specimen was interogated with the <em>${species}</em> database</td>
+<td>The specimen was interrogated with the <em>${species}</em> database</td>
 </tr>
 <tr>
 <td>It is predicted to be resistant to ${resistant_drugs}</td>
