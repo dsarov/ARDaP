@@ -44,7 +44,7 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 1) Download the latest installation with git clone. Recommended to place this installation in a bin folder or other easily accessible location.
 
 ```
-git clone https://github.com/dsarov/ardap.git
+git clone https://github.com/dsarov/ardap.git ./ardap
 ```
 
 2) Install an ardap environment using conda
