@@ -20,7 +20,7 @@ if [ $status == 0 ]; then
 else
     echo "Couldn't find strain specific data in file, reverting to default"
 	head -n1 patientMetaData.csv >> patientMetaData_"$seq".csv
-    echo -e "$seq,BARCODE,Smith,James,1/01/1990,Darwin,Blood,$seq,$date,Blood,Cultured isolate,RDH,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData_"$seq".csv	  
+    echo -e "$seq,BARCODE,Smith,James,1/01/1990,Shanghai,Blood,$seq,$date,Blood,Cultured isolate,unspecified,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData_"$seq".csv	  
 fi  
 
 mv patientMetaData_"$seq".csv patientMetaData.csv
@@ -80,7 +80,7 @@ mv AbR_output.temp AbR_output.final.txt
 awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
 mv AbR_output.temp AbR_output.txt
 
-#TO DO -  replace with awk pattern matching is case users want to add custom drug classes
+#TO DO -  replace with awk pattern matching in case users want to add custom drug classes
 
 i=1
 while read f; do 
@@ -107,7 +107,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"r.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -123,7 +123,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"i.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -139,7 +139,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"s.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
 	
 	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
 	
@@ -210,7 +210,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"r.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -226,7 +226,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"i.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -242,7 +242,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"s.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
 	
 	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
 	
@@ -279,10 +279,11 @@ done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ pri
 while read f; do 
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
 	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"s"' AbR_output.txt > "$f"s.output
 	#awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
 	#awk -F"|" -v f="$f" '$4~ f"i"' "${seq}"_resfinder_report.txt >> "$f"i.output
 	
-		##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
+	##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"r.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -298,7 +299,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"r.level_calc
+    }' |  sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -314,7 +315,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"i.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -330,7 +331,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"s.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
 	
 	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
 	
@@ -383,6 +384,8 @@ done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{
 #Looking for resistance
 while read f; do
 	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
+	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
+	awk -F"|" -v f="$f" '$4~ f"s"' AbR_output.txt > "$f"s.output
 	#awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
 	
 		##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
@@ -401,7 +404,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"r.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -417,7 +420,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"i.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
 	
 	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
     for (i=1; i<=NF; i++) {
@@ -433,7 +436,7 @@ while read f; do
         }
         print str
        }
-    }' | grep "$f" > "$f"s.level_calc
+    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
 	
 	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
 	

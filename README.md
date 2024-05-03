@@ -29,9 +29,9 @@ ARDaP was written by Derek Sarovich ([@DerekSarovich](https://twitter.com/DerekS
 ## Introduction
 
 
-ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is a pipeline designed to identify genetic variants (i.e. single-nucleotide polymorphisms [SNPs], insertions/deletions [indels], copy-number variants [CNVs], and gene loss) associated with antimicrobial resistance (AMR) from microbial (meta)genomes or (meta)transcriptomes. Further, ARDaP reports these variants in a user-friendly manner that does not require extensive domain-specific knowledge, and that links AMR genotype to AMR phenotype. The impetus behind developing ARDaP was our frustration with current methodology being unable to detect AMR conferred by "complex" chromosomal alterations, and accurate AMR detection from mixtures, meaning that many tools cannot offer comprehensive AMR determinant detection. Our species of interest, *Burkholderia pseudomallei*, *Pseudomonas aeruginosa*\*, and *Haemophilus influenzae*\*, can develop AMR in a multiple ways, predominantly through chromosomal gene loss, CNVs, SNPs, and indels; and in *B. pseudomallei*, gene gain plays no role in conferring AMR, rendering many existing AMR tools entirely ineffective. ARDaP first identifies all genetic variation in a microbial sequence data (either .fasta assemblies or Illumina paired-end data; other data types currently not supported), and then interrogates this information against a user-created database of AMR determinants. The software will then summarise the identified AMR determinants and produce an easy-to-interpret summary report.
+ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is a pipeline designed to identify genetic variants (i.e. single-nucleotide polymorphisms [SNPs], insertions/deletions [indels], copy-number variants [CNVs], and gene loss) associated with antimicrobial resistance (AMR) from microbial (meta)genomes or (meta)transcriptomes. Further, ARDaP reports these variants in a user-friendly manner that does not require extensive domain-specific knowledge, and that links AMR genotype to AMR phenotype. The impetus behind developing ARDaP was our frustration with current methodology being unable to detect AMR conferred by "complex" chromosomal alterations, and accurate AMR detection from mixtures, meaning that many tools cannot offer comprehensive AMR determinant detection. Our species of interest, *Burkholderia pseudomallei*, *Pseudomonas aeruginosa*, and *Haemophilus influenzae*\*, can develop AMR in a multiple ways, predominantly through chromosomal gene loss, CNVs, SNPs, and indels; and in *B. pseudomallei*, gene gain plays no role in conferring AMR, rendering many existing AMR tools entirely ineffective. ARDaP first identifies all genetic variation in a microbial sequence data (either .fasta assemblies or Illumina paired-end data; other data types currently not supported), and then interrogates this information against a user-created database of AMR determinants. The software will then summarise the identified AMR determinants and produce an easy-to-interpret summary report.
 
-\**P. aeruginosa* and *H. influenzae* modules still under development
+\**H. influenzae* module still under development
 
 
 
@@ -44,7 +44,7 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 1) Download the latest installation with git clone. Recommended to place this installation in a bin folder or other easily accessible location.
 
 ```
-git clone https://github.com/dsarov/ardap.git
+git clone https://github.com/dsarov/ardap.git ./ardap
 ```
 
 2) Install an ardap environment using conda

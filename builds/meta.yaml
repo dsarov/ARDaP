@@ -26,7 +26,7 @@ requirements:
       - gatk4=4.1.8
       - sqlite
       - snpEff=4.3.1t
-      - nextflow
+      - nextflow=22.10.6
       - fasttree
       - bcftools
       - kma
@@ -43,7 +43,7 @@ requirements:
       - gatk4=4.1.8
       - sqlite
       - snpEff=4.3.1t
-      - nextflow
+      - nextflow=22.10.6
       - fasttree
       - bcftools
       - kma
@@ -57,4 +57,3 @@ about:
   license: MIT
   license_file: LICENSE
   summary: 'Antimicrobial resistance detection and prediction from WGS'
-
