@@ -71,7 +71,7 @@ while read line; do
 done < drug.table.txt.backup
 
 
-cat "${seq}".AbR_output_snp_indel.txt "${seq}".AbR_output_del_dup.txt "${seq}"_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
+cat "${seq}".AbR_output_snp_indel_mix.txt "${seq}".AbR_output_del_dup_mix.txt "${seq}"_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
 
 
 #Deduplicate any repetition in the resistance list
