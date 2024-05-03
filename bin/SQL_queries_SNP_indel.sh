@@ -14,7 +14,7 @@ WHERE
 	Variants_SNP_indel.Antibiotic_affected LIKE 'none';
 _EOF_
   
-
+  
 sqlite3 "$RESISTANCE_DB" < Variant_ignore_Q.txt >> Variant_ignore.txt;
 
 sed -i 's/|/ /g' Variant_ignore.txt 
@@ -62,6 +62,7 @@ SELECT
 	Variants_SNP_indel.Locus_tag,
 	Variants_SNP_indel.Variant_annotation,
 	Variants_SNP_indel.Antibiotic_affected,
+	Variants_SNP_indel.Threshold,
 	Variants_SNP_indel.Comments 
 FROM 
 	Variants_SNP_indel 
@@ -93,6 +94,7 @@ SELECT
 	Variants_SNP_indel.Locus_tag,
 	Variants_SNP_indel.Variant_annotation,
 	Variants_SNP_indel.Antibiotic_affected,
+	Variants_SNP_indel.Threshold,
 	Variants_SNP_indel.Comments
 FROM
 	Variants_SNP_indel

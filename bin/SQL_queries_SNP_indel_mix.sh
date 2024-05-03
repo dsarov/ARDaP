@@ -42,7 +42,8 @@ SELECT
 	Variants_SNP_indel.Gene_name, 
 	Variants_SNP_indel.Locus_tag,
 	Variants_SNP_indel.Variant_annotation, 
-	Variants_SNP_indel.Antibiotic_affected, 
+	Variants_SNP_indel.Antibiotic_affected,
+	Variants_SNP_indel.Threshold,
 	Variants_SNP_indel.Comments 
 FROM 
 	Variants_SNP_indel 
