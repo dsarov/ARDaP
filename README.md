@@ -127,7 +127,7 @@ If you require more information about how to set your resource manager (e.g. mem
 
 If you would like to just submit jobs to the resource manager queue without monitoring, then use of the `screen` or `nohup` commands will allow you to run the pipeline process in the background, and won't kill the pipeline if the shell is terminated. Examples of `nohup` are included below.
 
-If you are running the pipeline on a system with overly draconian resource restrictions, or you need to specify specific queues because the default queue has a time limit of one hour (e.g. https://rcc.uq.edu.au/bunya), additional variables can be added to the nextflow.config file using the “clusterOptions” assignment.
+If you are running the pipeline on a system with overly draconian resource restrictions, or you need to specify specific queues because the default queue has a time limit of one hour, additional variables can be added to the nextflow.config file using the “clusterOptions” assignment.
 
 e.g.
 clusterOptions = "-A account_name"
@@ -161,25 +161,25 @@ Optional Parameter: \
   
   Example:
   
-  `$ nextflow run dsarov/ardap --mixtures`
+  `$ nextflow run dsarov/ardap --species Burkholderia_pseudomallei --mixtures`
   or
-  `$ nextflow run /path/to/ardap/main.nf --mixtures`
+  `$ nextflow run /path/to/ardap/main.nf --species Pseudomonas_aeruginosa --mixtures`
   
   `--size` ARDaP can optionally down-sample your read data to run through the pipeline more quickly (integer value expected). Default=1000000, which corresponds to ~50x coverage for a 6Mbp genome. To switch down-sampling off, specify --size 0. When mixture analysis is requested, this option should be switched to 0 for the most sensitive ARM determinant detection.
   
   Example:
   
-  `$ nextflow run dsarov/ardap --size 0 --mixtures`
+  `$ nextflow run dsarov/ardap --species Pseudomonas_aeruginosa --size 0 --mixtures`
   or
-  `$ nextflow run /path/to/ardap/main.nf  --size 0 --mixtures`
+  `$ nextflow run /path/to/ardap/main.nf --species Pseudomonas_aeruginosa --size 0 --mixtures`
   
   `--phylogeny` Use this flag if you would like a whole-genome phylogeny, or an annotated variant matrix file. Note that this may take a long time if you have a large number of isolates. Default=false
   
   Example:
   
-  `$ nextflow run dsarov/ardap --phylogeny`
+  `$ nextflow run dsarov/ardap --species Pseudomonas_aeruginosa --phylogeny`
   or
-  `$ nextflow run /path/to/ardap/main.nf  --phylogeny`
+  `$ nextflow run /path/to/ardap/main.nf --species Burkholderia_pseudomallei --phylogeny`
   
   `--species` Use this flag to specify an ARDaP database that contains species-specific AMR determinant information.
   
@@ -190,7 +190,7 @@ Optional Parameter: \
   For example: \
   `nextflow run dsarov/ardap --species Pseudomonas_aeruginosa`
   or
-  `$ nextflow run /path/to/ardap/main.nf  --species Pseudomonas_aeruginosa`
+  `$ nextflow run /path/to/ardap/main.nf --species Pseudomonas_aeruginosa`
   
 If you don't want to constantly use the flags for different species, this setting can be changed in the `nextflow.config` file.
 
@@ -216,7 +216,7 @@ or
 
 ## Inclusion of Assembled Genomes
 
-Although it is strongly recommended to use raw Illumina reads to enable to most robust AMR detection (especially CNVs and gene upregulation), ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis.
+Although it is strongly recommended to use raw Illumina reads to enable to most robust AMR detection (especially CNVs and gene upregulation), ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis. Currently there is a limitation that at least some strains must have short-read data in addition to the assembled genomes. This is a known limitation but should be addressed in a future update.
 
 
 ## Custom Database Creation
