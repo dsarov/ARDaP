@@ -1,4 +1,4 @@
-{% set version = "1.9.2" %}
+{% set version = "2.3 beta" %}
 
 package:
   name: ardap
