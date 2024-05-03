@@ -120,9 +120,9 @@ header=`grep -a -n "#CHROM" ${id}.failed.indels.vcf | cut -d':' -f 1`
 head -n $header ${id}.failed.indels.vcf > indel_head
 cat ${id}.failed.indels.vcf | grep FAIL | cat indel_head - > ${id}.FAIL.indels.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
+snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.snps.vcf > ${id}.PASS.snps.annotated.vcf
 
-snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
+snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff ${snpeff} ${id}.PASS.indels.vcf > ${id}.PASS.indels.annotated.vcf
 
 echo "Calculating duplication and deletion events"
 
