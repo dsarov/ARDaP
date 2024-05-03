@@ -3,10 +3,6 @@
 
 seq=$1
 RESISTANCE_DB=$2
-#CARD_DB=$3
-
-##GWAS cutoff value
-#cutoff=$4
 
 
 #subset the SNP data based on interesting genes
@@ -59,6 +55,8 @@ COUNTER=$((COUNTER+1))
 done < ${seq}.annotated.ALL.effects.subset
 SNP_COUNT="$COUNTER"
 }
+
+#This statement should look for both mixed indels AND mixed SNPs. Both types of variants should be contained in the annotated.ALL.effects.subset file
 
 STATEMENT_SNPS
 
