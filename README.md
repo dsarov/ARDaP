@@ -53,7 +53,8 @@ git clone https://github.com/dsarov/ardap.git ./ardap
 conda env create --name ardap -f ./ardap/env.yaml
 ```
 
-3) Download the Delly binary (or install with conda in the ardap environment but I've found that approach error prone). Just make sure the binary is placed into a directory contained in your PATH and accessible when the ardap environment is loaded.  
+3) Check to see if delly works in the ardap environment and install manually if broken
+4) Skip if delly already works. Download the Delly binary. Make sure the binary is placed into a directory contained in your PATH and accessible when the ardap environment is loaded.  
 
 ```
 wget https://github.com/dellytools/delly/releases/download/v0.8.7/delly_v0.8.7_linux_x86_64bit
@@ -73,7 +74,7 @@ And check the executable
 delly
 ```
 
-4) Install Resfinder dependencies.
+5) Install Resfinder dependencies.
 ```
 pip3 install tabulate biopython cgecore gitpython python-dateutil
 ```
