@@ -388,7 +388,7 @@ process Deduplicate {
 
     """
     gatk --java-options -Xmx${task.memory.toString().replaceAll(/[\sB]/,'')} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
-    --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT
+    --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT --ASSUME_SORT_ORDER coordinate
     samtools index ${id}.dedup.bam
 
     mosdepth --by ${refcov} output ${id}.dedup.bam
