@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             2.3 beta
+ *  Version             2.3.1 beta
  *  Description         Antimicrobial resistance detection and prediction from WGS
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v2.3 beta
+                             v2.3.1 beta
 ================================================================================
 
 Optional Parameters:
