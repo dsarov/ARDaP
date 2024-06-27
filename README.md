@@ -290,7 +290,7 @@ A: Take a look at the nextflow.config file to see if sufficient resources are be
 ## Citation
 
 [Madden DE et al., 2021. Taking the next-gen step: Comprehensive antibiotic resistance detection from *Burkholderia pseudomallei*. *EBioMedicine*](https://doi.org/10.1016/j.ebiom.2020.103152).
-
+[Madden DE et al., 2024. Keeping up with the pathogens: improved antimicrobial resistance detection and prediction from *Pseudomonas aeruginosa*. Genome Medicine](genomeshttps://genomemedicine.biomedcentral.com/articles/10.1186/s13073-024-01346-z).
 
 ## Bugs
 
