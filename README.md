@@ -215,6 +215,8 @@ STRAIN_2_sequence.fq.gz (second pair)
 or
   `$ nextflow run /path/to/ardap/main.nf  --fastq "*_{1,2}_sequence.fq.gz"`
 
+Please make sure to include the quotation marks when specifying the fastq format eg `"*_{1,2}_sequence.fq.gz"` not `*_{1,2}_sequence.fq.gz`
+
 ## Inclusion of Assembled Genomes
 
 Although it is strongly recommended to use raw Illumina reads to enable to most robust AMR detection (especially CNVs and gene upregulation), ARDaP can optionally include assembled genomes in the workflow using the `--assemblies` flag. To do so, please include all genome assemblies in an "assemblies" subdirectory of the main analysis directory. These files will need to be in FASTA format with the .fasta extension. ARDaP will automatically scan for the subdirectory "assemblies" and include all files identified with a .fasta extension. Synthetic reads will be synthesised using ART and included in all downstream analysis. Currently there is a limitation that at least some strains must have short-read data in addition to the assembled genomes. This is a known limitation but should be addressed in a future update.
