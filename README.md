@@ -52,6 +52,10 @@ git clone https://github.com/dsarov/ardap.git ./ardap
 ```
 conda env create --name ardap -f ./ardap/env.yaml
 ```
+or use the full environment if you are having issues with version clashes
+```
+conda env create --name ardap -f ./ardap/env_full.yaml
+```
 
 3) Check to see if delly works in the ardap environment and install manually if broken
 4) Skip if delly already works. Download the Delly binary. Make sure the binary is placed into a directory contained in your PATH and accessible when the ardap environment is loaded.  
