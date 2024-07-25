@@ -1,4 +1,4 @@
-name: ardap4
+name: ardap
 channels:
   - bioconda
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/bioconda
