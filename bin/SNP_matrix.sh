@@ -44,6 +44,15 @@ echo -e "\n#nexus\nbegin data;\ndimensions ntax=$ntaxa nchar=$nchar;\nformat sym
 ###########################################################################
 
 awk 'BEGIN {FS=" "; OFS=""}{for (i=1;i<=NF;i++){arr[NR,i]=$i; if(big <= NF) big=NF;}}END {for(i=1;i<=big;i++){for(j=1;j<=NR;j++){printf("%s%s",arr[j,i],(j==NR?"":OFS));} print "";}}' grid.nucleotide > grid.nucleotide.fasttree
+
+if [ ! -s grid.nucleotide.fasttree ]; then
+  echo "Error: File grid.nucleotide.fasttree not found!"
+  exit 1
+else
+  echo "File grid.nucleotide.fasttree exists."
+fi
+
+
 head -n1 out.vcf.table | cut -f3,6- | sed 's/.GT//g' > taxa.tmp
 awk 'BEGIN {FS=" "; OFS=""}{for (i=1;i<=NF;i++){arr[NR,i]=$i; if(big <= NF) big=NF;}}END {for(i=1;i<=big;i++){for(j=1;j<=NR;j++){printf("%s%s",arr[j,i],(j==NR?"":OFS));} print "";}}' taxa.tmp > taxa.fasttree
 sed -i 's/^/>/' taxa.fasttree
