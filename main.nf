@@ -3,7 +3,7 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             2.3.1 beta
+ *  Version             2.3.2 beta
  *  Description         Antimicrobial resistance detection and prediction from WGS
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
@@ -12,7 +12,7 @@
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v2.3.1 beta
+                             v2.3.2 beta
 ================================================================================
 
 Optional Parameters:
@@ -235,18 +235,18 @@ process Trimmomatic {
     set id, file(forward), file(reverse) from fastq
 
     output:
-    set id, "${id}_1.fq.gz", "${id}_2.fq.gz" into downsample
+    set id, "${id}_1.fq.temp.gz", "${id}_2.fq.temp.gz" into downsample
 
 	script:
 	if (params.notrim) {
     """
-    mv ${forward} ${id}_1.fq.gz
-    mv ${reverse} ${id}_2.fq.gz
+    mv ${forward} ${id}_1.fq.temp.gz
+    mv ${reverse} ${id}_2.fq.temp.gz
     """
   } else {
     """
     trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
-    ${id}_1.fq.gz ${id}_1_u.fq.gz ${id}_2.fq.gz ${id}_2_u.fq.gz \
+    ${id}_1.fq.temp.gz ${id}_1_u.fq.gz ${id}_2.fq.temp.gz ${id}_2_u.fq.gz \
     ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
     LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
     rm ${id}_1_u.fq.gz ${id}_2_u.fq.gz
