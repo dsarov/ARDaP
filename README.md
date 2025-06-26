@@ -62,11 +62,6 @@ Load the conda environment
 conda activate ardap
 ```
 
-3) Install Resfinder dependencies.
-```
-pip3 install tabulate biopython cgecore gitpython python-dateutil
-```
-
 The pipeline itself is either run by calling the main.nf or from a local respostory in a local nextflow cache. 
 
 Load the conda environment:
