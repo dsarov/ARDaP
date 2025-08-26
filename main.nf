@@ -438,7 +438,7 @@ if (params.mixtures) {
     head -n "\$header" ${id}.snps.indels.filtered.mixed.vcf > snp_head
     cat ${id}.snps.indels.filtered.mixed.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.indels.mixed.vcf
 
-    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
+    snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
 
     echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
     pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
