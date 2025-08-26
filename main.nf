@@ -440,7 +440,7 @@ if (params.mixtures) {
 
     snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
 
-    echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
+    echo -e "${id}.dedup.bam\t500\tB" > pindel.bam.config
     pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
 
     rm -f pindel.out_CloseEndMapped pindel.out_INT_final
