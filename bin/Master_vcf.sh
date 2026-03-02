@@ -4,7 +4,7 @@ ref=$1
 
 echo "Creating master VCF file"
 
-array=($(find *.gvcf -printf "%f "))
+array=($(find . -name '*.gvcf' -printf '%f '))
 n="${#array[@]}"
 array2=("${array[@]/#/-V }")
 gatk CombineGVCFs -R ${ref}.fasta ${array2[*]} -O master.vcf
