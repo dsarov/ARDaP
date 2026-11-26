@@ -50,13 +50,9 @@ git clone https://github.com/dsarov/ardap.git ./ardap
 2) Install an environment with Nextflow (>version 24) using conda
 
 ```
-conda create -n nf -c conda-forge -c bioconda nextflow
-```
-
-Load the conda environment
-
-```
+conda create -n nf -c conda-forge -c bioconda nextflow git git-lfs
 conda activate nf
+git lfs install
 ```
 
 The pipeline itself is either run by calling the main.nf or from a local respostory in a local nextflow cache. 
