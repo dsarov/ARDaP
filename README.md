@@ -47,30 +47,22 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 git clone https://github.com/dsarov/ardap.git ./ardap
 ```
 
-2) Install an ardap environment using conda
+2) Install an environment with Nextflow (>version 24) using conda
 
 ```
-conda env create --name ardap -f ./ardap/env.yaml
+conda create -n nf -c conda-forge -c bioconda nextflow
 ```
-or use the full environment if you are having issues with version clashes
-```
-conda env create --name ardap -f ./ardap/env_full.yaml
-```
+
 Load the conda environment
 
 ```
-conda activate ardap
-```
-
-3) Install Resfinder dependencies.
-```
-pip3 install tabulate biopython cgecore gitpython python-dateutil
+conda activate nf
 ```
 
 The pipeline itself is either run by calling the main.nf or from a local respostory in a local nextflow cache. 
 
 Load the conda environment:
-`conda activate ardap`
+`conda activate nf`
 
 And run from a local installation:
 `nextflow run ~/bin/ardap/main.nf`
@@ -87,6 +79,7 @@ If you want to make changes to the default `nextflow.config` file, clone the wor
 `nextflow clone dsarov/ardap install_dir/`
 
 Or navigate to the nextflow install path of ARDaP and change the `nextflow.config` in that location.
+
 
 
 ## Usage
