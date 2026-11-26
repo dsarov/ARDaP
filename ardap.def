@@ -1,0 +1,50 @@
+Bootstrap: docker
+From: condaforge/miniforge3:latest
+
+%labels
+    Description ARDaP tool environment (everything in env.yaml except Nextflow itself)
+
+%help
+    Build (run in the folder that contains env.yaml):
+        apptainer build --fakeroot ardap.sif ardap.def
+    Check the tools are present:
+        apptainer test ardap.sif
+
+%files
+    env.yaml /opt/env.yaml
+
+%post
+    set -eu
+    export DEBIAN_FRONTEND=noninteractive
+
+    # System tools the pipeline scripts rely on:
+    #   gawk   - scripts use gawk-only features (IGNORECASE, 3-argument match)
+    #   bc     - depth and mixture-percentage calculations
+    #   procps - provides 'ps', which Nextflow needs inside containers
+    #   pigz   - parallel gzip (the pipeline falls back to gzip if it is missing)
+    apt-get update
+    apt-get install -y --no-install-recommends gawk bc procps pigz
+    rm -rf /var/lib/apt/lists/*
+    update-alternatives --set awk /usr/bin/gawk || true
+
+    # Nextflow runs on the host, not inside the image, so drop it from the env.
+    sed -i '/nextflow/d' /opt/env.yaml
+
+    # Creates /opt/conda/envs/ardap (the name comes from env.yaml)
+    mamba env create -f /opt/env.yaml
+    mamba clean --all --yes
+    rm -f /opt/env.yaml
+
+%environment
+    export PATH=/opt/conda/envs/ardap/bin:$PATH
+
+%test
+    missing=0
+    for t in bwa samtools bcftools bedtools picard gatk snpEff seqtk trimmomatic \
+             art_illumina mosdepth pindel pindel2vcf delly kma fasttree sqlite3 \
+             python3 java gawk bc ps pigz; do
+        command -v "$t" >/dev/null 2>&1 || { echo "MISSING: $t"; missing=1; }
+    done
+    awk --version 2>&1 | head -n1 | grep -q "GNU Awk" || { echo "awk is not gawk"; missing=1; }
+    python3 -c "import cgecore, Bio, tabulate, git, dateutil" || { echo "MISSING: python modules"; missing=1; }
+    [ "$missing" -eq 0 ]

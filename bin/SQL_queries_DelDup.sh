@@ -23,112 +23,61 @@ while read f; do
 	mv ${seq}.Function_lost_list.txt.tmp ${seq}.Function_lost_list.txt
 done < Variant_ignore.txt
 
-declare -A SQL_loss_report=()
-STATEMENT_GENE_LOSS_COV () {
-COUNTER=1
-while read line; do 
-chromosome=$(echo "$line" | awk '{print $1}')
-q_start=$(echo "$line" | awk '{print $2}')
-q_end=$(echo "$line" | awk '{print $3 }')
-SQL_loss_report[$COUNTER]=$(
-cat << EOF
-SELECT
-    Coverage.Gene,
-    Coverage.Locus_tag,
-    Coverage.Upregulation_or_loss,
-    Coverage.Antibiotic_affected,
-	Coverage.Threshold,
-	Coverage.Comments
-FROM
-    Coverage
-WHERE
-    Coverage.Chromosome = '$chromosome'
-    AND Coverage.Start_coords < '$q_end'
-    AND Coverage.End_coords > '$q_start'
-    AND Coverage.Upregulation_or_loss LIKE 'Loss';
-EOF
-)
 
-COUNTER=$((COUNTER+1))
-done < <(tail -n +2 ${seq}.deletion_summary.txt)
-LOSS_COUNT="$COUNTER"
+# ---------------------------------------------------------------------------
+# Database lookups.
+# Before: one sqlite3 process per coverage interval / lost gene, plus several
+# awk/cat processes per line just to build each statement.
+# Now: ONE sqlite3 session with temporary tables and joins. Output order is
+# unchanged: duplications, then losses of coverage, then functional losses; in
+# file order, with matching rows in table order for each line.
+# Comparisons use untyped temp-table columns, so SQLite applies the same type
+# rules as it did for the old quoted string literals.
+# ---------------------------------------------------------------------------
+make_coord_inserts () {   # $1 = temp table, $2 = summary file (header line is skipped)
+	tail -n +2 "$2" | while read line; do printf '%s\n' "$line"; done | awk -v T="$1" -v Q="'" '
+	function quote(s) { gsub(Q, Q Q, s); return Q s Q }
+	{ printf "INSERT INTO %s VALUES(%d,%s,%s,%s);\n", T, NR, quote($1), quote($2), quote($3) }'
 }
 
-
-declare -A SQL_upregulation_report=()
-STATEMENT_UPREGULATION () {
-COUNTER=1
-while read line; do
-  chromosome=$(echo "$line" | awk '{print $1}')
-  q_start=$(echo "$line" | awk '{print $2}')
-  q_end=$(echo "$line" | awk '{print $3 }')
-SQL_upregulation_report[$COUNTER]=$(
-cat << EOF
-SELECT
-    Coverage.Gene,
-    Coverage.Locus_tag,
-    Coverage.Upregulation_or_loss,
-    Coverage.Antibiotic_affected,
-	Coverage.Threshold,
-	Coverage.Comments
-FROM
-    Coverage
-WHERE
-    Coverage.Chromosome = '$chromosome'
-    AND Coverage.Start_coords > '$q_start'
-    AND Coverage.End_coords < '$q_end'
-    AND Coverage.Upregulation_or_loss LIKE 'Upregulation';
-EOF
-)
-
-COUNTER=$((COUNTER+1))
-done < <(tail -n +2 ${seq}.duplication_summary.txt)
-UPREG_COUNT="$COUNTER"
+make_gene_inserts () {    # $1 = temp table, $2 = Function_lost_list file
+	while read line; do printf '%s\n' "$line"; done < "$2" | awk -v T="$1" -v Q="'" '
+	function quote(s) { gsub(Q, Q Q, s); return Q s Q }
+	{ printf "INSERT INTO %s VALUES(%d,%s);\n", T, NR, quote($1) }'
 }
 
-declare -A SQL_loss_func=()
-STATEMENT_GENE_LOSS_FUNC () {
-COUNTER=1
-while read line; do 
-gene=$(echo "$line" | awk '{print $1}')
-#variant=$(echo $line | awk '{print $2 }')
-SQL_loss_func[$COUNTER]=$(
-cat << EOF
-SELECT
-    Coverage.Gene,
-    Coverage.Locus_tag,
-    Coverage.Upregulation_or_loss,
-    Coverage.Antibiotic_affected,
-	Coverage.Threshold,
-	Coverage.Comments
-FROM
-    Coverage
-WHERE
-    Coverage.Gene = '$gene'
-	AND Coverage.Upregulation_or_loss LIKE 'loss';
-EOF
-)
+echo "Running duplication, loss of coverage and functional loss queries"
+{
+	echo "BEGIN;"
+	echo "CREATE TEMP TABLE up_q(n, chrom, s, e);"
+	echo "CREATE TEMP TABLE loss_q(n, chrom, s, e);"
+	echo "CREATE TEMP TABLE func_q(n, gene);"
+	if [ -e ${seq}.duplication_summary.txt ]; then make_coord_inserts up_q ${seq}.duplication_summary.txt; fi
+	if [ -e ${seq}.deletion_summary.txt ]; then make_coord_inserts loss_q ${seq}.deletion_summary.txt; fi
+	if [ -e ${seq}.Function_lost_list.txt ]; then make_gene_inserts func_q ${seq}.Function_lost_list.txt; fi
+	echo "COMMIT;"
+	cat << 'SQL'
+SELECT c.Gene, c.Locus_tag, c.Upregulation_or_loss, c.Antibiotic_affected, c.Threshold, c.Comments
+FROM up_q q JOIN Coverage c
+  ON c.Chromosome = q.chrom AND c.Start_coords > q.s AND c.End_coords < q.e
+ AND c.Upregulation_or_loss LIKE 'Upregulation'
+ORDER BY q.n, c.rowid;
+SELECT c.Gene, c.Locus_tag, c.Upregulation_or_loss, c.Antibiotic_affected, c.Threshold, c.Comments
+FROM loss_q q JOIN Coverage c
+  ON c.Chromosome = q.chrom AND c.Start_coords < q.e AND c.End_coords > q.s
+ AND c.Upregulation_or_loss LIKE 'Loss'
+ORDER BY q.n, c.rowid;
+SELECT c.Gene, c.Locus_tag, c.Upregulation_or_loss, c.Antibiotic_affected, c.Threshold, c.Comments
+FROM func_q q JOIN Coverage c
+  ON c.Gene = q.gene AND c.Upregulation_or_loss LIKE 'loss'
+ORDER BY q.n, c.rowid;
+SQL
+} > ${seq}.del_dup_lookup.sql
 
-COUNTER=$((COUNTER+1))
-done < ${seq}.Function_lost_list.txt
-LOSS_FUNC_COUNT="$COUNTER"
-}
-
-echo "Creating function lost statements"
-STATEMENT_GENE_LOSS_FUNC 
-echo -e "Creating loss statements\n"
-STATEMENT_GENE_LOSS_COV
-echo -e "Creating upregulation statements\n"
-STATEMENT_UPREGULATION
-
-echo "Running duplication detection queries"
-for (( i=1; i<"$UPREG_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_upregulation_report[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
-echo "done"
-echo "Running loss of coverage queries"
-for (( i=1; i<"$LOSS_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_report[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
-echo "done"
-echo "Running detection of functional loss queries"
-for (( i=1; i<"$LOSS_FUNC_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_loss_func[$i]}" >> ${seq}.AbR_output_del_dup.txt; done
+if ! sqlite3 -bail "$RESISTANCE_DB" < ${seq}.del_dup_lookup.sql >> ${seq}.AbR_output_del_dup.txt; then
+	echo "ERROR: the deletion/duplication database lookup failed" >&2
+	exit 1
+fi
 echo "done"
 
 #if [ ! -s ${seq}.AbR_output_del_dep.txt ]; then

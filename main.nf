@@ -3,16 +3,27 @@
 /*
  *
  *  Pipeline            ARDaP
- *  Version             2.3.2 beta
+ *  Version             v3
  *  Description         Antimicrobial resistance detection and prediction from WGS
  *  Authors             Derek Sarovich, Erin Price, Danielle Madden, Eike Steinig
  *
+ *  Nextflow DSL2 (needs Nextflow >= 23.04; developed and tested on 24.10.5)
+ *
  */
+
+nextflow.enable.dsl = 2
+
+// How many HaplotypeCaller runs share one VariantCalling job (a --hc_chunks value on the command line wins)
+params.hc_chunks = 4
+
+// Single-end mode (--SE true): where to look for the reads
+params.SE = false
+params.fastq_se = "SE/*.fastq.gz"
 
 log.info """
 ===============================================================================
                            NF-ARDaP
-                             v2.3.2 beta
+                             v3 beta
 ================================================================================
 
 Optional Parameters:
@@ -32,6 +43,13 @@ Optional Parameters:
                  subdirectory called 'assemblies'. (default: false)
 
                  Currently mixtures is set to $params.assemblies
+
+    --SE         Also run single-end reads. ARDaP looks in a directory called SE
+                 for files named sequence_name.fastq.gz and aligns the single
+                 read only. Paired-end reads in the run directory are still
+                 processed (default: false). Not available with --mixtures.
+
+                 Currently SE is set to $params.SE
 
     --notrim     Although not generally recommended to switch off, set to true
                  if you want to skip the timmomatic step (default: false).
@@ -71,6 +89,13 @@ Optional Parameters:
 
                  Currently fast is set to $params.fast
 
+    --hc_chunks  Number of pieces the genome is split into so that GATK HaplotypeCaller can
+                 run on them at the same time inside one job (default: 4). The number
+                 actually used is limited by the job's CPUs and memory (about 1.5 GB per
+                 piece, so the default 4 GB job uses 2 pieces). Set to 1 for a single run.
+
+                 Currently hc_chunks is set to $params.hc_chunks
+
     --gwas       **Experimental**. If you have a database of GWAS co-ordinates
                  ARDaP can interrogate SNPs and indels across the entire genome
                  to identify novel mutations likely contributing to an antibiotic
@@ -95,7 +120,7 @@ Update to the local cache of this workflow:
 //find ref and species specific databases
 
 species=params.species
-database_config_file="${baseDir}/Databases/Database.config"
+database_config_file="${projectDir}/Databases/Database.config"
 ref_proc1="grep -w ${species} ${database_config_file}".execute()
 ref_proc2="cut -f3".execute()
 ref_proc1 | ref_proc2
@@ -112,630 +137,199 @@ database=databasetmp.trim()
 //println "${database}"
 //println "${ref}"
 
-params.reference="${baseDir}/Databases/${database}/${ref}"
-params.resistance_db="${baseDir}/Databases/${database}/${database}.db"
+params.reference="${projectDir}/Databases/${database}/${ref}"
+params.resistance_db="${projectDir}/Databases/${database}/${database}.db"
 params.snpeff="${database}"
 
-fastq = Channel
-  .fromFilePairs("${params.fastq}", flat: true)
-	.ifEmpty { exit 1, """ Input read files could not be found.
+
+// Look for paired-end reads. They are only mandatory when no assemblies are supplied.
+def reads_found = file(params.fastq)
+def has_reads = (reads_found instanceof List) ? !reads_found.isEmpty() : reads_found.exists()
+
+include { IndexReference; MakeIntervals } from './modules/reference'
+include { Read_synthesis; Trimmomatic; ReferenceAlignment } from './modules/reads'
+include { VariantCalling; VariantCallingMixture; MixtureSummariesSQL; SqlSnpsIndelsMix; R_report; GWASInterrogate } from './modules/variants'
+include { VariantCallingGVCF; Master_vcf; snp_matrix } from './modules/phylogeny'
+
+workflow {
+
+  // ---------------------------------------------------------------- inputs
+  // Paired-end reads in the run directory are always processed. With --SE true, the single-end
+  // reads in SE/sequence_name.fastq.gz are processed as well (sample id = sequence_name).
+  fastq = Channel.empty()
+  n_inputs = 0
+
+  if (has_reads) {
+    fastq = fastq.mix(
+      Channel.fromFilePairs("${params.fastq}", flat: true)
+        .map { id, f, r -> tuple(id, [f, r]) }
+    )
+    n_inputs++
+  }
+
+  if (params.SE) {
+    if (params.mixtures) {
+      error "--SE cannot be used together with --mixtures (the mixtures analysis needs paired-end insert sizes)"
+    }
+    se_found = file(params.fastq_se)
+    se_list = (se_found instanceof List) ? se_found : (se_found.exists() ? [se_found] : [])
+    if (!se_list.isEmpty()) {
+      fastq = fastq.mix(
+        Channel.fromPath("${params.fastq_se}")
+          .map { f -> tuple(f.name.replaceFirst(/\.fastq\.gz$/, ''), f) }
+      )
+      n_inputs++
+    } else {
+      log.warn "--SE true but no single-end reads found matching ${params.fastq_se}"
+    }
+  }
+
+  if (n_inputs == 0 && !params.assemblies) {
+    error """ Input read files could not be found.
 Have you included the read files in the current directory and do they have the correct naming?
-With the parameters specified, ARDaP is looking for reads named ${params.fastq}.
+With the parameters specified, ARDaP is looking for paired reads named ${params.fastq}.
 To fix this error either rename your reads to match this formatting or specify the desired format
 when initializing ARDaP e.g. --fastq "*_{1,2}_sequence.fastq.gz"
-
+For single-end reads use --SE true and place sequence_name.fastq.gz files in a directory called SE
+If you only want to analyse assembled genomes, use --assemblies true --assembly_loc "assemblies/*.fasta"
 """
-}
+  }
+  if (n_inputs == 0) {
+    log.info "No reads found. Running with assemblies only."
+  }
 
-if (params.assemblies) {
-  assembly_loc = Channel
-    .fromPath("${params.assembly_loc}", checkIfExists: true)
-    .ifEmpty {"No assembled genomes will be processed"}
-    .map { file ->
-      def id = file.name.toString().tokenize('.').get(0)
-      return tuple(id, file)
-    }
-}
+  resistance_database_file = file(params.resistance_db)
+  if( !resistance_database_file.exists() ) {
+    error "The resistance database file does no exist: ${params.resistance_db}"
+  }
 
-resistance_database_file = file(params.resistance_db)
-if( !resistance_database_file.exists() ) {
-  exit 1, "The resistance database file does no exist: ${params.resistance_db}"
-}
-
-reference_file = file(params.reference)
-if( !reference_file.exists() ) {
-  exit 1, """
+  reference_file = file(params.reference)
+  if( !reference_file.exists() ) {
+    error """
 ARDaP can't find the reference file.
 It is currently looking for this file --> ${params.reference}
-Please check that this reference exists here --> ${baseDir}/Databases/${database}/${ref}
+Please check that this reference exists in ${projectDir}/Databases/
 If this file doesn't exist either ARDaP is not configured to run with this reference/species
 or there was an error during the installation process and ARDaP needs to be re-installed
 """
-}
-
-
-patient_meta_file = file(params.patientMetaData)
-if( !patient_meta_file.exists() ) {
-  exit 1, "The specified patient metadata file does not exist: ${params.patientMetaData}"
-}
-
-/*
-======================================================================
-      Part 1: create reference indices, dict files and bed files
-======================================================================
-*/
-
-process IndexReference {
-
-        label "index"
-
-        input:
-        file reference from reference_file
-
-        output:
-        file "ref.*" into ref_index_ch
-        file "${reference}.fai" into ref_fai_ch1
-        file "${reference.baseName}.dict" into ref_dict_ch1
-        file "${reference}.bed" into refcov_ch
-
-        """
-        bwa index -a is -p ref $reference
-        samtools faidx $reference
-        picard CreateSequenceDictionary R=$reference O=${reference.baseName}.dict
-        bedtools makewindows -g ${reference}.fai -w $params.window > ${reference}.bed
-        """
-}
-
-/*
-======================================================================
-      Part 1B: create synthetic reads from reference files
-======================================================================
-*/
-
-if (params.assemblies) {
-  process Read_synthesis {
-
-    label "art"
-    tag {"$assembly.baseName"}
-
-    input:
-    set id, file(assembly) from assembly_loc
-
-    output:
-    set id, file("${assembly.baseName}_1_cov.fq.gz"), file("${assembly.baseName}_2_cov.fq.gz") into (alignment_assembly)
-
-    """
-    art_illumina -i ${assembly} -p -l 150 -f 30 -m 500 -s 10 -ss HS25 -na -o ${assembly.baseName}_out
-    mv ${assembly.baseName}_out1.fq ${assembly.baseName}_1_cov.fq
-    mv ${assembly.baseName}_out2.fq ${assembly.baseName}_2_cov.fq
-    gzip ${assembly.baseName}_1_cov.fq
-    gzip ${assembly.baseName}_2_cov.fq
-
-    """
   }
-}
 
-/*
-=======================================================================
-Part 2: read processing, reference alignment and variant identification
-=======================================================================
-// Variant calling sub-workflow
+  patient_meta_file = file(params.patientMetaData)
+  if( !patient_meta_file.exists() ) {
+    error "The specified patient metadata file does not exist: ${params.patientMetaData}"
+  }
 
-=======================================================================
-   Part 2A: Trim reads with light quality filter and remove adapters
-=======================================================================
-*/
+  // ------------------------------------------------------------- reference
+  IndexReference(reference_file)
 
-process Trimmomatic {
-
-    label "trimmomatic"
-    tag {"$id"}
-
-    input:
-    set id, file(forward), file(reverse) from fastq
-
-    output:
-    set id, "${id}_1.fq.temp.gz", "${id}_2.fq.temp.gz" into downsample
-
-	script:
-	if (params.notrim) {
-    """
-    mv ${forward} ${id}_1.fq.temp.gz
-    mv ${reverse} ${id}_2.fq.temp.gz
-    """
+  // The interval list is only used by --fast runs without --mixtures. Everything else passes the
+  // reference as a placeholder so the process input is still satisfied (staged as intervals.list).
+  if (params.fast && !params.mixtures) {
+    MakeIntervals(resistance_database_file)
+    intervals_ch = MakeIntervals.out.intervals
   } else {
-    """
-    trimmomatic PE -threads $task.cpus ${forward} ${reverse} \
-    ${id}_1.fq.temp.gz ${id}_1_u.fq.gz ${id}_2.fq.temp.gz ${id}_2_u.fq.gz \
-    ILLUMINACLIP:${baseDir}/resources/trimmomatic/all_adapters.fa:2:30:10: \
-    LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:36
-    rm ${id}_1_u.fq.gz ${id}_2_u.fq.gz
-    """
-  }
-}
-/*
-=======================================================================
-              Part 2B: Downsample reads to increase speed
-=======================================================================
-*/
-process Downsample {
-
-    label "ardap_default"
-    tag { "$id" }
-    // publishDir "./Clean_reads", mode: 'copy', overwrite: false
-
-    input:
-    set id, file(forward), file(reverse) from downsample
-
-    output:
-    set id, file("${id}_1_cov.fq.gz"), file("${id}_2_cov.fq.gz") into (alignment)
-
-    script:
-    if (params.size > 0) {
-            """
-            seqtk sample -s 11 ${forward} $params.size | gzip - > ${id}_1_cov.fq.gz
-            seqtk sample -s 11 ${reverse} $params.size | gzip - > ${id}_2_cov.fq.gz
-            """
-     } else {
-            // Rename files even if not downsampled to channel into Alignment
-            """
-            mv ${forward} ${id}_1_cov.fq.gz
-            mv ${reverse} ${id}_2_cov.fq.gz
-            """
-      }
-}
-/*
-=======================================================================
-        Part 2C: Align reads against the reference with assemblies
-=======================================================================
-*/
-if (params.assemblies) {
-  process ReferenceAlignment_assembly {
-
-    label "alignment"
-    tag {"$id"}
-	publishDir "./Outputs/Resfinder", mode: 'copy', pattern: "*_resfinder.txt", overwrite: true
-
-    input:
-    file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment.mix(alignment_assembly)
-
-    output:
-    set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
-
-    """
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
-    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
-    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
-    samtools index ${id}.bam
-    rm ${id}.sam ${id}.bam_tmp
-
-    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
-    """
-
+    intervals_ch = Channel.value(reference_file)
   }
 
-} else {
-/*
-=======================================================================
-               Part 2C: Align reads against the reference
-=======================================================================
-*/
-  process ReferenceAlignment {
+  // ------------------------------------------------------------------ reads
+  // With --notrim true (the default) there is nothing to trim, so reads go straight to alignment
+  if (params.notrim) {
+    reads_ch = fastq
+  } else {
+    Trimmomatic(fastq)
+    reads_ch = Trimmomatic.out.reads
+  }
 
-    label "alignment"
-    tag {"$id"}
-    publishDir "./Outputs/Resfinder", mode: 'copy', pattern: "*_resfinder.txt", overwrite: true
+  // sample_n: reads to keep per file (0 = use all reads, e.g. reads synthesised from assemblies)
+  align_in = reads_ch.map { id, r -> tuple(id, r, params.size) }
 
-    input:
-    file ref_index from ref_index_ch
-    set id, file(forward), file(reverse) from alignment
+  if (params.assemblies) {
+    assembly_ch = Channel
+      .fromPath("${params.assembly_loc}", checkIfExists: true)
+      .map { f -> tuple(f.baseName, f) }
+    Read_synthesis(assembly_ch)
+    align_in = align_in.mix( Read_synthesis.out.reads.map { id, f, r -> tuple(id, [f, r], 0) } )
+  }
 
-    output:
-    set id, file("${id}.bam"), file("${id}.bam.bai") into dup
-    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_1
+  // ------------------------------------------- alignment, dedup, coverage, ResFinder
+  ReferenceAlignment(IndexReference.out.index, IndexReference.out.bed, align_in)
 
-    script:
-    if (params.fast) {
+  // ---------------------------------------------------------------- variants
+  if (params.mixtures) {
 
-    """
-    bash Masked_alignment.sh $task.cpus ${forward} ${reverse} ${id} ${baseDir} ${params.snpeff}
-	bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-	-t $task.cpus ref ${forward} ${reverse} > ${id}.sam
-    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
-    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
-    samtools index ${id}.bam
-    rm ${id}.sam ${id}.bam_tmp
-    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
-	"""
+    if (params.gwas) {
+      log.warn "--gwas is not available together with --mixtures and will be skipped"
+    }
 
-    } else {
+    VariantCallingMixture(
+      reference_file,
+      IndexReference.out.fai,
+      IndexReference.out.dict,
+      ReferenceAlignment.out.bam.join(ReferenceAlignment.out.resfinder)
+    )
 
-    """
-    bwa mem -R '@RG\\tID:${params.org}\\tSM:${id}\\tPL:ILLUMINA' -a \
-    -t $task.cpus ref ${forward} ${reverse} > ${id}.sam
-    samtools view -h -b -@ 1 -q 1 -o ${id}.bam_tmp ${id}.sam
-    samtools sort -@ 1 -o ${id}.bam ${id}.bam_tmp
-    samtools index ${id}.bam
-    rm ${id}.sam ${id}.bam_tmp
-    bash Run_resfinder.sh ${baseDir} ${forward} ${reverse} ${id}
-    """
+    MixtureSummariesSQL(
+      VariantCallingMixture.out.annotated
+        .join(VariantCallingMixture.out.pindel_d)
+        .join(VariantCallingMixture.out.pindel_td)
+        .join(VariantCallingMixture.out.resfinder)
+    )
+
+    SqlSnpsIndelsMix(
+      MixtureSummariesSQL.out.effects
+        .join(MixtureSummariesSQL.out.function_lost)
+        .join(MixtureSummariesSQL.out.deletions)
+        .join(MixtureSummariesSQL.out.duplications)
+        .join(MixtureSummariesSQL.out.resfinder),
+      resistance_database_file,
+      patient_meta_file
+    )
+
+    R_report(SqlSnpsIndelsMix.out.report_inputs)
+
+  } else {
+
+    // Samples are joined by id, so one sample can never be paired with another sample's files
+    VariantCalling(
+      reference_file,
+      IndexReference.out.fai,
+      IndexReference.out.dict,
+      intervals_ch,
+      ReferenceAlignment.out.bam
+        .join(ReferenceAlignment.out.coverage)
+        .join(ReferenceAlignment.out.resfinder),
+      resistance_database_file,
+      patient_meta_file
+    )
+
+    if (params.gwas) {
+      GWASInterrogate(
+        VariantCalling.out.annotated_snps.join(VariantCalling.out.annotated_indels),
+        resistance_database_file
+      )
     }
   }
-}
-/*
-=======================================================================
-                       Part 2D: De-duplicate bams
-=======================================================================
-*/
-process Deduplicate {
 
-    label "markduplicates"
-    tag { "$id" }
-    publishDir "./Outputs/bams", mode: 'copy', pattern: "*.bam*", overwrite: false
-
-    input:
-    set id, file(bam_alignment), file(bam_index) from dup
-    file refcov from refcov_ch
-    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_1
-
-    output:
-    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") into (variantCalling, mixturePindel, variantcallingGVCF_ch)
-    set id, file("output.per-base.bed.gz"), file("${id}.depth.txt") into coverageData
-    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_2
-
-    """
-    gatk --java-options -Xmx${task.memory.toString().replaceAll(/[\sB]/,'')} MarkDuplicates -I "${id}.bam" -O ${id}.dedup.bam --REMOVE_DUPLICATES true \
-    --METRICS_FILE ${id}.dedup.txt --VALIDATION_STRINGENCY LENIENT --ASSUME_SORT_ORDER coordinate
-    samtools index ${id}.dedup.bam
-
-    mosdepth --by ${refcov} output ${id}.dedup.bam
-    sum_depth=\$(zcat output.regions.bed.gz | awk '{print \$4}' | awk '{s+=\$1}END{print s}')
-    total_chromosomes=\$(zcat output.regions.bed.gz | awk '{print \$4}' | wc -l)
-    echo "\$sum_depth/\$total_chromosomes" | bc > ${id}.depth.txt
-    """
-}
-
-/*
-=======================================================================
-                        Part 2F: Variant identification
-=======================================================================
-*/
-if (params.mixtures) {
-
-  process VariantCallingMixture {
-
-    label "gatk"
-    tag { "$id" }
-    publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*.ALL.annotated.mixture.vcf", overwrite: false
-    publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*.PASS.snps.indels.mixed.vcf", overwrite: false
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantCalling
-    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
-
-    output:
-    set id, file("${id}.ALL.annotated.mixture.vcf") into mixtureArdapProcessing
-    file("pindel.out_D.vcf") into mixtureDeletionSummary
-    file("pindel.out_TD.vcf") into mixtureDuplicationSummary
-    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
-    set id, file("${id}.PASS.snps.indels.mixed.vcf") into variants_publish_ch
-
-    """
-    gatk HaplotypeCaller -R ${reference} --I ${id}.dedup.bam -O ${id}.raw.snps.indels.mixed.vcf
-
-    gatk VariantFiltration -R ${reference} -O ${id}.snps.indels.filtered.mixed.vcf -V ${id}.raw.snps.indels.mixed.vcf \
-    -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
-    -filter "FS > $params.FS_SNP" --filter-name "FSFilter" \
-    -filter "QUAL < $params.QUAL_SNP" --filter-name "StandardFilters"
-
-    header=`grep -n "#CHROM" ${id}.snps.indels.filtered.mixed.vcf | cut -d':' -f 1`
-    head -n "\$header" ${id}.snps.indels.filtered.mixed.vcf > snp_head
-    cat ${id}.snps.indels.filtered.mixed.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.indels.mixed.vcf
-
-    snpEff eff -t -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
-
-    echo -e "${id}.dedup.bam\t250\tB" > pindel.bam.config
-    pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
-
-    rm -f pindel.out_CloseEndMapped pindel.out_INT_final
-
-    for f in pindel.out_*; do
-      pindel2vcf -r ${reference} -R ${reference.baseName} -d ARDaP -p \$f -v \${f}.vcf -e 5 -is 15 -as 50000
-      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${baseDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
-    done
-
-    """
-  }
-
-  process MixtureSummariesSQL {
-
-    label "ardap_default"
-    tag { "$id" }
-
-    input:
-    set id, file(variants) from mixtureArdapProcessing
-    file(pindelD) from mixtureDeletionSummary
-    file(pindelTD) from mixtureDuplicationSummary
-    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_3
-
-    output:
-    set id, file("${id}.annotated.ALL.effects") into variants_all_ch
-    set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
-    set id, file("${id}.deletion_summary_mix.txt") into deletion_summary_mix_ch
-    set id, file("${id}.duplication_summary_mix.txt") into duplication_summary_mix_ch
-    set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_4
-
-    shell:
-
-    '''
-    echo 'Effects summary'
-
-    awk '{if (match($0,"ANN=")){print substr($0,RSTART)}}' !{variants} > all.effects.tmp
-    awk -F "|" '{ print $4,$10,$11,$15 }' all.effects.tmp | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> annotated.ALL.effects.tmp
-    grep -E "#|ANN=" !{variants} > ALL.annotated.subset.vcf
-    gatk VariantsToTable -V ALL.annotated.subset.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -GF AD -GF DP -O ALL.genotypes.subset.table
-    tail -n +2 ALL.genotypes.subset.table | awk '{ print $5,$6,$7,$8 }' > ALL.genotypes.subset.table.headerless
-    paste annotated.ALL.effects.tmp ALL.genotypes.subset.table.headerless > !{id}.annotated.ALL.effects
-
-    echo 'Identification of high confidence mutations'
-
-    grep '|HIGH|' !{variants} > ALL.func.lost
-		awk '{if (match($0,"ANN=")){print substr($0,RSTART)}}' ALL.func.lost > ALL.func.lost.annotations
-		awk -F "|" '{ print $4,$11,$15 }' ALL.func.lost.annotations | sed 's/c\\.//' | sed 's/p\\.//' | sed 's/n\\.//'> ALL.func.lost.annotations.tmp
-		grep -E "#|\\|HIGH\\|" !{variants} > ALL.annotated.func.lost.vcf
-    gatk VariantsToTable -V ALL.annotated.func.lost.vcf -F CHROM -F POS -F REF -F ALT -F TYPE -GF GT -GF AD -GF DP -O ALL.annotated.func.lost.table
-		tail -n +2 ALL.annotated.func.lost.table | awk '{ print $5,$6,$7,$8 }' > ALL.annotated.func.lost.table.headerless
-		paste ALL.func.lost.annotations.tmp ALL.annotated.func.lost.table.headerless > !{id}.Function_lost_list.txt
-
-    echo 'Summary of deletions and duplications'
-
-    grep -v '#' !{pindelD} | awk -v OFS="\t" '{ print $1,$2 }' > d.start.coords.list
-		grep -v '#' !{pindelD} | gawk 'match($0, /END=([0-9]+);/,arr){ print arr[1]}' > d.end.coords.list
-		grep -v '#' !{pindelD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.D
-		grep -v '#' !{pindelD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.D
-		paste d.start.coords.list d.end.coords.list mutant_depth.D depth.D > !{id}.deletion_summary_mix.txt
-
-    grep -v '#' !{pindelTD} | awk -v OFS="\t" '{ print $1,$2 }' > td.start.coords.list
-		grep -v '#' !{pindelTD} | gawk 'match($0, /END=([0-9]+);/,arr){ print arr[1]}' > td.end.coords.list
-		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $2 }' > mutant_depth.TD
-		grep -v '#' !{pindelTD} | awk '{ print $10 }' | awk -F":" '{print $2 }' | awk -F"," '{ print $1+$2 }' > depth.TD
-		paste td.start.coords.list td.end.coords.list mutant_depth.TD depth.TD > !{id}.duplication_summary_mix.txt
-
-    '''
-
-  }
-
-} else {
-    // Not a mixture
-    //To do split GVCF calling when phylogeny isn't called
-
-    process VariantCalling {
-
-      label "gatk"
-      tag { "$id" }
-      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*FAIL*.vcf", overwrite: false
-      publishDir "./Outputs/Variants/VCFs", mode: 'copy', pattern: "*PASS*.vcf", overwrite: false
-      publishDir "./Outputs/Variants/Annotated", mode: 'copy', pattern: "*annotated*.vcf", overwrite: false
-
-      input:
-      file reference from reference_file
-      file reference_fai from ref_fai_ch1
-      file reference_dict from ref_dict_ch1
-      set id, file(dedup_bam), file(dedup_index) from variantCalling
-      set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_2
-      set id, file(perbase), file(depth) from coverageData
-
-      output:
-      set id, file("${id}.PASS.snps.vcf"), file("${id}.FAIL.snps.vcf") into filteredSNPs
-      set id, file("${id}.PASS.indels.vcf"), file("${id}.FAIL.indels.vcf") into filteredindels
-      set id, file("${id}.annotated.indel.effects") into annotated_indels_ch
-      set id, file("${id}.annotated.snp.effects") into annotated_snps_ch
-      set id, file("${id}.Function_lost_list.txt") into function_lost_ch1, function_lost_ch2
-      set id, file("${id}.PASS.snps.annotated.vcf") into annotatedSNPs, annotated_snps_ch2
-      set id, file("${id}.PASS.indels.annotated.vcf") into annotatedIndels, annotated_indels_ch2
-      set id, file("${id}.deletion_summary.txt") into deletion_summary_ch
-      set id, file("${id}.duplication_summary.txt") into duplication_summary_ch
-      set id, file("${id}_resfinder.txt") into abr_report_resfinder_ch_3
-
-      script:
-      """
-      bash VariantCalling.sh ${id} ${reference} ${baseDir} ${params.snpeff} ${params.fast}
-
-      """
-
-    }
-}
-/*
-====================================================================
-                              Part 3
-  These processes will interrogate the SQL databases (except Resfinder)
-  These have been split to run across different flavours of variants
-                 so they can be run in parallel
-=====================================================================
-*/
- if (params.mixtures) {
-
-  process SqlSnpsIndelsMix {
-
-    label "genomic_queries"
-    tag { "$id" }
-
-    input:
-    set id, file("${id}.annotated.ALL.effects") from variants_all_ch
-    set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
-    file resistance_db from resistance_database_file
-    file("patientMetaData.csv") from patient_meta_file
-    set id, file("${id}.deletion_summary_mix.txt") from deletion_summary_mix_ch
-    set id, file("${id}.duplication_summary_mix.txt") from duplication_summary_mix_ch
-    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_4
-
-    output:
-    set id, file("${id}.AbR_output.final.txt") into r_report_ch
-    file("patientMetaData.csv") into r_report_metadata_ch
-    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
-
-    script:
-    """
-    bash SQL_queries_SNP_indel_mix.sh ${id} ${resistance_db}
-    bash SQL_queries_DelDupMix.sh ${id} ${resistance_db}
-    bash AbR_reports_mix.sh ${id} ${resistance_db}
-    """
-  }
-} else {
-  process SqlSnpsIndels {
-
-    label "genomic_queries"
-    tag { "$id" }
-
-    input:
-    set id, file("${id}.annotated.indel.effects") from annotated_indels_ch
-    set id, file("${id}.annotated.snp.effects") from annotated_snps_ch
-    set id, file("${id}.Function_lost_list.txt") from function_lost_ch1
-    set id, file("${id}_resfinder.txt") from abr_report_resfinder_ch_3
-    set id, file("${id}.duplication_summary.txt") from duplication_summary_ch
-    set id, file("${id}.deletion_summary.txt") from deletion_summary_ch
-    file("patientMetaData.csv") from patient_meta_file
-    file resistance_db from resistance_database_file
-
-    output:
-    set id, file("${id}.AbR_output.final.txt") into r_report_ch
-    file("patientMetaData.csv") into r_report_metadata_ch
-    file("patientDrugSusceptibilityData.csv") into r_report_drug_data_ch
-
-    script:
-    """
-    bash SQL_queries_SNP_indel.sh ${id} ${resistance_db}
-    bash SQL_queries_DelDup.sh ${id} ${resistance_db}
-    bash AbR_reports.sh ${id} ${resistance_db}
-    """
-  }
-}
-
-if (params.gwas) {
-  process GWASInterrogate {
-
-    label "genomic_queries"
-    tag { "$id" }
-    publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
-
-    input:
-    set id, file("${id}.PASS.snps.annotated.vcf") from annotated_snps_ch2
-    set id, file("${id}.PASS.indels.annotated.vcf") from annotated_indels_ch2
-    file resistance_db from resistance_database_file
-
-    output:
-    set id, file("${id}.AbR_output.GWAS_SNP.txt")
-    set id, file("${id}.AbR_output.GWAS_indel.txt")
-
-    script:
-    """
-    bash SQL_GWAS.sh ${id} ${resistance_db}
-    """
-  }
-}
-
-process R_report {
-
-  label "report"
-  tag { "$id" }
-  publishDir "./Outputs/AbR_reports", mode: 'copy', overwrite: true
-
-  input:
-  set id, file("${id}.AbR_output.final.txt") from r_report_ch
-  file("patientMetaData.csv") from r_report_metadata_ch
-  file("patientDrugSusceptibilityData.csv") from r_report_drug_data_ch
-
-  output:
-  set id, file("${id}_report.html")
-  set id, file("${id}.AbR_output.final.txt")
-
-  script:
-  """
-  bash Report_html.sh ${species}
-  """
-}
-
-/*
-===========================================================================
-= This process will combine all vcf files into a master VCF file
-= Clean vcf files are concatenated and converted into a matrix for phylogeny programs
-=
-===========================================================================
-*/
-
-if (params.phylogeny) {
-  process VariantCallingGVCF {
-
-    label "gatk"
-    tag { "$id" }
-    publishDir "./Outputs/Variants/GVCFs", mode: 'copy', overwrite: false, pattern: '*.gvcf'
-
-    input:
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-    set id, file("${id}.dedup.bam"), file("${id}.dedup.bam.bai") from variantcallingGVCF_ch
-
-    output:
-    set id, file("${id}.raw.gvcf")
-	file("${id}.raw.gvcf") into gvcf_files
-
-    """
-    gatk HaplotypeCaller -R ${reference} -ERC GVCF --I ${id}.dedup.bam -O ${id}.raw.gvcf
-    """
-  }
-  process Master_vcf {
-    label "master_vcf"
-   // tag { "$id" }
-    publishDir "./Outputs/Master_vcf", mode: 'copy', overwrite: true
-
-    input:
-    file("*.raw.gvcf") from gvcf_files.collect()
-    file reference from reference_file
-    file reference_fai from ref_fai_ch1
-    file reference_dict from ref_dict_ch1
-
-    output:
-    set file("out.filtered.vcf"), file("out.vcf") into snp_matrix_ch
-
-    script:
-    """
-    bash Master_vcf.sh ${reference.baseName}
-    gatk VariantFiltration -R ${reference} -O out.filtered.vcf -V out.vcf \
-    --cluster-size $params.CLUSTER_SNP -window $params.CLUSTER_WINDOW_SNP \
-    -filter "QD < $params.QD_SNP" --filter-name "QDFilter" \
-    -filter "MQ < $params.MQ_SNP" --filter-name "MQFilter" \
-    -filter "FS > $params.FS_SNP" --filter-name "HaplotypeScoreFilter"
-    """
-  }
-  process snp_matrix {
-    label "snp_matrix"
-    publishDir "./Outputs/Phylogeny_and_annotation", mode: 'copy', overwrite: false
-
-    input:
-    set file(filtered_vcf), file(out_vcf) from snp_matrix_ch
-
-    output:
-    file("Ortho_SNP_matrix.nex")
-    file("MP_phylogeny.tre")
-    file("ML_phylogeny.tre")
-    file("All_SNPs_indels_annotated.txt")
-
-    script:
-    """
-    bash SNP_matrix.sh $params.snpeff ${baseDir}
-    """
+  // --------------------------------------------------------------- phylogeny
+  if (params.phylogeny) {
+    VariantCallingGVCF(
+      reference_file,
+      IndexReference.out.fai,
+      IndexReference.out.dict,
+      ReferenceAlignment.out.bam
+    )
+    Master_vcf(
+      VariantCallingGVCF.out.gvcf.map { id, gvcf -> gvcf }.collect(),
+      reference_file,
+      IndexReference.out.fai,
+      IndexReference.out.dict
+    )
+    snp_matrix(Master_vcf.out.vcfs)
   }
 }
 
 workflow.onComplete {
-	println ( workflow.success ? "\nDone! Result files are in --> ./Outputs\n \
+  println ( workflow.success ? "\nDone! Result files are in --> ./Outputs\n \
   Antibiotic resistance reports are in --> ./Outputs/AbR_reports\n \
   If further analysis is required, bam alignments are in --> ./Outputs/bams\n \
   Phylogenetic tree and annotated merged variants are in --> ./Outputs/Phylogeny_and_annotation\n \

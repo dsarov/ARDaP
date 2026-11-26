@@ -109,11 +109,6 @@ kma_index -i colistin.fsa -o kma_indexing/colistin
 kma_index -i beta-lactam.fsa -o kma_indexing/beta-lactam
 ```
 
-### Documentation
-
-The documentation available as of the date of this release can be found at:
-https://bitbucket.org/genomicepidemiology/resfinder_db/overview.
-
 
 Citation
 =======

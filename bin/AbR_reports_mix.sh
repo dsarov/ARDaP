@@ -3,30 +3,25 @@
 seq=$1
 RESISTANCE_DB=$2
 
-#This variable restricts resfinder matches to "3" which means 100% nucleotide identity across the entire length of the gene. Set to "2" to reduce stringency 
+# This variable restricts resfinder matches to "3" which means 100% nucleotide identity across the entire length of the gene.
 stringency=3
 
 echo -e "Importing isolate data"
-#echo -e "ID,Barcode,LName,FName,DOB,Location,sampType,sampID,sampDate,sampSource,sampSeq,reportLab,reportDate,comments,organism,requestor,requestorContact,lineageNum,lineageName" > patientMetaData.csv
 date=$(date +"%F")
 echo -e "Looking for specific strain in the metadata file"
-grep -w "$seq" patientMetaData.csv
-status=$?
-if [ $status == 0 ]; then
+if grep -q -w "$seq" patientMetaData.csv; then
     echo "Found strain information"
-	head -n1 patientMetaData.csv >> patientMetaData_"$seq".csv
-	grep -w "$seq" patientMetaData.csv >> patientMetaData_"$seq".csv
+    head -n1 patientMetaData.csv > patientMetaData_"$seq".csv
+    grep -w "$seq" patientMetaData.csv >> patientMetaData_"$seq".csv
 else
     echo "Couldn't find strain specific data in file, reverting to default"
-	head -n1 patientMetaData.csv >> patientMetaData_"$seq".csv
-    echo -e "$seq,BARCODE,Smith,James,1/01/1990,Shanghai,Blood,$seq,$date,Blood,Cultured isolate,unspecified,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData_"$seq".csv	  
+    head -n1 patientMetaData.csv > patientMetaData_"$seq".csv
+    echo -e "$seq,BARCODE,Smith,James,1/01/1990,Shanghai,Blood,$seq,$date,Blood,Cultured isolate,unspecified,$date,No words needed,Burkholderia pseudomallei,Dr. Requestor Name,req_contact@genome.com,XX,NA" >> patientMetaData_"$seq".csv   
 fi  
 
 mv patientMetaData_"$seq".csv patientMetaData.csv
 
-Report_structure () {
-
-cat << _EOF_ >  Drug.table
+cat << _EOF_ > Drug.table
 .separator ","
 SELECT Antibiotics."Drug_class",
 Antibiotics.Antibiotic,
@@ -35,469 +30,126 @@ FROM Antibiotics
 ORDER BY Antibiotics."Drug_class"
 _EOF_
 
-sqlite3 "$RESISTANCE_DB" < Drug.table >> drug.table.txt
-
-}
-
-Report_structure
-
+sqlite3 "$RESISTANCE_DB" < Drug.table > drug.table.txt
 cp drug.table.txt drug.table.txt.backup
 
-#sed manipulation of the drug table here is simplistic and relies on the order of the drugs in the drug.table.txt.back file
-#TO DO -  replace with awk pattern matching is case users want to add custom drug classes
-
-#format Resfinder output for report
-while read line; do
-  echo "$line" > resfinder_query_string.txt
-  Antibiotic=$(awk -F "," '{print $2}' resfinder_query_string.txt)
-  abbrev=$(awk -F "," '{print $3}' resfinder_query_string.txt)
-  echo "Antibiotic = $Antibiotic"
-  echo "abbrev=$abbrev"
-  awk -F "\t" -v Ab="${Antibiotic}" 'BEGIN{IGNORECASE=1} $1==Ab' "${seq}"_resfinder.txt > resfinder_tmp.txt
-  gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt)
-  #apply resfinder stringency filter
-  #awk -v stringency="${stringency}" -F "\t" '$4==stringency' resfinder_tmp.txt > resfinder_tmp2.txt
- 
-  #look for resistance
-  awk -F "\t" '$3 ~ "Resistant" { exit 1 } ' resfinder_tmp.txt &> /dev/null
-  status=$?
-  #echo $status  
-  if [ "$status" == 1 ]; then  #Resistant strain
-    echo "Found resistance to ${Antibiotic} for ${seq}"
-    echo -e "Resfinder|$gene||${abbrev}r|100" >> "${seq}"_resfinder_report.txt #If the resistance mechanism is found then report 100% for resfinder AMR
-  else
-    echo "Strain appears sensitive to $Antibiotic"
-  fi
+# === FORMAT RESFINDER OUTPUT ===
+touch "${seq}_resfinder_report.txt"
+while IFS=, read -r d_class Antibiotic abbrev; do
+    # Strip any hidden DOS carriage returns or whitespace
+    abbrev=$(echo "$abbrev" | tr -d '\r ')
+    
+    if awk -F "\t" -v Ab="${Antibiotic}" 'BEGIN{IGNORECASE=1} $1==Ab' "${seq}_resfinder.txt" > resfinder_tmp.txt; then
+        gene=$(awk -F "\t" '{ print $5 }' resfinder_tmp.txt | head -n1)
+        if awk -F "\t" '$3 ~ "Resistant" { found=1; exit } END { exit !found }' resfinder_tmp.txt; then
+            echo "Found resistance to ${Antibiotic} for ${seq}"
+            echo -e "Resfinder|$gene||${abbrev}r|100" >> "${seq}_resfinder_report.txt"
+        else
+            echo "Strain appears sensitive to $Antibiotic"
+        fi
+    fi
 done < drug.table.txt.backup
 
+# === COMPILE ALL RESISTANCE MARKERS (MIXED VARIANTS) ===
+cat "${seq}.AbR_output_snp_indel_mix.txt" "${seq}.AbR_output_del_dup_mix.txt" "${seq}_resfinder_report.txt" 2>/dev/null > AbR_output.tmp
+awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.tmp > AbR_output.txt
+cp AbR_output.txt AbR_output.final.txt
 
-cat "${seq}".AbR_output_snp_indel_mix.txt "${seq}".AbR_output_del_dup_mix.txt "${seq}"_resfinder_report.txt | tee AbR_output.txt AbR_output.final.txt
+# === PROCESS EACH DRUG ROBUSTLY ===
+echo "ID,Class,Drug,Status,Level,Details" > patientDrugSusceptibilityData.csv
 
+while IFS=, read -r d_class d_name d_abbrev; do
+    # Clean hidden whitespace to prevent matching errors
+    d_class=$(echo "$d_class" | tr -d '\r')
+    d_abbrev=$(echo "$d_abbrev" | tr -d '\r ')
+    
+    # 1. Safely extract exact matches only (CT will no longer match CTX)
+    awk -F"|" -v f="${d_abbrev}r" 'BEGIN{OFS="|"} {split($4, a, ","); for(x in a) if(a[x]==f) {print $0; break}}' AbR_output.txt > "${d_abbrev}r.output"
+    awk -F"|" -v f="${d_abbrev}i" 'BEGIN{OFS="|"} {split($4, a, ","); for(x in a) if(a[x]==f) {print $0; break}}' AbR_output.txt > "${d_abbrev}i.output"
+    awk -F"|" -v f="${d_abbrev}s" 'BEGIN{OFS="|"} {split($4, a, ","); for(x in a) if(a[x]==f) {print $0; break}}' AbR_output.txt > "${d_abbrev}s.output"
 
-#Deduplicate any repetition in the resistance list
-awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.final.txt > AbR_output.temp
-mv AbR_output.temp AbR_output.final.txt
+    # 2. Calculate Resistance Levels
+    sum_resistance=0
+    for type in r i s; do
+        local_sum=$(awk -F"|" -v tgt="${d_abbrev}${type}" '{
+            split($4, d, ","); split($5, s, ",");
+            for(x in d) if(d[x]==tgt) print s[x]+0
+        }' "${d_abbrev}${type}.output" | awk '{sum+=$1} END {print sum+0}')
+        sum_resistance=$((sum_resistance + local_sum))
+    done
 
-#Deduplicate any repetition in the resistance list
-awk -F"|" '!seen[$1,$2,$3,$4,$5]++' AbR_output.txt > AbR_output.temp
-mv AbR_output.temp AbR_output.txt
+    status="Sensitive"
+    mech="No resistance detected"
 
-#TO DO -  replace with awk pattern matching in case users want to add custom drug classes
-
-i=1
-while read f; do 
-	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"s"' AbR_output.txt > "$f"s.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output #already included above
-	#awk -F"|" -v f="$f" '$4~ f"i"' "${seq}"_resfinder_report.txt >> "$f"i.output
-	
-	
-	##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
-	
-		awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"r.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
-	
-	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
-	
-	sum_resistance=$(awk '{ for(i=1; i<=NF; i++) { if($i ~ /^-?[0-9]+$/) { sum += $i } } } END { print sum }' "$f".level_calc.tmp)
-	
-	#echo "$sum_resistance"
-	if [ ! -n "$sum_resistance" ]; then
-	  sum_resistance=0
+    # 3. Apply Class-Specific Reporting Logic
+    if [[ "${d_class,,}" == *"intrinsic"* ]]; then
+        # Intrinsic: looks for sensitivity mechanism first
+        if [ -s "${d_abbrev}s.output" ]; then
+            len=$(wc -l < "${d_abbrev}s.output")
+            status="Sensitive"
+            if [ "$len" -gt 1 ]; then
+                mech="Multiple determinants"
+            else
+                mech=$(awk -F"|" '{print $1,$2,$3}' "${d_abbrev}s.output" | tr ',' ' ')
+            fi
+            echo "found mechanism for $d_name sensitivity"
+        else
+            status="Resistant"
+            mech="No sensitivity detected"
+            echo "no mechanism identified for $d_name sensitivity"
+        fi
+    else
+        # First/Second/Tertiary: looks for Resistance, then Intermediate
+        if [ -s "${d_abbrev}r.output" ]; then
+            len=$(wc -l < "${d_abbrev}r.output")
+            status="Resistant"
+            if [ "$len" -gt 1 ]; then
+                mech="Multiple determinants"
+            else
+                mech=$(awk -F"|" '{print $1,$2,$3}' "${d_abbrev}r.output" | tr ',' ' ')
+            fi
+            echo "found mechanism for $d_name resistance"
+            
+        elif [ -s "${d_abbrev}i.output" ]; then
+            len=$(wc -l < "${d_abbrev}i.output")
+            status="Intermediate"
+            if [ "$len" -gt 1 ]; then
+                mech="Multiple determinants"
+            else
+                mech=$(awk -F"|" '{print $1,$2,$3}' "${d_abbrev}i.output" | tr ',' ' ')
+            fi
+            echo "found intermediate resistance mechanism for $d_name"
+            
+        else
+            status="Sensitive"
+            mech="No resistance detected"
+            echo "no mechanism identified for $d_name resistance"
+        fi
     fi
-	
-	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
-	status=$?
-	if [[ "$status" -eq 0 ]]; then 
-		echo "found mechanism for $f resistance"
-		length=$(wc -l "$f"r.output | awk '{print $1}' )
-		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple determinants for $f resistance"
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},Multiple determinants/" drug.table.txt
-			i=$((i+1))
-		else
-			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},${mech}/" drug.table.txt
-			i=$((i+1))
-		fi
-	else
-		echo "no mechanism identified for $f resistance, looking for intermediate resistance"
-		grep -w "${f}"i "$f"i.output &> /dev/null
-		status=$?
-		if [[ "$status" -eq 0 ]]; then
-			echo "found intermediate resistance mechanism for $f"
-			length=$(wc -l "$f"i.output | awk '{print $1}' )
-			if [[ "$length" -gt 1 ]]; then
-				echo "found multiple determinants for intermediate $f resistance"
-				sed -i "${i}s/.*/&,Intermediate,${sum_resistance},Multiple determinants/" drug.table.txt
-				i=$((i+1))
-			else
-				echo "found single mechanism for intermediate $f resistance" 
-				mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
-				sed -i "${i}s/.*/&,Intermediate,${sum_resistance},${mech}/" drug.table.txt
-				i=$((i+1))
-			fi
-		else
-			echo "no intermediate resistance found"
-			sed -i "${i}s/.*/&,Sensitive,${sum_resistance},No resistance detected/" drug.table.txt
-			i=$((i+1))
-		fi
-	fi
-done < <(grep -E "First-line|first-line" drug.table.txt.backup | awk -F "," '{ print $3 }') #Three letter abbreviation of antibiotic
 
-while read f; do
-	awk -F"|" -v f="$f" '$4~ f"s" ' AbR_output.txt > "$f"s.output 
-	#awk -F"|" -v f="$f" '$4~ f"s" ' "${seq}"_resfinder_report.txt >> "$f"s.output
-	
-	##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"r.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
-	
-	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
-	
-	sum_resistance=$(awk '{ for(i=1; i<=NF; i++) { if($i ~ /^-?[0-9]+$/) { sum += $i } } } END { print sum }' "$f".level_calc.tmp)
-	#echo "$sum_resistance"
-	if [ ! -n "$sum_resistance" ]; then
-	  sum_resistance=0
-    fi
-	
-	grep -w "$f"s "$f"s.output &> /dev/null
-	status=$?
-	if [[ "$status" -eq 0 ]]; then
-		echo "found mechanism for $f sensitivity"
-		length=$(wc -l "$f"s.output | awk '{print $1}' )
-		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple determinants for $f sensitivity"
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			sed -i "${i}s/.*/&,Sensitive,${sum_resistance},Multiple determinants/" drug.table.txt
-			i=$((i+1))
-		else
-			echo "found single mechanism for $f sensitivity" 
-			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"s.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3)
-			sed -i "${i}s/.*/&,Sensitive,${sum_resistance},${mech}/" drug.table.txt
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			i=$((i+1))
-		fi
-	else
-		echo "no mechanism identified for $f sensitivity"
-		sed -i "${i}s/.*/&,Resistant,${sum_resistance},No sensitivity detected/" drug.table.txt
-		i=$((i+1))
-	fi
-done < <(grep -E "intrinsic|Intrinsic" drug.table.txt.backup | awk -F "," '{ print $3 }')
+    # Append safely to final CSV output
+    echo "${seq},${d_class},${d_name},${status},${sum_resistance},${mech}" >> patientDrugSusceptibilityData.csv
 
-while read f; do 
-	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"s"' AbR_output.txt > "$f"s.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
-	#awk -F"|" -v f="$f" '$4~ f"i"' "${seq}"_resfinder_report.txt >> "$f"i.output
-	
-	##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"r.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' |  sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
-	
-	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
-	
-	sum_resistance=$(awk '{ for(i=1; i<=NF; i++) { if($i ~ /^-?[0-9]+$/) { sum += $i } } } END { print sum }' "$f".level_calc.tmp)
-	#echo "$sum_resistance"
-	if [ ! -n "$sum_resistance" ]; then
-	  sum_resistance=0
-    fi
-	
-	grep -w "$f"r "$f"r.output &> /dev/null #looks for full resistance
-	status=$?
-	if [[ "$status" -eq 0 ]]; then
-		echo "found mechanism for $f resistance"
-		length=$(wc -l "$f"r.output | awk '{print $1}' )
-		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple determinants for $f resistance"
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},Multiple determinants/" drug.table.txt
-			i=$((i+1))
-		else
-			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},${mech}/" drug.table.txt
-			i=$((i+1))
-		fi
-	else
-		echo "no mechanism identified for $f resistance, looking for intermediate resistance"
-		grep -w "${f}"i "$f"i.output &> /dev/null
-		status=$?
-		if [[ "$status" -eq 0 ]]; then
-			echo "found intermediate resistance mechanism for $f"
-			length=$(wc -l "$f"i.output | awk '{print $1}' )
-			if [[ "$length" -gt 1 ]]; then
-				echo "found multiple determinants for intermediate $f resistance"
-				sed -i "${i}s/.*/&,Intermediate,${sum_resistance},Multiple determinants/" drug.table.txt
-				i=$((i+1))
-			else
-				echo "found single mechanism for intermediate $f resistance" 
-				mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"i.output) #Prints gene name (column 2 from SQL query) and mutation (col 3
-				sed -i "${i}s/.*/&,Intermediate,${sum_resistance},${mech}/" drug.table.txt
-				i=$((i+1))
-			fi
-		else
-			echo "no intermediate resistance found"
-			sed -i "${i}s/.*/&,Sensitive,${sum_resistance},No resistance detected/" drug.table.txt
-			i=$((i+1))
-		fi
-	fi
-done < <(grep -E "Second-line|second-line" drug.table.txt.backup | awk -F "," '{ print $3 }') 
+done < drug.table.txt.backup
 
-#Looking for resistance
-while read f; do
-	awk -F"|" -v f="$f" '$4~ f"r"' AbR_output.txt > "$f"r.output
-	awk -F"|" -v f="$f" '$4~ f"i"' AbR_output.txt > "$f"i.output
-	awk -F"|" -v f="$f" '$4~ f"s"' AbR_output.txt > "$f"s.output
-	#awk -F"|" -v f="$f" '$4~ f"r"' "${seq}"_resfinder_report.txt >> "$f"r.output
-	
-		##calc level of resistance - messy code here. TO DO - neaten and reduce redundancy 
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"r.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"r.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"i.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"i.level_calc
-	
-	awk -F"|" 'BEGIN { OFS = "\n" } {print $4,$5}' "$f"s.output | awk -F"," '{
-    for (i=1; i<=NF; i++) {
-        a[NR,i] = $i
-        }
-    }
-    NF>p { p = NF }
-    END {
-      for(j=1; j<=p; j++) {
-        str=a[1,j]
-        for(i=2; i<=NR; i++){
-            str=str"\t"a[i,j];
-        }
-        print str
-       }
-    }' | sed 's/\t/\n/g' | grep "$f" -A1 > "$f"s.level_calc
-	
-	cat "$f"{r,s,i}.level_calc > "$f".level_calc.tmp
-	
-	sum_resistance=$(awk '{ for(i=1; i<=NF; i++) { if($i ~ /^-?[0-9]+$/) { sum += $i } } } END { print sum }' "$f".level_calc.tmp)
-	#echo "$sum_resistance"
-	if [ ! -n "$sum_resistance" ]; then
-	  sum_resistance=0
-    fi
-	
-	grep -w "$f"r "$f"r.output &> /dev/null
-	status=$?
-	if [[ "$status" -eq 0 ]]; then
-		echo "found mechanism for $f resistance"
-		length=$(wc -l "$f"r.output | awk '{print $1}' )
-		if [[ "$length" -gt 1 ]]; then
-			echo "found multiple determinants for $f resistance"
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},Multiple determinants/" drug.table.txt
-			i=$((i+1))
-		else
-			echo "found single mechanism for $f resistance" 
-			mech=$(awk -F "|" '{ print $1,$2,$3 }' "$f"r.output) #Prints gene name (column 2 from SQL query) and mutation (#col 3
-			sed -i "${i}s/.*/&,Resistant,${sum_resistance},${mech}/" drug.table.txt
-			#cat "$f"s.output >> drug.table.tertiary.txt
-			i=$((i+1))
-		fi
-	else
-		echo "no mechanism identified for $f resistance"
-		sed -i "${i}s/.*/&,Sensitive,${sum_resistance},No resistance detected/" drug.table.txt
-		i=$((i+1))
-	fi
-done < <(grep -E "tertiary|Tertiary" drug.table.txt.backup | awk -F "," '{ print $3 }')
-
-#Looking for speciation and QC
+# === QC & SPECIATION ===
 echo "Looking for speciation markers"
-awk -F"|" -v f="speciation" 'BEGIN{IGNORECASE=1} $4~ f' AbR_output.txt > speciation.output
-grep -iw "speciation" speciation.output &> /dev/null
-status=$?
-if [[ "$status" -eq 0 ]]; then
-	echo "Species specific marker is missing. Likely quality control issue" #TO DO This should go into final report
-	echo "Interpret AMR profile with caution" #TO DO This should go into final report
-fi	
+if awk -F"|" 'BEGIN{IGNORECASE=1} $4 ~ "speciation"' AbR_output.txt > speciation.output; then
+    if ! grep -iqw "speciation" speciation.output; then
+        echo "Species specific marker is missing. Likely quality control issue"
+        echo "Interpret AMR profile with caution"
+    fi
+fi
 
-# create patientDrugSusceptibilityData.csv
-# ID refers to individual strains
-sed -i "s/^/$seq,/" drug.table.txt
-awk -v FS="," -v OFS="," '{print $1,$2,$3,$5,$6,$7 }' drug.table.txt > drug.table.txt.tmp
+# Ensure final output files are prepped
+cp patientDrugSusceptibilityData.csv drug.table.txt
 
-#debug line to check format
-#cp drug.table.txt drug.table.txt.format_check
-
-mv drug.table.txt.tmp drug.table.txt
-sed -i '1 i\ID,Class,Drug,Status,Level,Details' drug.table.txt 
-cp drug.table.txt patientDrugSusceptibilityData.csv
-
-if [ -s AbR_output.final.txt ]; then
-	cp AbR_output.final.txt "$seq".AbR_output.final.txt
-else	
-	echo "No antibiotic resistance identified in $seq" >> "$seq".AbR_output.final.txt
+if [ ! -s "${seq}.AbR_output.final.txt" ]; then
+    if [ -s AbR_output.final.txt ]; then
+        cp AbR_output.final.txt "${seq}.AbR_output.final.txt"
+    else    
+        echo "No antibiotic resistance identified in $seq" > "${seq}.AbR_output.final.txt"
+    fi
 fi
 
 exit 0

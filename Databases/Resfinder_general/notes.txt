@@ -5,6 +5,7 @@ aac(2')-Ib:Aminoglycoside resistance:
 aac(2')-Ic:Aminoglycoside resistance:
 aac(2')-Id:Aminoglycoside resistance:
 aac(2')-Ie:Aminoglycoside resistance:
+aac(2')-IIa:Aminoglycoside resistance:
 aac(3)-I:Aminoglycoside resistance:
 aac(3)-IIIa:Aminoglycoside resistance:
 aac(3)-IIIb:Aminoglycoside resistance:
@@ -166,6 +167,7 @@ aacA-aphD:Aminoglycoside resistance:Alternate name; aac(6')-Ie
 car(A):Macrolide, Lincosamide and Streptogramin B resistance:
 cfr:Phenicols, Lincosamides, Oxazolidinones, Pleuromutilins, and Streptogramin A resistance:
 optrA:Oxazolidinone and Phenicol resistance:
+poxtA:Oxazolidinone and Phenicol resistance:
 ere(A):Macrolide resistance:
 ere(B):Macrolide resistance:
 erm(30):Macrolide resistance:
@@ -180,6 +182,7 @@ erm(39):Macrolide resistance:
 erm(40):Macrolide resistance:
 erm(41):Macrolide resistance:
 erm(42):Macrolide resistance:
+erm(54):Macrolide resistance:
 erm(A):Macrolide resistance:
 erm(B):Macrolide resistance:
 erm(C):Macrolide resistance:
@@ -313,6 +316,7 @@ qnrB5:Quinolone resistance:
 qnrB6:Quinolone resistance:
 qnrB7:Quinolone resistance:
 qnrB8:Quinolone resistance:
+qnrB82:Quinolone resistance:
 qnrB9:Quinolone resistance:
 qnrC:Quinolone resistance:
 qnrD:Quinolone resistance:
@@ -359,7 +363,10 @@ qnrVC5:Quinolone resistance:
 qnrVC7:Quinolone resistance:
 qnrE:Quinolone resistance:
 qepA:Quinolone resistance:
+qepA1:Quinolone resistance:
 qepA2:Quinolone resistance:
+qepA3:Quinolone resistance:
+qepA4:Quinolone resistance:
 aac(6')-Ib-cr:Fluoroquinolone and aminoglycoside resistance:
 norA:Fluoroquinolone resistance:
 oqxA:Quinolone resistance:
@@ -410,8 +417,23 @@ tet(X):Tetracycline resistance:
 tet(Y):Tetracycline resistance:
 tet(Z):Tetracycline resistance:
 tetA(P):Tetracycline resistance:
+tetA(46):Tetracycline resistance:
+tetA(60):Tetracycline resistance:
 tetB(P):Tetracycline resistance:
+tetB(46):Tetracycline resistance:
 tet(X6):Tetracycline resistance:
+tmexC1:Tetracycline resistance:
+tmexC2:Tetracycline resistance:
+tmexC3:Tetracycline resistance:
+tmexC4:Tetracycline resistance:
+tmexD1:Tetracycline resistance:
+tmexD2:Tetracycline resistance:
+tmexD3:Tetracycline resistance:
+tmexD4:Tetracycline resistance:
+TOprJ1:Tetracycline resistance:
+TOprJ2:Tetracycline resistance:
+TOprJ3:Tetracycline resistance:
+TOprJ4:Tetracycline resistance:
 #Trimethoprim resistance
 dfrA1:Trimethoprim resistance:
 dfrA10:Trimethoprim resistance:
@@ -460,7 +482,9 @@ dfrK:Trimethoprim resistance:
 dfrA36:Trimethoprim resistance:
 dfrA35:Trimethoprim resistance:
 dfrA34:Trimethoprim resistance:
-#Vancomycin:
+dfrE:Trimethoprim resistance:
+#Glycopeptide:
+bleO:Glycopeptide resistance:
 ddlA2-Sc:Vancomycin resistance:
 VanA:Vancomycin resistance (Glycopeptid resistance):VanA vancomycin resistance operon, (VanA, VanH-A, VanR-A, VanS-A, VanX-A, VanY-A and VanZ-A)
 VanH-A:Vancomycin resistance (Glycopeptid resistance):VanA vancomycin resistance operon, (VanA, VanH-A, VanR-A, VanS-A, VanX-A, VanY-A and VanZ-A)
@@ -558,6 +582,7 @@ blaCARB-48:Beta-lactam resistance:
 blaL:Beta-lactam resistance:
 blaCARB-47:Beta-lactam resistance:
 blaVMB-1:Beta-lactam resistance:
+blaVMB-2:Beta-lactam resistance:
 blaVHW-1:Beta-lactam resistance:
 blaVHH-1:Beta-lactam resistance:
 blaTER-2:Beta-lactam resistance:
@@ -1808,6 +1833,7 @@ blaGES-20:Beta-lactam resistance:
 blaGES-21:Beta-lactam resistance:
 blaGES-22:Beta-lactam resistance:
 blaGES-23:Beta-lactam resistance:
+blaGMB-1:Beta-lactam resistance:
 blaKPC-1:Beta-lactam resistance:
 blaKPC-2:Beta-lactam resistance:
 blaKPC-3:Beta-lactam resistance:
@@ -2186,6 +2212,7 @@ fosF:Fosfomycin resistance:
 fosG:Fosfomycin resistance:
 fosK:Fosfomycin resistance:
 fosX:Fosfomycin resistance:
+fosY:Fosfomycin resistance:
 #Fusidic acid resistance:
 fusA:Fusidic acid resistance:
 fusB:Fusidic acid resistance:
@@ -2216,22 +2243,7 @@ mcr-3:Colistin resistance:
 mcr-1.9:Colistin resistance:
 mcr-4:Colistin resistance:
 mcr-5:Colistin resistance:
-mcr-9:Colistin resistance:
 mcr-10:Colistin resistance:
-#Disinfectant resistance:
-formA:Disinfectant resistance:
-qacA:Disinfectant resistance:
-qacB:Disinfectant resistance:
-qacC:Disinfectant resistance:
-qacD:Disinfectant resistance:
-qacE:Disinfectant resistance:
-qacF:Disinfectant resistance:
-qacG:Disinfectant resistance:
-qacH:Disinfectant resistance:
-qacA4:Disinfectant resistance:
-qacJ:Disinfectant resistance:
-qacZ:Disinfectant resistance:
-sitABCD:Disinfectant resistance:
-OqxA:Disinfectant resistance:
-OqxB:Disinfectant resistance:
-ClpL:Disinfectant resistance:
+# Misc resistance: 
+NarA:Ionophores resistance:
+NarB:Ionophores resistance:

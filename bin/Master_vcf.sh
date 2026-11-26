@@ -4,10 +4,10 @@ ref=$1
 
 echo "Creating master VCF file"
 
-array=($(find . -name '*.gvcf' -printf '%f '))
+array=($(find *.gvcf -printf "%f "))
 n="${#array[@]}"
 array2=("${array[@]/#/-V }")
 gatk CombineGVCFs -R ${ref}.fasta ${array2[*]} -O master.vcf
-gatk GenotypeGVCFs -ploidy $n -R ${ref}.fasta -V master.vcf -O out.vcf
+gatk GenotypeGVCFs -ploidy 1 -R ${ref}.fasta -V master.vcf -O out.vcf
  
 exit 0

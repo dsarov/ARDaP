@@ -46,81 +46,50 @@ while read f; do
 done < SNP_gene_list.txt
 
 
-	declare -A SQL_SNP_report=()
-	STATEMENT_SNPS () {
-	COUNTER=1
-	while read line; do 
-	gene=$(echo "$line" | awk '{print $1}')
-	#echo $gene
-	variant=$(echo "$line" | awk '{print $3}')
-	variant2=$(echo "$line" | awk '{print $2}')
-	#echo $variant
-	SQL_SNP_report[$COUNTER]=$(
-cat << EOF
-SELECT 
-	Variants_SNP_indel.Gene_name,
-	Variants_SNP_indel.Locus_tag,
-	Variants_SNP_indel.Variant_annotation,
-	Variants_SNP_indel.Antibiotic_affected,
-	Variants_SNP_indel.Threshold,
-	Variants_SNP_indel.Comments 
-FROM 
-	Variants_SNP_indel 
-WHERE 
-	Variants_SNP_indel.Gene_name = '$gene' 
-	AND Variants_SNP_indel.Variant_annotation = '$variant' 
-	OR Variants_SNP_indel.Gene_name = '$gene' 
-	AND Variants_SNP_indel.Variant_annotation = '$variant2';
-EOF
-	)
+# ---------------------------------------------------------------------------
+# Database lookups.
+# Before: one sqlite3 process per variant, plus several awk/cat processes per
+# variant just to build each statement (thousands of process launches).
+# Now: ONE sqlite3 session. Every variant is loaded into a temporary table and
+# matched with a join. Output order is unchanged: variants in file order, and
+# for each variant the matching rows in table order.
+# Lines go through 'read' first so whitespace/backslash handling is the same as
+# the old 'while read line' loops.
+# ---------------------------------------------------------------------------
+make_inserts () {   # $1 = temp table, $2 = effects file, $3 = snp | indel
+	while read line; do printf '%s\n' "$line"; done < "$2" | awk -v T="$1" -v M="$3" -v Q="'" '
+	function quote(s) { gsub(Q, Q Q, s); return Q s Q }
+	{
+		v1 = $3
+		v2 = (M == "snp") ? $2 : $3
+		printf "INSERT INTO %s VALUES(%d,%s,%s,%s);\n", T, NR, quote($1), quote(v1), quote(v2)
+	}'
+}
 
-	COUNTER=$((COUNTER+1))
-	done < ${seq}.annotated.snp.effects.subset
-	SNP_COUNT="$COUNTER"
-	}
+echo "Running SNP and indel detection queries"
+{
+	echo "BEGIN;"
+	echo "CREATE TEMP TABLE snp_q(n, gene, v1, v2);"
+	echo "CREATE TEMP TABLE indel_q(n, gene, v1, v2);"
+	if [ -s ${seq}.annotated.snp.effects.subset ]; then make_inserts snp_q ${seq}.annotated.snp.effects.subset snp; fi
+	if [ -s ${seq}.annotated.indel.effects.subset ]; then make_inserts indel_q ${seq}.annotated.indel.effects.subset indel; fi
+	echo "COMMIT;"
+	cat << 'SQL'
+SELECT d.Gene_name, d.Locus_tag, d.Variant_annotation, d.Antibiotic_affected, d.Threshold, d.Comments
+FROM snp_q q JOIN Variants_SNP_indel d
+  ON d.Gene_name = q.gene AND (d.Variant_annotation = q.v1 OR d.Variant_annotation = q.v2)
+ORDER BY q.n, d.rowid;
+SELECT d.Gene_name, d.Locus_tag, d.Variant_annotation, d.Antibiotic_affected, d.Threshold, d.Comments
+FROM indel_q q JOIN Variants_SNP_indel d
+  ON d.Gene_name = q.gene AND d.Variant_annotation = q.v1
+ORDER BY q.n, d.rowid;
+SQL
+} > ${seq}.snp_indel_lookup.sql
 
-	declare -A SQL_indel_report=()
-	STATEMENT_INDELS () {
-	COUNTER=1
-	while read line; do 
-	gene=$(echo "$line" | awk '{print $1}')
-	#echo $gene
-	variant=$(echo "$line" | awk '{print $3 }')
-	#echo $variant
-	SQL_indel_report[$COUNTER]=$(
-cat << EOF
-SELECT
-	Variants_SNP_indel.Gene_name,
-	Variants_SNP_indel.Locus_tag,
-	Variants_SNP_indel.Variant_annotation,
-	Variants_SNP_indel.Antibiotic_affected,
-	Variants_SNP_indel.Threshold,
-	Variants_SNP_indel.Comments
-FROM
-	Variants_SNP_indel
-WHERE
-	Variants_SNP_indel.Gene_name = '$gene' 
-	AND Variants_SNP_indel.Variant_annotation = '$variant';
-EOF
-	)
-		
-	COUNTER=$((COUNTER+1))
-	done < ${seq}.annotated.indel.effects.subset
-	INDEL_COUNT="$COUNTER"
-	}
-
-#run functions
-echo -e "Creating SNP statements\n"
-STATEMENT_SNPS
-echo "Creating indel statements"
-STATEMENT_INDELS
-
-echo "Running SNP detection queries"
-for (( i=1; i<"$SNP_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_SNP_report[$i]}" >> ${seq}.AbR_output_snp_indel.txt; done
-echo "done"
-
-echo -e "Running indel detection queries"
-for (( i=1; i<"$INDEL_COUNT"; i++ )); do sqlite3 "$RESISTANCE_DB" "${SQL_indel_report[$i]}" >> ${seq}.AbR_output_snp_indel.txt; done
+if ! sqlite3 -bail "$RESISTANCE_DB" < ${seq}.snp_indel_lookup.sql >> ${seq}.AbR_output_snp_indel.txt; then
+	echo "ERROR: the SNP/indel database lookup failed" >&2
+	exit 1
+fi
 echo "done"
 
 #if [ ! -s ${seq}.AbR_output_snp_indel.txt ]; then

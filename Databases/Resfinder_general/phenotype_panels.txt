@@ -42,7 +42,7 @@ Tetracycline
 :Panel: Escherichia coli
 Amikacin
 Ampicillin
-Ampicillin+clavulanic acid
+Ampicillin+Clavulanic acid
 Azithromycin
 Cefepime
 Cefotaxime
@@ -108,7 +108,7 @@ Gentamicin
 Imipenem
 Meropenem
 Nalidixic acid
-Pipercallin+Tazobactam
+Piperacillin+Tazobactam
 Sulfamethoxazole
 Temocillin
 Tetracycline
@@ -132,7 +132,7 @@ Gentamicin
 Linezolid
 Mupirocin
 Penicillin
-Quinupristin+dalfopristin
+Quinupristin+Dalfopristin
 Spiramycin
 Sulfamethoxazole
 Teicoplanin
@@ -150,9 +150,5 @@ Ethambutol
 Isoniazid
 Levofloxacin
 Linezolid
-Rifampin
+Rifampicin
 Streptomycin
-
-
-
-
