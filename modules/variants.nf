@@ -24,6 +24,7 @@ process VariantCalling {
     tuple val(id), path(dedup_bam), path(dedup_index), path(perbase), path(depth), path(resfinder)
     path resistance_db
     path patient_meta, stageAs: 'patientMetaData.csv'
+    val snpeff_db
 
     output:
     tuple val(id), path("${id}.PASS.snps.vcf"), path("${id}.FAIL.snps.vcf"), emit: filtered_snps
@@ -39,7 +40,7 @@ process VariantCalling {
 
     script:
     """
-    bash VariantCalling.sh ${id} ${reference} ${projectDir} ${params.snpeff} ${params.fast} ${task.cpus} intervals.list ${params.hc_chunks} ${task.memory.toGiga()}
+    bash VariantCalling.sh ${id} ${reference} ${projectDir} ${snpeff_db} ${params.fast} ${task.cpus} intervals.list ${params.hc_chunks} ${task.memory.toGiga()}
     echo "[timer] variant calling finished at \${SECONDS}s"
 
     # the database queries and the report take about a second, so they run in this job
@@ -67,6 +68,7 @@ process VariantCallingMixture {
     path reference_fai
     path reference_dict
     tuple val(id), path(dedup_bam), path(dedup_index), path(resfinder)
+    val snpeff_db
 
     output:
     tuple val(id), path("${id}.ALL.annotated.mixture.vcf"), emit: annotated
@@ -88,7 +90,7 @@ process VariantCallingMixture {
     head -n "\$header" ${id}.snps.indels.filtered.mixed.vcf > snp_head
     cat ${id}.snps.indels.filtered.mixed.vcf | grep PASS | cat snp_head - > ${id}.PASS.snps.indels.mixed.vcf
 
-    snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${projectDir}/resources/snpeff $params.snpeff ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
+    snpEff eff -nodownload -no-downstream -no-intergenic -ud 100 -v -dataDir ${projectDir}/resources/snpeff ${snpeff_db} ${id}.PASS.snps.indels.mixed.vcf > ${id}.ALL.annotated.mixture.vcf
 
     echo -e "${id}.dedup.bam\t500\tB" > pindel.bam.config
     pindel -f ${reference} -T $task.cpus -i pindel.bam.config -o pindel.out
@@ -97,7 +99,7 @@ process VariantCallingMixture {
 
     for f in pindel.out_*; do
       pindel2vcf -r ${reference} -R ${reference.baseName} -d ARDaP -p \$f -v \${f}.vcf -e 5 -is 15 -as 50000
-      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${projectDir}/resources/snpeff $params.snpeff \${f}.vcf > \${f}.vcf.annotated
+      snpEff eff -no-downstream -no-intergenic -ud 100 -v -dataDir ${projectDir}/resources/snpeff ${snpeff_db} \${f}.vcf > \${f}.vcf.annotated
     done
     """
 }

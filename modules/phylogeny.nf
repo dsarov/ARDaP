@@ -58,6 +58,7 @@ process snp_matrix {
 
     input:
     tuple path(filtered_vcf), path(out_vcf)
+    val snpeff_db
 
     output:
     path "Ortho_SNP_matrix.nex"
@@ -67,6 +68,6 @@ process snp_matrix {
 
     script:
     """
-    bash SNP_matrix.sh $params.snpeff ${projectDir}
+    bash SNP_matrix.sh ${snpeff_db} ${projectDir}
     """
 }

@@ -41,20 +41,21 @@ process MakeIntervals {
 
     input:
     path resistance_db
+    val snpeff_db
 
     output:
     path "intervals.list", emit: intervals
 
     script:
     """
-    if [ -s ${projectDir}/Databases/${params.snpeff}/intervals.list ]; then
+    if [ -s ${projectDir}/Databases/${snpeff_db}/intervals.list ]; then
       # A pre-built list shipped with the database takes priority
-      cp ${projectDir}/Databases/${params.snpeff}/intervals.list intervals.list
+      cp ${projectDir}/Databases/${snpeff_db}/intervals.list intervals.list
     else
       sqlite3 ${resistance_db} "SELECT Coverage.Gene FROM Coverage;" > gene.list.coverage
       sqlite3 ${resistance_db} "SELECT Variants_SNP_indel.Gene_name FROM Variants_SNP_indel;" > gene.list.variants
       cat gene.list.variants gene.list.coverage | sort -u > gene.list
-      snpEff genes2bed ${params.snpeff} -dataDir ${projectDir}/resources/snpeff -f gene.list > genes.bed
+      snpEff genes2bed ${snpeff_db} -dataDir ${projectDir}/resources/snpeff -f gene.list > genes.bed
       sed 's/\\t/:/;s/\\t/-/' genes.bed | awk '{print \$1}' | tail -n+2 > intervals.list
     fi
     """
