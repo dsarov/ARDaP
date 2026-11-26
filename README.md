@@ -41,18 +41,17 @@ ARDaP (**A**ntimicrobial **R**esistance **D**etection **a**nd **P**rediction) is
 **Github + Conda** 
 ### Currently recommended because updating packages in Conda is broken for me
 
-1) Download the latest installation with git clone. Recommended to place this installation in a bin folder or other easily accessible location.
-
-```
-git clone https://github.com/dsarov/ardap.git ./ardap
-```
-
-2) Install an environment with Nextflow (>version 24) using conda
+1) Install an environment with Nextflow (>version 20 - DSL2 support required) using conda
 
 ```
 conda create -n nf -c conda-forge -c bioconda nextflow git git-lfs
 conda activate nf
 git lfs install
+```
+2) Download the latest installation with git clone. Recommended to place this installation in a bin folder or other easily accessible location.
+
+```
+git clone https://github.com/dsarov/ardap.git ./ardap
 ```
 
 The pipeline itself is either run by calling the main.nf or from a local respostory in a local nextflow cache. 
